@@ -1,48 +1,65 @@
-<%@ page import="edu.gatech.cs2340.todo.model.Todo" %>
+<%@ page import="edu.gatech.cs2340team2.risk.model.Player" %>
 <%@ page import="java.util.*" %>
 
-<% TreeMap<Integer, Todo> todos = 
-   (TreeMap<Integer, Todo>) request.getAttribute("todos"); %>
+<% TreeMap<Integer, Player> players = (TreeMap<Integer, Player>) request.getAttribute("players"); %>
+<% Integer numPlayers = (Integer) request.getAttribute("numPlayers"); %>
 
 <html>
 <head>
 <title>RISK Start Screen</title>
 </head>
+
 <body>
 <h1>How many players?</h1>
-
 <table>
-<tr>
-<th>Buttons</th><th>TextFields</th>
-</tr>
-
-<% for (Integer id: todos.keySet()) { %>
-<% Todo todo = todos.get(id); %>
-<tr>
-<form action="/todo/update/<%= id %>" method="POST">
-  <!-- hidden operation element to simulate HTTP PUT method in server -->
-  <input type="hidden" name="operation" value="PUT"/>
-  <td><input type="text" name="title" value="<%= todo.getTitle() %>"/></td>
-  <td><input type="text" name="task" value="<%= todo.getTask() %>"/></td>
-  <td><input type="submit" value="Update"/></td>
-</form>
-<td valign="bottom">
-  <form action="/todo/delete/<%= id %>" method="POST">
-  <!-- hidden operation element to simulate HTTP DELETE method in server -->
-    <input type="hidden" name="operation" value="DELETE"/>
-    <input type="submit" value="Delete"/>
-  </form>
- </td>
-</tr>
-<% } %>
-<tr>
-<form action="/todo/create" method="POST">
-  <td><input type="text" name="title"/></td>
-  <td><input type="text" name="task"/></td>
-  <td><input type="submit" value="Add"/></td>
-</form>
-<td></td> <!-- empty cell to align with previous cells -->
-</tr>
+   <tr>
+      <td>	
+	 <table>
+	    <tr>
+	       <input type="button" value="3" />
+	    </tr>
+	    <tr>
+	       <input type="button" value="4" />
+	    </tr>
+	    <tr>
+	       <input type="button" value="5" />
+	       </tr>
+	    <tr>
+	       <input type="button" value="6" />
+	    </tr>
+	    <tr>
+	       <form action="/risk/update" method="POST">
+		  <input type="hidden" name="operation" value="PUT" />
+		  <input type="text" name="numplayers" value="<%= numPlayers %>" autofocus />
+		  <input type="submit" value="SetNum" />
+	       </form>
+	     </tr>
+	 </table>			
+      </td>
+      <td>
+	 <table>
+	    <form action="dummy.html" method="POST" >
+	    <tr>
+	       <input type="text" name="player1Name" />
+	    </tr>
+	    <tr>
+	       <input type="text" name="player2Name" />
+	    </tr>
+	    <tr>
+	       <input type="text" name="player3Name" />
+	    </tr>
+	    <% for (int i = 3; i < numPlayers; i++) { %>
+	    <tr>
+	       <input type="text" name="player<%= i %>Name"/>
+	    </tr>
+	    <% } %>
+	    <tr>
+	       <input type="submit" value="Begin" />
+	    </tr>
+	    </form>
+	 </table>
+      </td>
+   </tr>
 </table>
 
 </body>

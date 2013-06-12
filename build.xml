@@ -1,7 +1,7 @@
-<project name="todo" default="compile" basedir=".">
+<project name="risk" default="compile" basedir=".">
 
   <property environment="env"/>
-  <property name="app.name"      value="todo"/>
+  <property name="app.name"      value="risk"/>
   <property name="app.path"      value="/${app.name}"/>
   <property name="app.version"   value="0.1-dev"/>
   <property name="build.home"    value="${basedir}/target"/>
@@ -51,5 +51,7 @@
       <fileset dir="${build.home}"/>
     </copy>    
   </target>
+  
+  <target name="main" depends="clean, deploy" />
 
 </project>
