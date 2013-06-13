@@ -24,6 +24,7 @@ public class RiskServlet extends HttpServlet {
     List<Integer> POSSIBLE_NUM_PLAYERS = Arrays.asList(3, 4, 5, 6);
     LinkedList<Player> players = new LinkedList<Player>();
     Integer numPlayers = 3;
+    RiskGame game = new RiskGame();
 
     @Override
     protected void doPost(HttpServletRequest request,
