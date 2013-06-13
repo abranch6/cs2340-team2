@@ -4,15 +4,12 @@ public class Player
 {
 	private String name;
 	private int armies;
+	
 
-	Player()
-	{
-	}
-
-	Player(String name, int startingArmies)
+	public Player(String name, int startingArmies)
 	{
 		this.name = name;
-		armies = startingArmies;
+		this.armies = startingArmies;
 	}
 
 	public String getName()

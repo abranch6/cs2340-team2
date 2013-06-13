@@ -3,7 +3,9 @@ package edu.gatech.cs2340team2.risk.controller;
 import edu.gatech.cs2340team2.risk.model.Player;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.TreeMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Arrays;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,13 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns={
         "/startup", // GET
-        "/create", // POST 
-        "/update", // PUT
+        "/load_game", // POST 
+        "/update_num_players", // PUT
         "/delete/*" // DELETE
     })
 public class RiskServlet extends HttpServlet {
 
-    TreeMap<Integer, Player> players = new TreeMap<>();
+    List<Integer> POSSIBLE_NUM_PLAYERS = Arrays.asList(3, 4, 5, 6);
+    LinkedList<Player> players = new LinkedList<Player>();
     Integer numPlayers = 3;
 
     @Override
@@ -41,25 +44,16 @@ public class RiskServlet extends HttpServlet {
             System.out.println("Delegating to doDelete().");
             doDelete(request, response);
         } else {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
-            dispatcher.forward(request,response);
-            /*
-            int numplayers = Integer.parseInt(request.getParameter("numplayers"));
-            request.setAttribute("numPlayers", numPlayers);
+            int j = 0;
+            for (int i = 1; i <= numPlayers; i++) {
+                System.out.println(request.getParameter("player" + i + "Name"));
+                
+                players.add(i-1, new Player((String)request.getParameter("player" + i + "Name"), 0));
+            }
             request.setAttribute("players", players);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
+            request.setAttribute("numPlayers", numPlayers);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
             dispatcher.forward(request,response);
-            */
-            
-            /*
-            String title = request.getParameter("title");
-            String task = request.getParameter("task");
-            todos.put(todos.size(), new Todo(title, task));
-            request.setAttribute("todos", todos);
-            RequestDispatcher dispatcher = 
-                getServletContext().getRequestDispatcher("/list.jsp");
-            dispatcher.forward(request,response);
-            */
         }
     }
 
@@ -87,17 +81,6 @@ public class RiskServlet extends HttpServlet {
         request.setAttribute("players", players);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
         dispatcher.forward(request,response);
-        
-        /*
-        String title = (String) request.getParameter("title");
-        String task = (String)  request.getParameter("task");
-        int id = getId(request);
-        todos.put(id, new Todo(title, task));
-        request.setAttribute("todos", todos);
-        RequestDispatcher dispatcher = 
-            getServletContext().getRequestDispatcher("/list.jsp");
-        dispatcher.forward(request,response);
-        */
     }
 
     protected void doDelete(HttpServletRequest request,
@@ -106,15 +89,6 @@ public class RiskServlet extends HttpServlet {
         System.out.println("In doDelete()");
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
         dispatcher.forward(request,response);
-        
-        /*
-        int id = getId(request);
-        todos.remove(id);
-        request.setAttribute("todos", todos);
-        RequestDispatcher dispatcher = 
-            getServletContext().getRequestDispatcher("/list.jsp");
-        dispatcher.forward(request,response);
-        */
     }
 
     private int getId(HttpServletRequest request) {
