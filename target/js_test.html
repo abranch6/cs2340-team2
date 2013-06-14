@@ -1,0 +1,33 @@
+<html>
+<head>
+<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+<!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/javascript" src="js/hexmap.js"></script>
+
+<script>
+function displayHex()
+{
+	populate(generateHexMap(10, 6));
+}
+</script>
+
+
+<link rel="stylesheet" type="text/css" href="css/hexmap.css" />
+
+</head>
+
+<body>
+<div id="hexmap"></div>
+</body>
+<button type="button" onclick="displayHex()">Display Hex</button>
+
+<div id="templates" class="hidden">
+  <div class="tiles blue">
+    <img src="images/tiles/hex-blue.png" width="72" height="72"/>
+  </div>
+</div>

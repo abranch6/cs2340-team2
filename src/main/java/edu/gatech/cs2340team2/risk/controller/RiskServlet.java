@@ -1,6 +1,7 @@
 package edu.gatech.cs2340team2.risk.controller;
 
 import edu.gatech.cs2340team2.risk.model.Player;
+import edu.gatech.cs2340team2.risk.model.RiskGame;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
@@ -21,10 +22,12 @@ import javax.servlet.http.HttpServletResponse;
     })
 public class RiskServlet extends HttpServlet {
 
-    List<Integer> POSSIBLE_NUM_PLAYERS = Arrays.asList(3, 4, 5, 6);
-    LinkedList<Player> players = new LinkedList<Player>();
-    Integer numPlayers = 3;
+//    List<Integer> POSSIBLE_NUM_PLAYERS = Arrays.asList(3, 4, 5, 6);
+    final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
+//    LinkedList<Player> players = new LinkedList<Player>();
+    int numPlayers = 3;
     RiskGame game = new RiskGame();
+    String[] players;
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -46,12 +49,15 @@ public class RiskServlet extends HttpServlet {
             doDelete(request, response);
         } else {
             int j = 0;
-            for (int i = 1; i <= numPlayers; i++) {
+            players = new String[numPlayers];
+            for (int i = 0; i < numPlayers; i++) {
                 System.out.println(request.getParameter("player" + i + "Name"));
-                
-                players.add(i-1, new Player((String)request.getParameter("player" + i + "Name"), 0));
+                players[i] = (String)request.getParameter("player" + i + "Name");
+//                players.add(i-1, new Player((String)request.getParameter("player" + i + "Name"), 0));
             }
-            request.setAttribute("players", players);
+            System.out.print("Player Length " + players.length);
+            game.initPlayers(players);
+            request.setAttribute("players", game.getQueue());
             request.setAttribute("numPlayers", numPlayers);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
             dispatcher.forward(request,response);
