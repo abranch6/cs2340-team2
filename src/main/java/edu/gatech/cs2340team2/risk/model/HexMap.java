@@ -1,80 +1,130 @@
-//package edu.gatech.cs2340team2.risk.model;
+package edu.gatech.cs2340team2.risk.model;
 
 
 //Odd Rows have the offset added to them
 
-import java.util.Queue;
+import java.util.Stack;
 import java.util.LinkedList;
+import java.util.Random;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class HexMap
 {
     int[][] jsMap;
+    Territory[][] territoryMap;
+    Gson json;
     
     public HexMap(int size)
     {
         createJSMap(size);
+        generateHexMap(size);
+        json = new Gson();
     }
 
+    /**
+     * Creates the int map for javascript
+     * @param size
+     *      size of the map to make
+     */
     public void createJSMap(int size)
     {
+
         jsMap = new int[(size * 2) - 1][(size * 2) - 1];
-        MapLocation temp = null;
         
-        boolean finalRing = false;
-        boolean finished = false;
-        Queue<MapLocation> currentRing = new LinkedList<MapLocation>();
-        Queue<MapLocation> prevRing = new LinkedList<MapLocation>();
         
-        MapLocation currentLocation = new MapLocation(jsMap.length / 2, jsMap[0].length / 2);
-        currentRing.add(currentLocation);
-        
-        for(int i = 0; i < size; i++)
+        for(int i = 0; i < jsMap[0].length; i++)
         {
-            finished = finalRing;
-            prevRing = currentRing;
-            currentRing = new LinkedList<MapLocation>();
-            while(prevRing.size() > 0)
+            jsMap[size - 1][i] = 1;
+        }
+        
+        for(int r = size - 1; r > 0; r--)
+        {
+            boolean firstOne = false;
+            for(int c = 0; c < jsMap[0].length; c++)
             {
-                currentLocation = prevRing.poll();
-                jsMap[currentLocation.row][currentLocation.col] = 1;
-                for(int j = 0; j < 6; j++)
+                MapLocation loc = new MapLocation(r, c);
+                
+                if(firstOne && jsMap[r][c] == 1)
                 {
-                    temp = currentLocation.getNeighbor(j);
-                    if(temp.row >= 0 && temp.col >= 0 && temp.row < jsMap.length && temp.col < jsMap[0].length && jsMap[temp.row][temp.col] == 0)
-                    {
-                        currentRing.add(temp);
-                    }
-                    finalRing = (temp.row == 0 || temp.col == 0 || temp.row == jsMap.length - 1 || temp.col == jsMap[0].length - 1);
+                    loc = loc.getNeighbor(MapLocation.UPPER_LEFT);
+                    jsMap[loc.row][loc.col] = 1;
                 }
+                
+                firstOne = (jsMap[r][c] == 1);
             }
         }
         
+        for(int r = 0; r < size - 1; r++)
+        {
+            for(int c = 0; c < jsMap[0].length; c++)
+            {
+                jsMap[jsMap.length - 1 - r][c] = jsMap[r][c];
+            }
+        }
     }
     
+    public void generateHexMap(int size)
+    {
+        territoryMap = new Territory[(size * 2) - 1][(size * 2) - 1];
+        Stack<MapLocation> locations = new Stack<MapLocation>();
+        MapLocation currentLocation = new MapLocation(territoryMap.length / 2, territoryMap[0].length / 2);
+        Random rnd = new Random();
+        int territories = (int)(Math.sqrt(3) / 4.0 * size * size * 6.0 * 3.0 / 4.0);
+        int rand = 0;
+        int neighborCount;
+        MapLocation[] neighbors = new MapLocation[6];
+        
+        jsMap[currentLocation.row][currentLocation.col] = 2;
+        locations.push(currentLocation);
+       
+        
+        while(locations.size() > 0 && territories > 0)
+        {
+            neighborCount = 0;
+            currentLocation = locations.peek();
+            
+            for(int i = 0; i < 6; i++)
+            {
+                MapLocation temp = currentLocation.getNeighbor(i);
+                
+                if(temp.row >= 0 && temp.col >= 0 && temp.row < jsMap.length && temp.col < jsMap[0].length && jsMap[temp.row][temp.col] == 1)
+                {
+                    neighbors[neighborCount] = temp;
+                    neighborCount++;
+                }
+            }
+            
+            if(neighborCount > 0)
+            {
+                rand = rnd.nextInt(neighborCount);
+                locations.push(neighbors[rand]);
+                jsMap[neighbors[rand].row][neighbors[rand].col] = 2;
+                territories--;
+            }
+            else
+            {
+                locations.pop();
+            }
+            
+            
+        }
+    }
+    
+    /**
+     * gets the int map for javascript
+     */
     public int[][] getJSMap()
     {
         return jsMap;
     }
     
-    public static void main(String[] args)
+    /**
+     * gets the json String to return to the browser javascript
+     */
+    public String getJsonMap()
     {
-        HexMap map = new HexMap(6);
-        int[][] temp = map.getJSMap();
-        
-        for(int r = 0; r < temp.length; r++)
-        {
-            for(int c = 0; c < temp[r].length; c++)
-            {
-                System.out.print(temp[r][c] + " ");
-            }
-            System.out.println();
-        }
-      /*  
-        MapLocation temp = new MapLocation(1,1);
-        MapLocation temp2 = temp.getNeighbor(MapLocation.UPPER_LEFT);
-        System.out.println("row: " + temp2.row + " col: " + temp2.col);
-    */
+        return json.toJson(jsMap);
     }
 }
-

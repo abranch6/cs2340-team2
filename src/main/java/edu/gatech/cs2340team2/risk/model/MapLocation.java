@@ -1,4 +1,4 @@
-//package edu.gatech.cs2340team2.risk.model;
+package edu.gatech.cs2340team2.risk.model;
 
 public class MapLocation
 {
@@ -25,6 +25,11 @@ public class MapLocation
         this.col = col;
     }
     
+    /**
+     * gets the neighbor of the MapLocation
+     * @param neighbor
+     *      The neighbor to return (see constants above)
+     */
     public MapLocation getNeighbor(int neighbor)
     {
         int newRow = 0;

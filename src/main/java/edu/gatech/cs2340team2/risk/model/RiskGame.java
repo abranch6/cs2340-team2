@@ -9,7 +9,25 @@ public class RiskGame {
 	
 	Queue<Player> list = new LinkedList<Player>();
 	int armies;
+	GameState state;
+	HexMap map;
+
+	public RiskGame()
+	{
+		state = GameState.INIT_PLAYERS;
+		map = new HexMap(60);
+	}
+
+	public void setGameState(GameState state)
+	{
+		this.state = state;
+	}
 	
+	public GameState getGameState()
+	{
+	    return state;
+	}
+
 	public void initPlayers(String[] names){
 		Random rand = new Random();
 		while(list.size() < names.length){
@@ -36,6 +54,11 @@ public class RiskGame {
 	}
 	public Queue<Player> getQueue(){
 		return list;
+	}
+	
+	public HexMap getMap()
+	{
+	    return map;
 	}
 		
 }
