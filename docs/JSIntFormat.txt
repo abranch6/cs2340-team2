@@ -1,4 +1,4 @@
-Null:
+Null
 	0x0000
 Land:
 	[0:1]: denotes type (2)
