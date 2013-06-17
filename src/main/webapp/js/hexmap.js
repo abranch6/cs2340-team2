@@ -1,31 +1,41 @@
+
 function placeTile(tile, x, y) {
   var tile = $("." + tile, "#templates").children().clone();
   tile.hexMapPosition(x, y).appendTo($('#hexmap'));
-
+  console.log("place");
   return tile; 
 }
 
-/*
-  Generate a new hex map
-  TESTING ONLY
-  Actual map will come from the servlet
-*/
-function generateHexMap(numRows, numCols) {
-  var cells = [];
-  for (var r = 0; r < numRows; r++) {
-    for (var c = 0; c < numCols; c++) {
-      var color = "blue";
-      var cell = { "row": r, "col": c, "data": { "color": color } };
-      cells.push(cell);
-    }
-  }
-  return cells;
+function showHexMap() {
+  
+  jQuery.getJSON("/risk/get_js_map", function(array) {
+	var cells = [];
+  	for(var r = 0; r < array.length; r++)
+  	{
+    		for(var c = 0; c < array[r].length; c++)
+    		{
+			if(array[r][c] == 1)
+			{
+				var color = "blue";
+				var cell = { "row": r, "col": c, "data": { "color": color } };
+      				cells.push(cell);
+			}
+			else if(array[r][c] == 2)
+			{
+				var color = "brown";
+                                var cell = { "row": r, "col": c, "data": { "color": color } };
+                                cells.push(cell);
+
+			}
+    		}
+  	}
+	populate(cells);
+  });
 }
 
 function populate(hexmap) {
-
   $('#hexmap').children().remove();
-  
+  console.log(hexmap); 
   for (index in hexmap) {
     var r = hexmap[index].row, c = hexmap[index].col;
     var data = hexmap[index].data;

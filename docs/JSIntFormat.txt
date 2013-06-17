@@ -1,0 +1,10 @@
+Null:
+	0x0000
+Land:
+	[0:1]: denotes type (2)
+	[2:7]: denotes shore
+	[7:9]: player id
+
+Water:
+        [0:1]: denotes type (1)
+        [2:7]: denotes waves	

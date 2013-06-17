@@ -2,6 +2,8 @@ package edu.gatech.cs2340team2.risk.controller;
 
 import edu.gatech.cs2340team2.risk.model.Player;
 import edu.gatech.cs2340team2.risk.model.RiskGame;
+import edu.gatech.cs2340team2.risk.model.GameState;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
@@ -14,21 +16,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 @WebServlet(urlPatterns={
         "/startup", // GET
         "/load_game", // POST 
         "/update_num_players", // PUT
-        "/delete/*" // DELETE
+        "/get_js_map" //GET
     })
 public class RiskServlet extends HttpServlet {
 
-//    List<Integer> POSSIBLE_NUM_PLAYERS = Arrays.asList(3, 4, 5, 6);
     final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
-//    LinkedList<Player> players = new LinkedList<Player>();
     int numPlayers = 3;
     RiskGame game = new RiskGame();
     String[] players;
-
+    
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
@@ -48,19 +51,22 @@ public class RiskServlet extends HttpServlet {
             System.out.println("Delegating to doDelete().");
             doDelete(request, response);
         } else {
-            int j = 0;
-            players = new String[numPlayers];
-            for (int i = 0; i < numPlayers; i++) {
-                System.out.println(request.getParameter("player" + i + "Name"));
-                players[i] = (String)request.getParameter("player" + i + "Name");
-//                players.add(i-1, new Player((String)request.getParameter("player" + i + "Name"), 0));
+            
+            switch(game.getGameState())
+            {
+                case INIT_PLAYERS:     
+                    int j = 0;
+                    players = new String[numPlayers];
+                    for (int i = 0; i < numPlayers; i++) {
+                        players[i] = (String)request.getParameter("player" + i + "Name");
+                    }
+                    game.initPlayers(players);
+                    request.setAttribute("players", game.getQueue());
+                    request.setAttribute("numPlayers", numPlayers);
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
+                    dispatcher.forward(request,response);
+                    break;
             }
-            System.out.print("Player Length " + players.length);
-            game.initPlayers(players);
-            request.setAttribute("players", game.getQueue());
-            request.setAttribute("numPlayers", numPlayers);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
-            dispatcher.forward(request,response);
         }
     }
 
@@ -71,23 +77,41 @@ public class RiskServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws IOException, ServletException {
-        System.out.println("In doGet()");
-        request.setAttribute("numPlayers", numPlayers);
-        request.setAttribute("players", players);
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
-        dispatcher.forward(request,response);
+        
+        switch(game.getGameState())
+        {
+            case INIT_PLAYERS:
+                if(request.getServletPath().equals("/get_js_map"))
+                {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(game.getMap().getJsonMap());
+                }
+                else
+                {
+                    request.setAttribute("numPlayers", numPlayers);
+               //     request.setAttribute("players", players);
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
+                    dispatcher.forward(request,response);
+                }
+                break;
+        }
     }
 
     protected void doPut(HttpServletRequest request,
                          HttpServletResponse response)
             throws IOException, ServletException {
-        System.out.println("In doPut()");
-        System.out.println("numplayers passed on = :" + request.getParameter("numplayers"));
-        numPlayers = Integer.parseInt(request.getParameter("numplayers"));
-        request.setAttribute("numPlayers", numPlayers);
-        request.setAttribute("players", players);
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
-        dispatcher.forward(request,response);
+   
+        switch(game.getGameState())
+        {
+            case INIT_PLAYERS:
+                numPlayers = Integer.parseInt(request.getParameter("numplayers"));
+                request.setAttribute("numPlayers", numPlayers);
+                request.setAttribute("players", players);
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
+                dispatcher.forward(request,response);
+                break;
+        }
     }
 
     protected void doDelete(HttpServletRequest request,
