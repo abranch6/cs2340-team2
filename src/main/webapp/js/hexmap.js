@@ -1,60 +1,55 @@
-
-function placeTile(tile, x, y) {
-  var tile = $("." + tile, "#templates").children().clone();
-  tile.hexMapPosition(x, y).appendTo($('#hexmap'));
-  console.log("place");
+function placeTile(color, r, c) {
+  var tile = $("." + color, "#templates").children().clone();
+  tile.positionTile(r, c).appendTo($('#hexmap'));
   return tile; 
 }
 
 function showHexMap() {
-  
+  $('#hexmap').children().remove(); 
   jQuery.getJSON("/risk/get_js_map", function(array) {
+	window.mapArray = create2DArray(array.length);
 	var cells = [];
   	for(var r = 0; r < array.length; r++)
   	{
     		for(var c = 0; c < array[r].length; c++)
     		{
-			if(array[r][c] == 1)
-			{
-				var color = "blue";
-				var cell = { "row": r, "col": c, "data": { "color": color } };
-      				cells.push(cell);
-			}
-			else if(array[r][c] == 2)
-			{
-				var color = "brown";
-                                var cell = { "row": r, "col": c, "data": { "color": color } };
-                                cells.push(cell);
-
-			}
+      				placeJSMapTile(array[r][c], r, c);			
     		}
   	}
-	populate(cells);
   });
 }
 
-function populate(hexmap) {
-  $('#hexmap').children().remove();
-  console.log(hexmap); 
-  for (index in hexmap) {
-    var r = hexmap[index].row, c = hexmap[index].col;
-    var data = hexmap[index].data;
-    var color = data.color;
+function placeJSMapTile(var value, var row, var col)
+{
+	var color;
+        if(value == 1)
+        {
+          color = "blue";
+        }
+        else if(value == 2)
+        {
+          color = "brown";
+        }
+	if(value != 0)
+	{
+		var tile = placeTile(color,row,col);
+        	window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
+        	tile.bind("click", function(event) {
+        	  var row = $(this).data("row");
+        	  var column = $(this).data("column");
+ 	  	  console.log(window.mapArray[r][c]);
+       		})
+	}
 
-    var tile = placeTile(color, r, c);
-    
-    tile.bind("click", function(event) {
-      var row = $(this).data("row");
-      var column = $(this).data("column");
-      alert("row: " + row + " col: " + column);    
-    });
-
-  }
 }
 
+function placeTerritoryMapTile()
+{
 
-jQuery.fn.hexMapPosition = function(row, col, additionalStyle) {
-    this.data({"row": row, "column": col});
+}
+
+jQuery.fn.positionTile = function(row, col, additionalStyle) {
+    this.data({"row": row, "column": col}); //used to lookup the tile in window.mapArray on click
     
     var tile_width = this.attr("width");
     var tile_height = this.attr("height");
@@ -74,8 +69,15 @@ jQuery.fn.hexMapPosition = function(row, col, additionalStyle) {
   
     var style = {"position": "absolute", 
                  "top": ypos, "left": xpos};
-    
     return this.css(style);
   };
 
+function create2DArray(rows) {
+  var arr = [];
 
+  for (var i=0;i<rows;i++) {
+     arr[i] = [];
+  }
+
+  return arr;
+}
