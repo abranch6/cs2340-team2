@@ -4,6 +4,7 @@ public class Player
 {
 	private String name;
 	private int armies;
+	private int id;
 	
 
 	public Player(String name, int startingArmies)
@@ -29,5 +30,15 @@ public class Player
 	public int getArmies()
 	{
 		return armies;
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 }
