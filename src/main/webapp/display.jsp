@@ -40,6 +40,13 @@
   <div class="tiles brown">
     <img src="images/tiles/hex-brown.png" width="72" height="72"/>
   </div>
+<<<<<<< HEAD
+=======
+
+  <div class="tiles ican">
+    <img src="images/tiles/hex-pepper.png" width="72" height="72"/>
+  </div>
+>>>>>>> upstream/master
 </div>
 
 </html>

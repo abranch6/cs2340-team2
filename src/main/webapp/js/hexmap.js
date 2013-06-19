@@ -19,7 +19,11 @@ function showHexMap() {
   });
 }
 
+<<<<<<< HEAD
 function placeJSMapTile(var value, var row, var col)
+=======
+function placeJSMapTile(value, r, c)
+>>>>>>> upstream/master
 {
 	var color;
         if(value == 1)
@@ -32,12 +36,19 @@ function placeJSMapTile(var value, var row, var col)
         }
 	if(value != 0)
 	{
+<<<<<<< HEAD
 		var tile = placeTile(color,row,col);
+=======
+		var tile = placeTile(color,r,c);
+>>>>>>> upstream/master
         	window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
         	tile.bind("click", function(event) {
         	  var row = $(this).data("row");
         	  var column = $(this).data("column");
+<<<<<<< HEAD
  	  	  console.log(window.mapArray[r][c]);
+=======
+>>>>>>> upstream/master
        		})
 	}
 

@@ -15,7 +15,11 @@ public class RiskGame {
 	public RiskGame()
 	{
 		state = GameState.INIT_PLAYERS;
+<<<<<<< HEAD
 		map = new HexMap(60);
+=======
+		map = new HexMap(20);
+>>>>>>> upstream/master
 	}
 
 	public void setGameState(GameState state)
