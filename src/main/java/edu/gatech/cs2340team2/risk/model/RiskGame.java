@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 public class RiskGame {
-	
+
 	Queue<Player> list = new LinkedList<Player>();
 	int armies;
 	GameState state;
@@ -15,18 +15,14 @@ public class RiskGame {
 	public RiskGame()
 	{
 		state = GameState.INIT_PLAYERS;
-<<<<<<< HEAD
-		map = new HexMap(60);
-=======
 		map = new HexMap(20);
->>>>>>> upstream/master
 	}
 
 	public void setGameState(GameState state)
 	{
 		this.state = state;
 	}
-	
+
 	public GameState getGameState()
 	{
 	    return state;
@@ -59,11 +55,10 @@ public class RiskGame {
 	public Queue<Player> getQueue(){
 		return list;
 	}
-	
+
 	public HexMap getMap()
 	{
 	    return map;
 	}
-		
-}
 
+}
