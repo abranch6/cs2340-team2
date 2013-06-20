@@ -45,6 +45,6 @@ public class Territory
 
     public String getJSonTerritory()
     {
-	return json.toJson(location);
+	return json.toJson(this);
     }
 }
