@@ -7,6 +7,7 @@ function placeTile(color, r, c) {
 function showHexMap() {
   $('#hexmap').children().remove(); 
   jQuery.getJSON("/risk/get_js_map", function(array) {
+	console.log(array);
 	window.mapArray = create2DArray(array.length);
 	var cells = [];
   	for(var r = 0; r < array.length; r++)
@@ -70,6 +71,7 @@ jQuery.fn.positionTile = function(row, col, additionalStyle) {
                  "top": ypos, "left": xpos};
     return this.css(style);
   };
+
 
 function create2DArray(rows) {
   var arr = [];

@@ -15,7 +15,7 @@ public class Territory
     public Territory(int r, int c)
     {
         location = new MapLocation(r,c);
-        json = new GSon();
+        json = new Gson();
     }
 
     public int getPlayerId()
