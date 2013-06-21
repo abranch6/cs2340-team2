@@ -1,8 +1,33 @@
-function placeTile(color, r, c) {
-  var tile = $("." + color, "#templates").children().clone();
-  tile.positionTile(r, c).appendTo($('#hexmap'));
-  return tile; 
+function placeTile(color, number, r, c) {
+  var tileImg = $("." + color, "#templates").children().clone();
+  var divStyle = getTilePosition(r, c, tileImg);
+  var idNum = r + "_" + c;
+  var idNumText = idNum + "_text"
+
+  
+   
+  var div = $('<div>', {
+                id : idNum,
+              });
+  if(number >= 0)
+  {
+      var textDiv = $('<div>', {
+                    id : idNumText,
+                    text : "0"
+                  });
+  
+      var textStyle = getTextPosition(tileImg, textDiv);
+
+      textDiv.css(textStyle).appendTo(div);
+  }
+  tileImg.appendTo(div)
+
+  div.data({"row": r, "column": c}); //used to lookup the tile in window.mapArray on click
+  div.css(divStyle).appendTo($('#hexmap'));
+
+  return div; 
 }
+
 
 function showHexMap() {
   $('#hexmap').children().remove(); 
@@ -23,17 +48,20 @@ function showHexMap() {
 function placeJSMapTile(value, r, c)
 {
 	var color;
+        var number;
         if(value == 1)
         {
           color = "blue";
+          number = -1;
         }
         else if(value == 2)
         {
           color = "brown";
+          number = 0;
         }
 	if(value != 0)
 	{
-		var tile = placeTile(color,r,c);
+		var tile = placeTile(color,number,r,c);
         	window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
         	tile.bind("click", function(event) {
         	  var row = $(this).data("row");
@@ -48,11 +76,23 @@ function placeTerritoryMapTile()
 
 }
 
-jQuery.fn.positionTile = function(row, col, additionalStyle) {
-    this.data({"row": row, "column": col}); //used to lookup the tile in window.mapArray on click
+function getTextPosition(image, text)
+{
+    var tile_width = image.attr("width");
+    var tile_height = image.attr("height");
+    ypos = (tile_height / 4);
+    xpos = (tile_width / 2) - 16;
+
+    var style = {"position": "absolute",
+                 "top": ypos, "left": xpos, 
+                 "width": 32, "text-align":"center"};
+
+    return style;
+}
+function getTilePosition(row, col, image) {
     
-    var tile_width = this.attr("width");
-    var tile_height = this.attr("height");
+    var tile_width = image.attr("width");
+    var tile_height = image.attr("height");
 
     var y_offset = tile_height / 4;
     var x_offset = tile_width / 2;
@@ -69,7 +109,7 @@ jQuery.fn.positionTile = function(row, col, additionalStyle) {
   
     var style = {"position": "absolute", 
                  "top": ypos, "left": xpos};
-    return this.css(style);
+    return style;
   };
 
 
