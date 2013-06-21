@@ -56,6 +56,11 @@ public class RiskGame {
 		return list;
 	}
 	
+	public String getJSonTerritory(MapLocation loc)
+	{
+	    return map.getTerritory(loc).getJSon();
+	}
+	
 	public HexMap getMap()
 	{
 	    return map;

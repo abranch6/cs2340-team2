@@ -15,13 +15,35 @@ text-align:center;
 <h1>
 Select the Number of Players
 </h1>
-<form action="/risk/update_num_players" method="get">
-   <ul>
-     <li><input type="button" style="width: 100px" name="button" value="3" /></li>
-     <li><input type="button" style="width: 100px" name="button" value="4" /></li>
-     <li><input type="button" style="width: 100px" name="button" value="5" /></li>
-     <li><input type="button" style="width: 100px" name="button" value="6" /></li>
-   </ul>
+<ul>
+
+<li>
+<form action="/risk/update_num_players" method="POST">
+    <input type="hidden" name="operation" value="PUT" />
+    <input type="submit" style="width: 100px" name="numplayers" value="3" />
 </form>
+</li>
+
+<li>
+<form action="/risk/update_num_players" method="POST">
+     <input type="hidden" name="operation" value="PUT" />
+     <input type="submit" style="width: 100px" name="numplayers" value="4" />
+</form>
+</li>
+
+<li>
+<form action="/risk/update_num_players" method="POST">
+     <input type="hidden" name="operation" value="PUT" />
+     <input type="submit" style="width: 100px" name="numplayers" value="5" />
+</form>
+</li>
+
+<li>
+<form action="/risk/update_num_players" method="POST">
+     <input type="hidden" name="operation" value="PUT" />
+     <input type="submit" style="width: 100px" name="numplayers" value="6" />
+</form>
+</li>
+</ul>
 
 </html>

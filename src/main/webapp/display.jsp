@@ -16,7 +16,7 @@
 <title>RISK Display Screen</title>
 </head>
 
-<body onLoad="showHexMap()">
+<body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap()" ondragstart="return false;" ondrop="return false;">
 
 <div id="hexmap"></div>
 
@@ -41,7 +41,7 @@
     <img src="images/tiles/hex-brown.png" width="72" height="72"/>
   </div>
 
-  <div class="tiles ican">
+  <div class="tiles pepper">
     <img src="images/tiles/hex-pepper.png" width="72" height="72"/>
   </div>
 </div>

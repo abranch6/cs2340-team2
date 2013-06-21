@@ -130,4 +130,9 @@ public class HexMap
     {
         return json.toJson(jsMap);
     }
+    
+    public Territory getTerritory(MapLocation loc)
+    {
+        return territoryMap[loc.row][loc.col];
+    }
 }

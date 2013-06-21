@@ -51,7 +51,7 @@ public class Territory
 	this.armies = armies;
     }
 
-    public String getJSonTerritory()
+    public String getJSon()
     {
 	return json.toJson(this);
     }

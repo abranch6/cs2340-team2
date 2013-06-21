@@ -3,6 +3,7 @@ package edu.gatech.cs2340team2.risk.controller;
 import edu.gatech.cs2340team2.risk.model.Player;
 import edu.gatech.cs2340team2.risk.model.RiskGame;
 import edu.gatech.cs2340team2.risk.model.GameState;
+import edu.gatech.cs2340team2.risk.model.MapLocation;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +24,8 @@ import com.google.gson.GsonBuilder;
         "/startup", // GET
         "/load_game", // POST 
         "/update_num_players", // PUT
-        "/get_js_map" //GET
+        "/get_js_map", //GET
+        "/update_territory" //POST
     })
 public class RiskServlet extends HttpServlet {
 
@@ -54,18 +56,33 @@ public class RiskServlet extends HttpServlet {
             
             switch(game.getGameState())
             {
-                case INIT_PLAYERS:     
-                    int j = 0;
-                    players = new String[numPlayers];
-                    for (int i = 0; i < numPlayers; i++) {
-                        players[i] = (String)request.getParameter("player" + i + "Name");
+                case INIT_PLAYERS:
+                    if(request.getServletPath().equals("/load_game"))
+                    {
+                        int j = 0;
+                        players = new String[numPlayers];
+                        for (int i = 0; i < numPlayers; i++) {
+                            players[i] = (String)request.getParameter("player" + i + "Name");
+                        }
+                        game.initPlayers(players);
+                        request.setAttribute("players", game.getQueue());
+                        request.setAttribute("numPlayers", numPlayers);
+                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
+                        dispatcher.forward(request,response);
                     }
-                    game.initPlayers(players);
-                    request.setAttribute("players", game.getQueue());
-                    request.setAttribute("numPlayers", numPlayers);
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
-                    dispatcher.forward(request,response);
                     break;
+            }
+            if(request.getServletPath().equals("/update_territory"))
+            {
+                int r = Integer.parseInt(request.getParameter("row"));
+                int c = Integer.parseInt(request.getParameter("col"));
+                
+                String json = game.getJSonTerritory(new MapLocation(r,c));
+
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json);
+                
             }
         }
     }
