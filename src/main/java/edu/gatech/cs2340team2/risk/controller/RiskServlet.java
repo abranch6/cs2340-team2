@@ -60,6 +60,7 @@ public class RiskServlet extends HttpServlet {
                     if(request.getServletPath().equals("/num_players"))
                     {
                         numPlayers = Integer.parseInt(request.getParameter("numplayers"));
+                        request.setAttribute("numPlayers", numPlayers);
                         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/enter_players.jsp");
                         dispatcher.forward(request,response);
                     }
@@ -72,7 +73,7 @@ public class RiskServlet extends HttpServlet {
                         }
                         game.initPlayers(players);
                         request.setAttribute("players", game.getQueue());
-                 //       request.setAttribute("numPlayers", numPlayers);
+                        request.setAttribute("numPlayers", numPlayers);
                         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
                         dispatcher.forward(request,response);
                     }
