@@ -16,6 +16,14 @@ public class Territory
     {
         location = new MapLocation(r,c);
         json = new Gson();
+        armies = 0;
+        playerId = 0;
+    }
+
+    public Territory(int playerId, int r, int c)
+    {
+        this(r,c);
+        this.playerId = playerId;
     }
 
     public int getPlayerId()
