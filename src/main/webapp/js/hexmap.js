@@ -43,7 +43,8 @@ function updateTerritory(r,c)
 }
 
 function showHexMap() {
-  $('#hexmap').children().remove(); 
+  $('#hexmap').children().remove();
+  window.selectedTerritory = 0;
   jQuery.getJSON("/risk/get_js_map", function(array) {
     window.mapArray = create2DArray(array.length);
     var cells = [];
@@ -79,6 +80,7 @@ function placeIntTile(value, r, c)
               var row = $(this).data("row");
               var column = $(this).data("column");
               updateTerritory(row,column);
+              window.selectedTerritory = {"row":r, "col":c}
             });
     }
 
