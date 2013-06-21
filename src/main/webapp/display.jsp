@@ -18,17 +18,17 @@
 
 <body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap()" ondragstart="return false;" ondrop="return false;">
 
+<div id=control_panel>
+    <div id=selected_territory>
+    </div>
+</div>
 <div id="hexmap"></div>
-    <table>
-        <% for (int i = 0; i < numPlayers; i++) { %>
-        <% Player temp = players.poll(); %>
-	 <p>
-	    Turn Order # <%= i+1 %> :     <%= temp.getName() %> Armies: <%= temp.getArmies() %>
-	 </p>
-	 <% players.add(temp); %>
-	 <% } %>        
-    </table>
 
+<div id=control_panel>
+    <div id=selected_territory>
+    
+    </div>
+</div> 
 </body>
 
 <div id="templates" class="hidden">
