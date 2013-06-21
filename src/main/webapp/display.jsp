@@ -20,8 +20,12 @@
 
 <div id=control_panel>
     <div id=selected_territory>
+        <h3>Selected Territory</h3>
+        <p id=s_t_player>Controlling Player:</p>
+        <p id=s_t_armies>Armies:</p>
     </div>
 </div>
+
 <div id="hexmap"></div>
 
 <div id=control_panel>

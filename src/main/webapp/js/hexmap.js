@@ -30,7 +30,15 @@ function placeTile(color, number, r, c) {
     return div; 
 }
 
-
+function updateSelectedTerritoryInfo()
+{   
+    var loc = window.selectedTerritory;
+    if(loc.row >= 0 && loc.col >= 0)
+    {
+        $("#s_t_player").text("Controlling Player: " + window.mapArray[loc.row][loc.col].player);
+        $("#s_t_armies").text("Armies: " + window.mapArray[loc.row][loc.col].player);
+    }
+}
 function updateTerritory(r,c)
 {
     jQuery.post("/risk/update_territory", {"row":r, "col":c}, function(territory) {
@@ -44,7 +52,7 @@ function updateTerritory(r,c)
 
 function showHexMap() {
   $('#hexmap').children().remove();
-  window.selectedTerritory = 0;
+  window.selectedTerritory = {"row":-1, "col":-1};
   jQuery.getJSON("/risk/get_js_map", function(array) {
     window.mapArray = create2DArray(array.length);
     var cells = [];
@@ -75,12 +83,19 @@ function placeIntTile(value, r, c)
     if(value != 0)
     {
         var tile = placeTile(color,number,r,c);
-            window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
+            if(value == 1)
+            {
+                window.mapArray[r][c] = {"DOM":tile, "player":-1, "armies":-1, "row":r, "col":c};
+            }
+            else
+            {
+                window.mapArray[r][c] = {"DOM":tile, "player":0, "armies":0, "row":r, "col":c};
+            }
             tile.bind("click", function(event) {
               var row = $(this).data("row");
               var column = $(this).data("column");
-              updateTerritory(row,column);
-              window.selectedTerritory = {"row":r, "col":c}
+              window.selectedTerritory = {"row":row, "col":column};
+              updateSelectedTerritoryInfo();
             });
     }
 
@@ -90,11 +105,12 @@ function placeTerritoryTile(player, armies, r, c)
 {
     color = "pepper";
     var tile = placeTile(color,armies,r,c);
-    window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
+    window.mapArray[r][c] = {"DOM":tile,"player":player, "armies":armies, "row":r, "col":c};
     tile.bind("click", function(event) {
         var row = $(this).data("row");
         var column = $(this).data("column");
-        updateTerritory(row,column);
+        window.selectedTerritory = {"row":row, "col":column};
+        updateSelectedTerritoryInfo();
     });
 }
 
