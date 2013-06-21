@@ -19,7 +19,6 @@
 <body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap()" ondragstart="return false;" ondrop="return false;">
 
 <div id="hexmap"></div>
-
     <table>
         <% for (int i = 0; i < numPlayers; i++) { %>
         <% Player temp = players.poll(); %>
