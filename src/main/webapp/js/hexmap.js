@@ -45,7 +45,6 @@ function updateTerritory(r,c)
 function showHexMap() {
   $('#hexmap').children().remove(); 
   jQuery.getJSON("/risk/get_js_map", function(array) {
-    console.log(array);
     window.mapArray = create2DArray(array.length);
     var cells = [];
     for(var r = 0; r < array.length; r++)
