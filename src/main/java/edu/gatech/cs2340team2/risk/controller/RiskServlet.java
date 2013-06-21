@@ -22,8 +22,8 @@ import com.google.gson.GsonBuilder;
 
 @WebServlet(urlPatterns={
         "/startup", // GET
-        "/load_game", // POST 
-        "/update_num_players", // PUT
+        "/start_game", // POST
+        "/num_players", // POST
         "/get_js_map", //GET
         "/update_territory" //POST
     })
@@ -57,7 +57,13 @@ public class RiskServlet extends HttpServlet {
             switch(game.getGameState())
             {
                 case INIT_PLAYERS:
-                    if(request.getServletPath().equals("/load_game"))
+                    if(request.getServletPath().equals("/num_players"))
+                    {
+                        numPlayers = Integer.parseInt(request.getParameter("numplayers"));
+                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/enter_players.jsp");
+                        dispatcher.forward(request,response);
+                    }
+                    else if(request.getServletPath().equals("/start_game"))
                     {
                         int j = 0;
                         players = new String[numPlayers];
@@ -66,7 +72,7 @@ public class RiskServlet extends HttpServlet {
                         }
                         game.initPlayers(players);
                         request.setAttribute("players", game.getQueue());
-                        request.setAttribute("numPlayers", numPlayers);
+                 //       request.setAttribute("numPlayers", numPlayers);
                         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
                         dispatcher.forward(request,response);
                     }
@@ -104,13 +110,6 @@ public class RiskServlet extends HttpServlet {
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(game.getMap().getJsonMap());
                 }
-                else
-                {
-                    request.setAttribute("numPlayers", numPlayers);
-               //     request.setAttribute("players", players);
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
-                    dispatcher.forward(request,response);
-                }
                 break;
         }
     }
@@ -122,11 +121,7 @@ public class RiskServlet extends HttpServlet {
         switch(game.getGameState())
         {
             case INIT_PLAYERS:
-                numPlayers = Integer.parseInt(request.getParameter("numplayers"));
-                request.setAttribute("numPlayers", numPlayers);
-                request.setAttribute("players", players);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
-                dispatcher.forward(request,response);
+                
                 break;
         }
     }
@@ -134,16 +129,6 @@ public class RiskServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request,
                             HttpServletResponse response)
             throws IOException, ServletException {
-        System.out.println("In doDelete()");
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/start.jsp");
-        dispatcher.forward(request,response);
+        
     }
-
-    private int getId(HttpServletRequest request) {
-        String uri = request.getPathInfo();
-        // Strip off the leading slash, e.g. "/2" becomes "2"
-        String idStr = uri.substring(1, uri.length()); 
-        return Integer.parseInt(idStr);
-    }
-
 }
