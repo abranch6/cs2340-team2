@@ -18,15 +18,14 @@
 
 <body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap()" ondragstart="return false;" ondrop="return false;">
 
-<div id=control_panel>
+<div id=control_panel style="width:200px; background:#CCC; float:left;">
     <div id=selected_territory>
         <h3>Selected Territory</h3>
         <p id=s_t_player>Controlling Player:</p>
         <p id=s_t_armies>Armies:</p>
     </div>
 </div>
-
-<div id="hexmap"></div>
+<div id="hexmap" style="float:left;"></div>
 
 <div id=control_panel>
     <div id=selected_territory>
@@ -37,15 +36,15 @@
 
 <div id="templates" class="hidden">
   <div class="tiles blue">
-    <img src="images/tiles/hex-blue.png" width="72" height="72"/>
+    <img src="images/tiles/hex-blue.png" width="40" height="40"/>
   </div>
 
   <div class="tiles brown">
-    <img src="images/tiles/hex-brown.png" width="72" height="72"/>
+    <img src="images/tiles/hex-brown.png" width="40" height="40"/>
   </div>
 
   <div class="tiles pepper">
-    <img src="images/tiles/hex-pepper.png" width="72" height="72"/>
+    <img src="images/tiles/hex-pepper.png" width="40" height="40"/>
   </div>
 </div>
 

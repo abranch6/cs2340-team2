@@ -15,7 +15,7 @@ public class RiskGame {
 	public RiskGame()
 	{
 		state = GameState.INIT_PLAYERS;
-		map = new HexMap(20);
+		map = new HexMap(10);
 	}
 
 	public void setGameState(GameState state)
