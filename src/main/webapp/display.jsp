@@ -12,6 +12,7 @@
 <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/hexmap.js"></script>
 <script type="text/javascript" src="js/gamecontrols.js"></script>
+<script type="text/javascript" src="js/getPlayerObjects.js"></script>
 <link rel="stylesheet" type="text/css" href="css/hexmap.css" />
 
 <title>RISK Display Screen</title>
@@ -27,11 +28,20 @@
         <p id="s_t_armies">Armies:</p>
     </div>
         <button onclick="placeArmies()">Place Armies</button>
+    <div id = "player1"><p id="p1"> </p></div>
+    <div id = "player2"><p id="p2"> </p></div>
+    <div id = "player3"><p id="p3"> </p></div>
+    <div id = "player4"><p id="p4"> </p></div>
+    <div id = "player5"><p id="p5"> </p></div>
+    <div id = "player6"><p id="p6"> </p></div>
 </div>
 
 <div id="hexmap" style="float:left;"></div>
 
 </body>
+
+
+
 
 <div id="templates" class="hidden">
     <div class="tiles blue">

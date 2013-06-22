@@ -28,6 +28,10 @@ import com.google.gson.GsonBuilder;
         "/update_territory", //POST
         "/place_armies",
         "/advance_turn"
+        "/load_game", // POST 
+        "/update_num_players", // PUT
+        "/get_js_map", //GET
+        "/get_player_json"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -111,6 +115,9 @@ public class RiskServlet extends HttpServlet {
                          HttpServletResponse response)
             throws IOException, ServletException {
         
+        if (request.getServletPath().equals("/get_player_json")){
+        	response.getWriter().write(game.getPlayerJSON());
+        }
         switch(game.getGameState())
         {
             case INIT_PLAYERS:

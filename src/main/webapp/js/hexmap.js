@@ -120,14 +120,6 @@ function placeTerritoryTile(player, armies, r, c)
     var tile = placeTile(color,armies,r,c);
     window.mapArray[r][c] = {"DOM":tile, "type":"land", "player":player, "armies":armies, "row":r, "col":c};
     updateSelectedTerritoryInfo();
-
-
-    tile.bind("click", function(event) {
-        var row = $(this).data("row");
-        var column = $(this).data("column");
-        window.selectedTerritory = {"row":row, "col":column};
-        updateSelectedTerritoryInfo();
-    });
 }
 
 function getTextPosition(image, text)

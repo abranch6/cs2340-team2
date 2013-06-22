@@ -3,6 +3,8 @@ package edu.gatech.cs2340team2.risk.model;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 public class RiskGame {
@@ -23,7 +25,7 @@ public class RiskGame {
 	{
 		this.state = state;
 	}
-	
+
 	public GameState getGameState()
 	{
 	    return state;
@@ -103,5 +105,10 @@ public class RiskGame {
 	    return list.peek().getId();
 	}
 		
-}
+	public String getPlayerJSON(){
+		Object[] queueToArray = list.toArray();
+		Gson json = new Gson();
+		return json.toJson(queueToArray);
+	}
 
+}
