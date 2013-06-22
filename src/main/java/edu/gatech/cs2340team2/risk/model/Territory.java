@@ -17,7 +17,7 @@ public class Territory
         location = new MapLocation(r,c);
         json = new Gson();
         armies = 0;
-        playerId = 0;
+        playerId = -1;
     }
 
     public Territory(int playerId, int r, int c)
@@ -28,31 +28,31 @@ public class Territory
 
     public int getPlayerId()
     {
-	return playerId;
+        return playerId;
     }
 
     public void setPlayerId(int playerId)
     {
-	this.playerId = playerId;
+        this.playerId = playerId;
     }
 
     public void addArmies(int a)
     {
-	armies += a;
+        armies += a;
     }
 
     public int getArmies()
     {
-	return armies;
+        return armies;
     }
 
     public void setArmies(int armies)
     {
-	this.armies = armies;
+        this.armies = armies;
     }
 
     public String getJSon()
     {
-	return json.toJson(this);
+        return json.toJson(this);
     }
 }

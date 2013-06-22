@@ -3,37 +3,48 @@ package edu.gatech.cs2340team2.risk.model;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 public class RiskGame {
 	
-	Queue<Player> list = new LinkedList<Player>();
-	int armies;
-	GameState state;
-	HexMap map;
+	private Queue<Player> list = new LinkedList<Player>();
+	private Player players[];
+	private int armies;
+	private GameState state;
+	private HexMap map;
+    private Gson json;
 
 	public RiskGame()
 	{
+        json = new Gson();
 		state = GameState.INIT_PLAYERS;
-		map = new HexMap(20);
+		map = new HexMap(7);
 	}
 
 	public void setGameState(GameState state)
 	{
 		this.state = state;
 	}
-	
+
 	public GameState getGameState()
 	{
 	    return state;
 	}
 
 	public void initPlayers(String[] names){
+	    players = new Player[names.length];
+	    int idCounter = 0;
 		Random rand = new Random();
+	
 		while(list.size() < names.length){
 			int index = rand.nextInt(names.length);
 			if (names[index] != null){
-				list.add(new Player(names[index], getStartingArmies(names.length)));
+			    Player temp = new Player(names[index], getStartingArmies(names.length), idCounter);
+				list.add(temp);
+			    players[idCounter] = temp;
+			    idCounter++;
 				names[index] = null;
 			}
 		}
@@ -65,6 +76,50 @@ public class RiskGame {
 	{
 	    return map;
 	}
-		
-}
+	
+	public boolean placeArmies(int row, int col, int playerId, int armies)
+	{
+	    Territory temp = map.getTerritory(new MapLocation(row, col));
+	    
+	    if(players[playerId].getArmies() >= armies)
+	    {
+	        if(temp.getPlayerId() == playerId)
+	        {
+	            temp.addArmies(armies);
+	            players[playerId].addArmies(-armies);
+	            return true;
+	        }
+	        else if(temp.getPlayerId() == -1)
+	        {
+	            temp.addArmies(armies);
+	            temp.setPlayerId(playerId);
+	            players[playerId].addArmies(-armies);
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public int nextTurn()
+	{
+	    Player temp = list.poll();
+	    list.add(temp);
+	    return list.peek().getId();
+	}
+	
+    public String getPlayerTurnJSON()
+    {
+        Player[] queuetoArray = list.toArray(new Player[0]);
+        int[] turn = new int[queuetoArray.length];
 
+        for(int i = 0; i < queuetoArray.length; i++)
+        {
+            turn[i] = queuetoArray[i].getId();
+        }
+        return json.toJson(turn);
+    }	
+	public String getPlayerJSON(){
+		return json.toJson(players);
+	}
+
+}

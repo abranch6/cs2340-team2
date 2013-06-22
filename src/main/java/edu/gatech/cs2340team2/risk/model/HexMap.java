@@ -100,10 +100,10 @@ public class HexMap
             {
                 rand = rnd.nextInt(neighborCount);
                 locations.push(neighbors[rand]);
-		int r = neighbors[rand].row;
-		int c = neighbors[rand].col;
+                int r = neighbors[rand].row;
+                int c = neighbors[rand].col;
                 jsMap[r][c] = 2;
-		territoryMap[r][c] = new Territory(r,c);
+                territoryMap[r][c] = new Territory(r,c);
                 territories--;
             }
             else

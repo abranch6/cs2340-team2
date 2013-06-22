@@ -7,10 +7,11 @@ public class Player
 	private int id;
 	
 
-	public Player(String name, int startingArmies)
+	public Player(String name, int startingArmies, int id)
 	{
 		this.name = name;
 		this.armies = startingArmies;
+		this.id = id;
 	}
 
 	public String getName()
@@ -27,6 +28,10 @@ public class Player
 		this.armies = armies;
 	}
 
+	public void addArmies(int armies)
+	{
+	    this.armies += armies;
+	}
 	public int getArmies()
 	{
 		return armies;
