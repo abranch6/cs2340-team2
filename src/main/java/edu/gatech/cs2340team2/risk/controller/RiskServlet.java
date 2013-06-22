@@ -80,7 +80,7 @@ public class RiskServlet extends HttpServlet {
         if (request.getServletPath.equals("/get_player_array")) {
         	response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
-        	response.getWriter().write(game.getQueue());
+        	response.getWriter().write(game.getQueue().toString());
         }
         switch(game.getGameState())
         {
