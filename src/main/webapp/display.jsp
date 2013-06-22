@@ -18,8 +18,6 @@
 
 <body onLoad="showHexMap()">
 
-<div id = "player"></div>
-
 <div id="hexmap"></div>
 
     <table>
@@ -31,6 +29,12 @@
 	 <% players.add(temp); %>
 	 <% } %>        
     </table>
+
+</body>
+
+<body onLoad="showPlayerInformation()">
+
+<div id = "player"></div>
 
 </body>
 
