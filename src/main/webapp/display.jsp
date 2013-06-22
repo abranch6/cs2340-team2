@@ -28,6 +28,7 @@
     </div>
         <button onclick="placeArmies()">Place Armies</button>
 </div>
+
 <div id="hexmap" style="float:left;"></div>
 
 </body>
@@ -41,8 +42,8 @@
         <img src="images/tiles/hex-brown.png" width="40" height="40"/>
     </div>
 
-    <div class="tiles pepper">
-        <img src="images/tiles/hex-pepper.png" width="40" height="40"/>
+    <div class="tiles yellow">
+        <img src="images/tiles/hex-yellow.png" width="40" height="40"/>
     </div>
     
     <div class="tiles cyan">

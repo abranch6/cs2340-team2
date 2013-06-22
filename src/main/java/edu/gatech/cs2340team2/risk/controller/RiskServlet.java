@@ -41,22 +41,14 @@ public class RiskServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws IOException, ServletException {
-        System.out.println("In doPost()");
-        // Handle the hidden HTML form field that simulates
-        // HTTP PUT and DELETE methods.
         String operation = (String) request.getParameter("operation");
-        // If form didn't contain an operation field and
-        // we're in doPost(), the operation is POST
-        if (null == operation) operation = "POST";
-        System.out.println("operation is " + operation);
-        if (operation.equalsIgnoreCase("PUT")) {
-            System.out.println("Delegating to doPut().");
+        
+        if (operation != null && operation.equalsIgnoreCase("PUT")) {
             doPut(request, response);
-        } else if (operation.equalsIgnoreCase("DELETE")) {
-            System.out.println("Delegating to doDelete().");
+        } else if (operation != null && operation.equalsIgnoreCase("DELETE")) {
             doDelete(request, response);
         } else {
-            
+           
             switch(game.getGameState())
             {
                 case INIT_PLAYERS:
@@ -102,7 +94,6 @@ public class RiskServlet extends HttpServlet {
                 int playerId = Integer.parseInt(request.getParameter("player"));
                 int armies = Integer.parseInt(request.getParameter("armies"));
 
-                System.out.println(playerId);
                 boolean placed = game.placeArmies(row, col, playerId, armies);
                 
                 response.setContentType("application/json");
@@ -131,6 +122,8 @@ public class RiskServlet extends HttpServlet {
                 }
                 break;
         }
+        
+        
         if(request.getServletPath().equals("/advance_turn"))
         {
             response.setContentType("application/json");

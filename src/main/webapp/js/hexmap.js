@@ -1,4 +1,4 @@
-var playerColors = ["brown", "cyan","fushia","green","pepper","red","tangerine"];
+var playerColors = ["brown", "cyan","fushia","green","yellow","red","tangerine"];
 
 function placeTile(color, number, r, c) {
     var tileImg = $("." + color, "#templates").children().clone();
@@ -51,6 +51,7 @@ function updateSelectedTerritoryInfo()
         }
     }
 }
+
 function updateTerritory(r,c)
 {
     jQuery.post("/risk/update_territory", {"row":r, "col":c}, function(territory) {
@@ -144,6 +145,7 @@ function getTextPosition(image, text)
 
     return style;
 }
+
 function getTilePosition(row, col, image) 
 {
     

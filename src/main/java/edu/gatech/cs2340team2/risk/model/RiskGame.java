@@ -16,7 +16,7 @@ public class RiskGame {
 	public RiskGame()
 	{
 		state = GameState.INIT_PLAYERS;
-		map = new HexMap(8);
+		map = new HexMap(7);
 	}
 
 	public void setGameState(GameState state)
@@ -33,6 +33,7 @@ public class RiskGame {
 	    players = new Player[names.length + 1];
 	    int idCounter = 1;
 		Random rand = new Random();
+	
 		while(list.size() < names.length){
 			int index = rand.nextInt(names.length);
 			if (names[index] != null){
