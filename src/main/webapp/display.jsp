@@ -17,10 +17,15 @@
 <title>RISK Display Screen</title>
 </head>
 
-<body onLoad="showHexMap()">
+<body onLoad="showHexMap()"; showPlayerInformation();>
 
 <div id="hexmap"></div>
-
+<div id = "player1"></div>
+<div id = "player2"></div>
+<div id = "player3"></div>
+<div id = "player4"></div>
+<div id = "player5"></div>
+<div id = "player6"></div>
     <table>
         <% for (int i = 0; i < numPlayers; i++) { %>
         <% Player temp = players.poll(); %>
@@ -30,17 +35,16 @@
 	 <% players.add(temp); %>
 	 <% } %>        
     </table>
-
+	<p id="player1"> </p>
+	<p id="player2"> </p>
+	<p id="player3"> </p>
+	<p id="player4"> </p>
+	<p id="player5"> </p>
+	<p id="player6"> </p>
 </body>
 
-<body onLoad="showPlayerInformation()">
 
-<div id = "player"></div>
 
-	<table>
-		<% System.out.println("im so mad"); %>
-	</table>
-</body>
 
 <div id="templates" class="hidden">
   <div class="tiles blue">

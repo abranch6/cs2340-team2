@@ -23,7 +23,9 @@ import com.google.gson.GsonBuilder;
         "/startup", // GET
         "/load_game", // POST 
         "/update_num_players", // PUT
-        "/get_js_map" //GET
+        "/get_js_map", //GET
+        "/get_player_array",//GET
+        "/get_player_json"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -81,6 +83,9 @@ public class RiskServlet extends HttpServlet {
         	response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
         	response.getWriter().write(game.getQueue().toString());
+        } 
+        if (request.getServletPath().equals("/get_player_json")){
+        	response.getWriter().write(game.getPlayerJSON());
         }
         switch(game.getGameState())
         {
