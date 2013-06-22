@@ -18,6 +18,8 @@
 
 <body onLoad="showHexMap()">
 
+<div id = "player"></div>
+
 <div id="hexmap"></div>
 
     <table>
