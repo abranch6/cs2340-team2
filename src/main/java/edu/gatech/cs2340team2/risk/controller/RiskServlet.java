@@ -79,7 +79,7 @@ public class RiskServlet extends HttpServlet {
             throws IOException, ServletException {
         if (request.getServletPath.equals("/get_player_array")) {
         	response.setContentType("application/json");
-        	response.getWriter().write(game.getQueue());
+        	response.getWriter().write(players);
         }
         switch(game.getGameState())
         {
