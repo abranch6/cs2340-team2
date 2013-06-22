@@ -17,7 +17,7 @@
 <title>RISK Display Screen</title>
 </head>
 
-<body onLoad="showHexMap()"; showPlayerInformation();>
+<body onLoad="showPlayerInfo()">
 
 <div id="hexmap"></div>
 <div id = "player1"><p id="p1"> </p></div>
@@ -35,11 +35,6 @@
 	 <% players.add(temp); %>
 	 <% } %>        
     </table>
-	
-	
-	
-	
-	
 	
 </body>
 

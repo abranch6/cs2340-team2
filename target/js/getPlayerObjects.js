@@ -6,21 +6,11 @@ function showPlayerInfo(){
 	$("#player5").children().remove();
 	$("#player6").children().remove(); */
 
-	/* $.get("/risk/get_player_json", function(array){
-		for (var r=1; r < array.length+1; r++){
-			var name = "player" + r
-			var text = $('<p>', {
-				text : name
-			}); */
-/* 			
-			text.appentTo($("#player1"));
-		} */
-		$("#p1").text("Type: Land");
-	/* }); */
+	$.get("/risk/get_player_json", function(array){
+		for (var r=0;r < array.length;r++){
+			$("#p" + r).text(array[0].name);
+		}
+		
+	});
 }
-function placePlayerInfo(){
-	var div = document.getElementById("player1");
-	div.textContent = "MY TEXT PRINTED!";
-	var textl = div.textContent;
-	text.appendTo($("#player1"));
-} 
+
