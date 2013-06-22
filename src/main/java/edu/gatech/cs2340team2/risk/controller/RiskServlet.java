@@ -25,7 +25,9 @@ import com.google.gson.GsonBuilder;
         "/start_game", // POST
         "/num_players", // POST
         "/get_js_map", //GET
-        "/update_territory" //POST
+        "/update_territory", //POST
+        "/place_armies",
+        "/advance_turn"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -33,6 +35,7 @@ public class RiskServlet extends HttpServlet {
     int numPlayers = 3;
     RiskGame game = new RiskGame();
     String[] players;
+    Gson json = new Gson();
     
     @Override
     protected void doPost(HttpServletRequest request,
@@ -79,6 +82,7 @@ public class RiskServlet extends HttpServlet {
                     }
                     break;
             }
+
             if(request.getServletPath().equals("/update_territory"))
             {
                 int r = Integer.parseInt(request.getParameter("row"));
@@ -90,6 +94,20 @@ public class RiskServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(json);
                 
+            }
+            else if(request.getServletPath().equals("/place_armies"))
+            {
+                int row = Integer.parseInt(request.getParameter("row"));
+                int col = Integer.parseInt(request.getParameter("col"));
+                int playerId = Integer.parseInt(request.getParameter("player"));
+                int armies = Integer.parseInt(request.getParameter("armies"));
+
+                System.out.println(playerId);
+                boolean placed = game.placeArmies(row, col, playerId, armies);
+                
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json.toJson(Boolean.toString(placed)));
             }
         }
     }
@@ -113,6 +131,12 @@ public class RiskServlet extends HttpServlet {
                 }
                 break;
         }
+        if(request.getServletPath().equals("/advance_turn"))
+        {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json.toJson(game.nextTurn()));
+        }
     }
 
     protected void doPut(HttpServletRequest request,
@@ -126,8 +150,8 @@ public class RiskServlet extends HttpServlet {
                 break;
         }
     }
-
     protected void doDelete(HttpServletRequest request,
+
                             HttpServletResponse response)
             throws IOException, ServletException {
         

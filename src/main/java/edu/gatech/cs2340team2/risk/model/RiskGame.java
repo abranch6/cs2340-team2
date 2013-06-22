@@ -7,15 +7,16 @@ import java.util.Random;
 
 public class RiskGame {
 	
-	Queue<Player> list = new LinkedList<Player>();
-	int armies;
-	GameState state;
-	HexMap map;
+	private Queue<Player> list = new LinkedList<Player>();
+	private Player players[];
+	private int armies;
+	private GameState state;
+	private HexMap map;
 
 	public RiskGame()
 	{
 		state = GameState.INIT_PLAYERS;
-		map = new HexMap(10);
+		map = new HexMap(8);
 	}
 
 	public void setGameState(GameState state)
@@ -29,11 +30,16 @@ public class RiskGame {
 	}
 
 	public void initPlayers(String[] names){
+	    players = new Player[names.length + 1];
+	    int idCounter = 1;
 		Random rand = new Random();
 		while(list.size() < names.length){
 			int index = rand.nextInt(names.length);
 			if (names[index] != null){
-				list.add(new Player(names[index], getStartingArmies(names.length)));
+			    Player temp = new Player(names[index], getStartingArmies(names.length), idCounter);
+				list.add(temp);
+			    players[idCounter] = temp;
+			    idCounter++;
 				names[index] = null;
 			}
 		}
@@ -64,6 +70,36 @@ public class RiskGame {
 	public HexMap getMap()
 	{
 	    return map;
+	}
+	
+	public boolean placeArmies(int row, int col, int playerId, int armies)
+	{
+	    Territory temp = map.getTerritory(new MapLocation(row, col));
+	    
+	    if(players[playerId].getArmies() >= armies)
+	    {
+	        if(temp.getPlayerId() == playerId)
+	        {
+	            temp.addArmies(armies);
+	            players[playerId].addArmies(-armies);
+	            return true;
+	        }
+	        else if(temp.getPlayerId() == 0)
+	        {
+	            temp.addArmies(armies);
+	            temp.setPlayerId(playerId);
+	            players[playerId].addArmies(-armies);
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public int nextTurn()
+	{
+	    Player temp = list.poll();
+	    list.add(temp);
+	    return list.peek().getId();
 	}
 		
 }

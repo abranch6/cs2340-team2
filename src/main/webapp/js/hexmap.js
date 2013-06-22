@@ -1,3 +1,5 @@
+var playerColors = ["brown", "cyan","fushia","green","pepper","red","tangerine"];
+
 function placeTile(color, number, r, c) {
     var tileImg = $("." + color, "#templates").children().clone();
     var divStyle = getTilePosition(r, c, tileImg);
@@ -35,8 +37,18 @@ function updateSelectedTerritoryInfo()
     var loc = window.selectedTerritory;
     if(loc.row >= 0 && loc.col >= 0)
     {
-        $("#s_t_player").text("Controlling Player: " + window.mapArray[loc.row][loc.col].player);
-        $("#s_t_armies").text("Armies: " + window.mapArray[loc.row][loc.col].player);
+        if(window.mapArray[loc.row][loc.col].type == "land")
+        {
+            $("#s_t_type").text("Type: Land");
+            $("#s_t_player").text("Controlling Player: " + window.mapArray[loc.row][loc.col].player);
+            $("#s_t_armies").text("Armies: " + window.mapArray[loc.row][loc.col].armies);
+        }
+        else if(window.mapArray[loc.row][loc.col].type == "water")
+        {
+            $("#s_t_type").text("Type: Water");
+            $("#s_t_player").text("");
+            $("#s_t_armies").text("");
+        }
     }
 }
 function updateTerritory(r,c)
@@ -67,7 +79,7 @@ function showHexMap() {
 }
 
 function placeIntTile(value, r, c)
-{
+{ 
     var color;
     var number;
     if(value == 1)
@@ -85,11 +97,11 @@ function placeIntTile(value, r, c)
         var tile = placeTile(color,number,r,c);
             if(value == 1)
             {
-                window.mapArray[r][c] = {"DOM":tile, "player":-1, "armies":-1, "row":r, "col":c};
+                window.mapArray[r][c] = {"DOM":tile, "type": "water", "row":r, "col":c};
             }
             else
             {
-                window.mapArray[r][c] = {"DOM":tile, "player":0, "armies":0, "row":r, "col":c};
+                window.mapArray[r][c] = {"DOM":tile, "player":0, "type":"land", "armies":0, "row":r, "col":c};
             }
             tile.bind("click", function(event) {
               var row = $(this).data("row");
@@ -103,9 +115,12 @@ function placeIntTile(value, r, c)
 
 function placeTerritoryTile(player, armies, r, c)
 {
-    color = "pepper";
+    color = window.playerColors[player];
     var tile = placeTile(color,armies,r,c);
-    window.mapArray[r][c] = {"DOM":tile,"player":player, "armies":armies, "row":r, "col":c};
+    window.mapArray[r][c] = {"DOM":tile, "type":"land", "player":player, "armies":armies, "row":r, "col":c};
+    updateSelectedTerritoryInfo();
+
+
     tile.bind("click", function(event) {
         var row = $(this).data("row");
         var column = $(this).data("column");
