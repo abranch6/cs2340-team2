@@ -51,6 +51,10 @@
       <fileset dir="${lib.home}"/>
     </copy>
   </target>
+  
+  <target name="tomcat.clean">
+    <delete dir="${catalina.home}/webapps/${app.name}" />
+  </target>
 
   <target name="deploy" depends="prepare">
     <mkdir dir="${catalina.home}/webapps/${app.name}"/>
