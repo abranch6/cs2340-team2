@@ -1,3 +1,5 @@
+var playerColors = ["cyan","fushia","green","yellow","red","tangerine"];
+
 function placeTile(color, number, r, c) {
     var tileImg = $("." + color, "#templates").children().clone();
     var divStyle = getTilePosition(r, c, tileImg);
@@ -30,6 +32,33 @@ function placeTile(color, number, r, c) {
     return div; 
 }
 
+function updateSelectedTerritoryInfo()
+{   
+    var loc = window.selectedTerritory;
+    if(loc.row >= 0 && loc.col >= 0)
+    {
+        if(window.mapArray[loc.row][loc.col].type == "land")
+        {
+            $("#s_t_type").text("Type: Land");
+            if(window.mapArray[loc.row][loc.col].player >= 0)
+            {
+                $("#s_t_player").text("Controlling Player: " + window.players[window.mapArray[loc.row][loc.col].player].name);
+            }
+            else
+            {
+                $("#s_t_player").text("Controlling Player: None");
+
+            }
+            $("#s_t_armies").text("Armies: " + window.mapArray[loc.row][loc.col].armies);
+        }
+        else if(window.mapArray[loc.row][loc.col].type == "water")
+        {
+            $("#s_t_type").text("Type: Water");
+            $("#s_t_player").text("");
+            $("#s_t_armies").text("");
+        }
+    }
+}
 
 function updateTerritory(r,c)
 {
@@ -44,7 +73,7 @@ function updateTerritory(r,c)
 
 function showHexMap() {
   $('#hexmap').children().remove();
-  window.selectedTerritory = 0;
+  window.selectedTerritory = {"row":-1, "col":-1};
   jQuery.getJSON("/risk/get_js_map", function(array) {
     window.mapArray = create2DArray(array.length);
     var cells = [];
@@ -59,28 +88,35 @@ function showHexMap() {
 }
 
 function placeIntTile(value, r, c)
-{
+{ 
     var color;
-    var number;
+    var armies;
     if(value == 1)
     {
          color = "blue";
-         number = -1;
+         armies = 0;
     }
     else if(value == 2)
     {
         color = "brown";
-        number = 0;
+        armies = 0;
     }
     if(value != 0)
     {
-        var tile = placeTile(color,number,r,c);
-            window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
+        var tile = placeTile(color,armies,r,c);
+            if(value == 1)
+            {
+                window.mapArray[r][c] = {"DOM":tile, "type": "water", "row":r, "col":c};
+            }
+            else
+            {
+                window.mapArray[r][c] = {"DOM":tile, "player":-1, "type":"land", "armies":0, "row":r, "col":c};
+            }
             tile.bind("click", function(event) {
               var row = $(this).data("row");
               var column = $(this).data("column");
-              updateTerritory(row,column);
-              window.selectedTerritory = {"row":r, "col":c}
+              window.selectedTerritory = {"row":row, "col":column};
+              updateSelectedTerritoryInfo();
             });
     }
 
@@ -88,14 +124,25 @@ function placeIntTile(value, r, c)
 
 function placeTerritoryTile(player, armies, r, c)
 {
-    color = "pepper";
+    if(player == -1)
+    {
+        color = "brown";
+    }
+    else
+    {
+        color = window.playerColors[player];
+    }
     var tile = placeTile(color,armies,r,c);
-    window.mapArray[r][c] = {"DOM":tile, "row":r, "col":c};
+
     tile.bind("click", function(event) {
-        var row = $(this).data("row");
-        var column = $(this).data("column");
-        updateTerritory(row,column);
-    });
+              var row = $(this).data("row");
+              var column = $(this).data("column");
+              window.selectedTerritory = {"row":row, "col":column};
+              updateSelectedTerritoryInfo();
+            });
+
+    window.mapArray[r][c] = {"DOM":tile, "type":"land", "player":player, "armies":armies, "row":r, "col":c};
+    updateSelectedTerritoryInfo();
 }
 
 function getTextPosition(image, text)
@@ -113,6 +160,7 @@ function getTextPosition(image, text)
 
     return style;
 }
+
 function getTilePosition(row, col, image) 
 {
     
