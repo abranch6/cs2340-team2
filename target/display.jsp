@@ -20,12 +20,12 @@
 <body onLoad="showHexMap()"; showPlayerInformation();>
 
 <div id="hexmap"></div>
-<div id = "player1"></div>
-<div id = "player2"></div>
-<div id = "player3"></div>
-<div id = "player4"></div>
-<div id = "player5"></div>
-<div id = "player6"></div>
+<div id = "player1"><p id="p1"> </p></div>
+<div id = "player2"><p id="p2"> </p></div>
+<div id = "player3"><p id="p3"> </p></div>
+<div id = "player4"><p id="p4"> </p></div>
+<div id = "player5"><p id="p5"> </p></div>
+<div id = "player6"><p id="p6"> </p></div>
     <table>
         <% for (int i = 0; i < numPlayers; i++) { %>
         <% Player temp = players.poll(); %>
@@ -35,12 +35,12 @@
 	 <% players.add(temp); %>
 	 <% } %>        
     </table>
-	<p id="player1"> </p>
-	<p id="player2"> </p>
-	<p id="player3"> </p>
-	<p id="player4"> </p>
-	<p id="player5"> </p>
-	<p id="player6"> </p>
+	
+	
+	
+	
+	
+	
 </body>
 
 
