@@ -8,6 +8,7 @@
   <property name="catalina.home" value="${env.CATALINA_HOME}"/>
   <property name="src.home"      value="${basedir}/src/main/"/>
   <property name="web.home"      value="${basedir}/web"/>
+  <property name="lib.home"      value="${basedir}/libs"/>
 
   <path id="compile.classpath">
 
@@ -17,6 +18,9 @@
     </fileset>
     <pathelement location="${catalina.home}/lib"/>
     <fileset dir="${catalina.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${lib.home}">
       <include name="*.jar"/>
     </fileset>
 
@@ -41,7 +45,11 @@
   <target name="prepare" depends="compile">
     <copy  todir="${build.home}">
       <fileset dir="${src.home}/webapp"/>
-    </copy>    
+    </copy>
+    <mkdir dir="${build.home}/WEB-INF/lib"/>
+    <copy todir="${build.home}/WEB-INF/lib">
+      <fileset dir="${lib.home}"/>
+    </copy>
   </target>
 
   <target name="deploy" depends="prepare">
