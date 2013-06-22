@@ -1,4 +1,3 @@
-var currentTurnId = 1;
 function placeArmies()
 {
     var r = selectedTerritory.row;
@@ -6,15 +5,24 @@ function placeArmies()
     var armies = 5;
     if(r >= 0 && c >= 0 && window.mapArray[r][c].type == "land")
     {
-        jQuery.post("/risk/place_armies", {"row":r, "col":c, "armies":armies,"player": window.currentTurnId}, function(success) {
+
+        $.ajax({
+        async: false,
+        url: "/risk/place_armies",
+        type: "post",
+        data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer},
+        success: function(success) {
             success = $.parseJSON(success);
             if(success)
             {
-                jQuery.get("/risk/advance_turn",function(id) {
-                    window.currentTurnId = id;
+                $.ajax({
+                    async: false,
+                    url: "/risk/advance_turn",
+                    type: "get"
                 });
             }
             updateTerritory(r,c);
-        });
+            }});
     }
+    updatePlayerInfo();
 }

@@ -27,11 +27,11 @@ import com.google.gson.GsonBuilder;
         "/get_js_map", //GET
         "/update_territory", //POST
         "/place_armies",
-        "/advance_turn"
-        "/load_game", // POST 
+        "/advance_turn", 
         "/update_num_players", // PUT
         "/get_js_map", //GET
-        "/get_player_json"
+        "/get_player_json",
+        "/get_player_turn_json"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -116,8 +116,16 @@ public class RiskServlet extends HttpServlet {
             throws IOException, ServletException {
         
         if (request.getServletPath().equals("/get_player_json")){
-        	response.getWriter().write(game.getPlayerJSON());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(game.getPlayerJSON());
         }
+        else  if (request.getServletPath().equals("/get_player_turn_json")){
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(game.getPlayerTurnJSON());
+        }
+
         switch(game.getGameState())
         {
             case INIT_PLAYERS:

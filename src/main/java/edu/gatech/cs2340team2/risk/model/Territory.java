@@ -17,7 +17,7 @@ public class Territory
         location = new MapLocation(r,c);
         json = new Gson();
         armies = 0;
-        playerId = 0;
+        playerId = -1;
     }
 
     public Territory(int playerId, int r, int c)

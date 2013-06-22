@@ -14,9 +14,11 @@ public class RiskGame {
 	private int armies;
 	private GameState state;
 	private HexMap map;
+    private Gson json;
 
 	public RiskGame()
 	{
+        json = new Gson();
 		state = GameState.INIT_PLAYERS;
 		map = new HexMap(7);
 	}
@@ -32,8 +34,8 @@ public class RiskGame {
 	}
 
 	public void initPlayers(String[] names){
-	    players = new Player[names.length + 1];
-	    int idCounter = 1;
+	    players = new Player[names.length];
+	    int idCounter = 0;
 		Random rand = new Random();
 	
 		while(list.size() < names.length){
@@ -87,7 +89,7 @@ public class RiskGame {
 	            players[playerId].addArmies(-armies);
 	            return true;
 	        }
-	        else if(temp.getPlayerId() == 0)
+	        else if(temp.getPlayerId() == -1)
 	        {
 	            temp.addArmies(armies);
 	            temp.setPlayerId(playerId);
@@ -104,11 +106,20 @@ public class RiskGame {
 	    list.add(temp);
 	    return list.peek().getId();
 	}
-		
+	
+    public String getPlayerTurnJSON()
+    {
+        Player[] queuetoArray = list.toArray(new Player[0]);
+        int[] turn = new int[queuetoArray.length];
+
+        for(int i = 0; i < queuetoArray.length; i++)
+        {
+            turn[i] = queuetoArray[i].getId();
+        }
+        return json.toJson(turn);
+    }	
 	public String getPlayerJSON(){
-		Object[] queueToArray = list.toArray();
-		Gson json = new Gson();
-		return json.toJson(queueToArray);
+		return json.toJson(players);
 	}
 
 }
