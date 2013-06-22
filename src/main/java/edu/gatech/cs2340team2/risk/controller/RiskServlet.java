@@ -34,7 +34,7 @@ import com.google.gson.GsonBuilder;
     })
 public class RiskServlet extends HttpServlet {
 
-    final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
+    //REMOVE// final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
     int numPlayers = 3;
     RiskGame game = new RiskGame();
     String[] players;
@@ -64,7 +64,7 @@ public class RiskServlet extends HttpServlet {
                     }
                     else if(request.getServletPath().equals("/start_game"))
                     {
-                        int j = 0;
+                        //REMOVE// int j = 0;
                         players = new String[numPlayers];
                         for (int i = 0; i < numPlayers; i++) {
                             players[i] = (String)request.getParameter("player" + i + "Name");

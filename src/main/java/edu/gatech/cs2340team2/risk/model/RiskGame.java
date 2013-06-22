@@ -14,11 +14,11 @@ public class RiskGame {
 	private int armies;
 	private GameState state;
 	private HexMap map;
-    private Gson json;
+	private Gson json;
 
 	public RiskGame()
 	{
-        json = new Gson();
+		json = new Gson();
 		state = GameState.INIT_PLAYERS;
 		map = new HexMap(7);
 	}
@@ -49,6 +49,7 @@ public class RiskGame {
 			}
 		}
 	}
+	
 	public int getStartingArmies(int i){
 		switch (i){
 		case 3: 
@@ -63,6 +64,7 @@ public class RiskGame {
 			return 30;
 		}
 	}
+	
 	public Queue<Player> getQueue(){
 		return list;
 	}
