@@ -94,7 +94,7 @@ function placeIntTile(value, r, c)
     if(value == 1)
     {
          color = "blue";
-         armies = 0;
+         armies = -1;
     }
     else if(value == 2)
     {
