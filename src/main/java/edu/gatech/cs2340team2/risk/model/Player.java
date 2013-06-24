@@ -5,6 +5,7 @@ public class Player
 	private String name;
 	private int armies;
 	private int id;
+	private int numTerritoriesControlled;
 
 
 	public Player(String name, int startingArmies, int id)
@@ -45,5 +46,20 @@ public class Player
 	public void setId(int id)
 	{
 		this.id = id;
+	}
+	
+	public void incrementNumTerritoriesContolled()
+	{
+		this.numTerritoriesControlled++;
+	}
+	
+	public void decrementNumTerritoriesContolled()
+	{
+		this.numTerritoriesControlled--;
+	
+	
+	public int getNumTerritoriesControlled()
+	{
+		return numTerritoriesControlled;
 	}
 }

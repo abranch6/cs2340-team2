@@ -15,6 +15,9 @@ public class RiskGame {
 	private GameState state;
 	private HexMap map;
 	private Gson json;
+	private int currPlayerTurnID;
+	
+	private final int CALC_NEW_ARMIES_BASE = 4;
 
 	public RiskGame()
 	{
@@ -102,26 +105,48 @@ public class RiskGame {
 	    return false;
 	}
 	
-	public int nextTurn()
+	public void nextTurn()
 	{
 	    Player temp = list.poll();
 	    list.add(temp);
-	    return list.peek().getId();
+	    currPlayerTurnID = list.peek().getId();
+	    
+	    if(state == GameState.GAME)
+	    {
+		this.givePlayerNewArmies(currPlayerTurnID);
+	    }
 	}
 	
-    public String getPlayerTurnJSON()
-    {
-        Player[] queuetoArray = list.toArray(new Player[0]);
-        int[] turn = new int[queuetoArray.length];
-
-        for(int i = 0; i < queuetoArray.length; i++)
-        {
-            turn[i] = queuetoArray[i].getId();
-        }
-        return json.toJson(turn);
-    }	
+	public String getPlayerTurnJSON()
+	{
+	    Player[] queuetoArray = list.toArray(new Player[0]);
+	    int[] turn = new int[queuetoArray.length];
+    
+	    for(int i = 0; i < queuetoArray.length; i++)
+	    {
+		turn[i] = queuetoArray[i].getId();
+	    }
+	    return json.toJson(turn);
+	}
+	
 	public String getPlayerJSON(){
 		return json.toJson(players);
+	}
+	
+	public void givePlayerNewArmies(int playerID)
+	{
+		Player currPlayer = players[playerID];
+		int numTerr = currPlayer.getNumTerritoriesControlled();
+		
+		if (numTerr <= CALC_NEW_ARMIES_BASE)
+		{
+			currPlayer.setArmies(CALC_NEW_ARMIES_BASE);
+		}
+		else
+		{
+			currPlayer.setArmies(numTerr / CALC_NEW_ARMIES_BASE);
+		}
+
 	}
 
 }
