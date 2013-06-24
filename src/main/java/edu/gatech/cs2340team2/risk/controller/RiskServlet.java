@@ -24,7 +24,6 @@ import com.google.gson.GsonBuilder;
         "/startup", // GET
         "/start_game", // POST
         "/num_players", // POST
-        "/get_js_map", //GET
         "/update_territory", //POST
         "/place_armies",
         "/advance_turn", 
