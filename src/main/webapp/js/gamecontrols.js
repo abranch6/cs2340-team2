@@ -26,3 +26,11 @@ function placeArmies()
     }
     updatePlayerInfo();
 }
+function advanceTurn(){
+	$.ajax({
+		async: false,
+		url: "/risk/advance_turn",
+		type: "get"
+	});
+ 	updatePlayerInfo(); 
+}
