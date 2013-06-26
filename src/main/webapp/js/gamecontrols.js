@@ -26,6 +26,7 @@ function placeArmies()
     }
     updatePlayerInfo();
 }
+
 function advanceTurn(){
 	$.ajax({
 		async: false,
@@ -33,4 +34,15 @@ function advanceTurn(){
 		type: "get"
 	});
  	updatePlayerInfo(); 
+
+}
+function fetchGameState()
+{
+    $.ajax({
+        async: false,
+        url: "/risk/get_game_state",
+        type: "get",
+        success: function(state) {
+            window.gameState = state;
+        }});
 }

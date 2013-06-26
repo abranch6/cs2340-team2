@@ -121,5 +121,10 @@ public class RiskGame {
 	public String getPlayerJSON(){
 		return json.toJson(players);
 	}
+    
+    public String getGameStateJSON()
+    {
+        return json.toJson(state);
+    }
 
 }
