@@ -10,19 +10,9 @@ function placeArmies()
         async: false,
         url: "/risk/place_armies",
         type: "post",
-        data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer},
-        success: function(success) {
-            success = $.parseJSON(success);
-            if(success)
-            {
-                $.ajax({
-                    async: false,
-                    url: "/risk/advance_turn",
-                    type: "get"
-                });
-            }
-            updateTerritory(r,c);
-            }});
+        data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer}
+        });
+        updateTerritory(r,c);    
     }
     updatePlayerInfo();
 }

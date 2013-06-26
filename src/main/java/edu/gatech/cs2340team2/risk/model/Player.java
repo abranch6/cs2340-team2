@@ -56,7 +56,7 @@ public class Player
 	public void decrementNumTerritoriesContolled()
 	{
 		this.numTerritoriesControlled--;
-	
+	}
 	
 	public int getNumTerritoriesControlled()
 	{

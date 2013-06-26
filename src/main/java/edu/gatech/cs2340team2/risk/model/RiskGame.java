@@ -37,8 +37,8 @@ public class RiskGame {
 	}
 
 	public void initPlayers(String[] names){
-	    players = new Player[names.length];
-	    int idCounter = 0;
+		players = new Player[names.length];
+		int idCounter = 0;
 		Random rand = new Random();
 	
 		while(list.size() < names.length){
@@ -51,6 +51,8 @@ public class RiskGame {
 				names[index] = null;
 			}
 		}
+		
+		state = GameState.PRE_GAME;
 	}
 	
 	public int getStartingArmies(int i){
@@ -84,25 +86,44 @@ public class RiskGame {
 	
 	public boolean placeArmies(int row, int col, int playerId, int armies)
 	{
-	    Territory temp = map.getTerritory(new MapLocation(row, col));
+	    boolean success = false; 
+	    Territory selectedTerr = map.getTerritory(new MapLocation(row, col));
 	    
 	    if(players[playerId].getArmies() >= armies)
 	    {
-	        if(temp.getPlayerId() == playerId)
+	        if(selectedTerr.getPlayerId() == playerId)
 	        {
-	            temp.addArmies(armies);
+	            selectedTerr.addArmies(armies);
 	            players[playerId].addArmies(-armies);
-	            return true;
+	            success = true;
 	        }
-	        else if(temp.getPlayerId() == -1)
+	        else if(selectedTerr.getPlayerId() == -1)
 	        {
-	            temp.addArmies(armies);
-	            temp.setPlayerId(playerId);
+	            selectedTerr.addArmies(armies);
+	            selectedTerr.setPlayerId(playerId);
 	            players[playerId].addArmies(-armies);
-	            return true;
+		    players[playerId].incrementNumTerritoriesContolled();
+	            success = true;
 	        }
 	    }
-	    return false;
+
+	    if (success)
+	    {
+		if (state == GameState.PRE_GAME)
+		{
+		    if (this.isPreGameComplete())
+		    {
+			state = GameState.GAME;
+		    }
+		    this.nextTurn(); 
+		}
+		else if (state == GameState.GAME)
+		{
+		    //TODO 
+		}
+	    }
+	    
+	    return success;
 	}
 	
 	public void nextTurn()
@@ -133,7 +154,7 @@ public class RiskGame {
 		return json.toJson(players);
 	}
 	
-	public void givePlayerNewArmies(int playerID)
+	private void givePlayerNewArmies(int playerID)
 	{
 		Player currPlayer = players[playerID];
 		int numTerr = currPlayer.getNumTerritoriesControlled();
@@ -147,6 +168,18 @@ public class RiskGame {
 			currPlayer.setArmies(numTerr / CALC_NEW_ARMIES_BASE);
 		}
 
+	}
+	
+	private boolean isPreGameComplete()
+	{
+		for (Player player : players)
+		{
+			if (player.getArmies() == 0)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -140,9 +140,7 @@ public class RiskServlet extends HttpServlet {
         
         if(request.getServletPath().equals("/advance_turn"))
         {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(json.toJson(game.nextTurn()));
+                //FOR LATER
         }
     }
 
