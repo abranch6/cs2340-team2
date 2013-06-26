@@ -24,6 +24,7 @@ function placeArmies()
             updateTerritory(r,c);
             }});
     }
+    fetchGameState();
     updatePlayerInfo();
 }
 
