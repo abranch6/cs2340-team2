@@ -127,7 +127,7 @@ public class RiskServlet extends HttpServlet {
 
         switch(game.getGameState())
         {
-            case INIT_PLAYERS:
+            case PRE_GAME:
                 if(request.getServletPath().equals("/get_js_map"))
                 {
                     response.setContentType("application/json");

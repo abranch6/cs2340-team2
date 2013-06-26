@@ -17,7 +17,7 @@ public class RiskGame {
 	private Gson json;
 	private int currPlayerTurnID;
 	
-	private final int CALC_NEW_ARMIES_BASE = 4;
+	private final int CALC_NEW_ARMIES_BASE = 2;
 
 	public RiskGame()
 	{
@@ -113,6 +113,7 @@ public class RiskGame {
 		{
 		    if (this.isPreGameComplete())
 		    {
+			System.out.println("GAME STATE TO --> GameState.GAME");
 			state = GameState.GAME;
 		    }
 		    this.nextTurn(); 
@@ -159,27 +160,33 @@ public class RiskGame {
 		Player currPlayer = players[playerID];
 		int numTerr = currPlayer.getNumTerritoriesControlled();
 		
-		if (numTerr <= CALC_NEW_ARMIES_BASE)
+		System.out.println("USER: " + currPlayer.getName() + " | Has # " + numTerr);
+		
+		if (numTerr <= (CALC_NEW_ARMIES_BASE * CALC_NEW_ARMIES_BASE))
 		{
+			
 			currPlayer.setArmies(CALC_NEW_ARMIES_BASE);
 		}
 		else
 		{
-			currPlayer.setArmies(numTerr / CALC_NEW_ARMIES_BASE);
+			int newArmies = (numTerr / CALC_NEW_ARMIES_BASE);
+			currPlayer.setArmies(newArmies);
 		}
 
 	}
 	
 	private boolean isPreGameComplete()
 	{
+		boolean complete = true;
+		
 		for (Player player : players)
 		{
-			if (player.getArmies() == 0)
+			if (player.getArmies() != 0)
 			{
-				return false;
+				complete = false;
 			}
 		}
-		return true;
+		return complete;
 	}
 
 }
