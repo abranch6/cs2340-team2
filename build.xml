@@ -26,8 +26,7 @@
 
   </path>
 
-  <target name="clean"
-   description="Delete old build and dist directories">
+  <target name="clean" description="Delete old build and dist directories">
     <delete dir="${build.home}"/>
   </target>
 
@@ -65,5 +64,11 @@
   </target>
   
   <target name="main" depends="clean, deploy" />
+  
+  <target name="tomcat.start">
+      <exec dir="${catalina.home}/bin" executable="cmd">
+          <arg line="startup.bat"/>
+      </exec>
+  </target>
 
 </project>
