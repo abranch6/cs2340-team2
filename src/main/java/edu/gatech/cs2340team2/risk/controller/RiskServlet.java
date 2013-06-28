@@ -125,7 +125,7 @@ public class RiskServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(game.getPlayerTurnJSON());
         }
-        else if(request.getServletPath().equals("/get_player_turn_json"))
+        else if(request.getServletPath().equals("/get_game_state"))
         {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

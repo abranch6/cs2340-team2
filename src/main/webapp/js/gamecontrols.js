@@ -25,6 +25,7 @@ function placeArmies()
             }});
     }
     updatePlayerInfo();
+    fetchGameState();
 }
 
 function advanceTurn(){
@@ -36,6 +37,7 @@ function advanceTurn(){
  	updatePlayerInfo(); 
 
 }
+
 function fetchGameState()
 {
     $.ajax({
@@ -45,4 +47,11 @@ function fetchGameState()
         success: function(state) {
             window.gameState = state;
         }});
+}
+
+function updateControl()
+{
+    if(window.gameState)
+    {
+    }
 }
