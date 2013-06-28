@@ -24,13 +24,14 @@ import com.google.gson.GsonBuilder;
         "/startup", // GET
         "/start_game", // POST
         "/num_players", // POST
-        "/get_js_map", //GET
         "/update_territory", //POST
         "/place_armies",
         "/advance_turn", 
         "/update_num_players", // PUT
+        "/get_js_map", //GET
         "/get_player_json",
-        "/get_player_turn_json"
+        "/get_player_turn_json",
+        "/get_game_state"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -123,6 +124,12 @@ public class RiskServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(game.getPlayerTurnJSON());
+        }
+        else if(request.getServletPath().equals("/get_game_state"))
+        {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(game.getGameStateJSON());
         }
 
         switch(game.getGameState())

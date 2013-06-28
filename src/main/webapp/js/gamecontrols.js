@@ -25,4 +25,33 @@ function placeArmies()
             }});
     }
     updatePlayerInfo();
+    fetchGameState();
+}
+
+function advanceTurn(){
+	$.ajax({
+		async: false,
+		url: "/risk/advance_turn",
+		type: "get"
+	});
+ 	updatePlayerInfo(); 
+
+}
+
+function fetchGameState()
+{
+    $.ajax({
+        async: false,
+        url: "/risk/get_game_state",
+        type: "get",
+        success: function(state) {
+            window.gameState = state;
+        }});
+}
+
+function updateControl()
+{
+    if(window.gameState)
+    {
+    }
 }
