@@ -28,14 +28,13 @@ import com.google.gson.GsonBuilder;
         "/place_armies",
         "/advance_turn", 
         "/update_num_players", // PUT
-        "/get_js_map", //GET
         "/get_player_json",
         "/get_player_turn_json",
         "/get_game_state"
     })
 public class RiskServlet extends HttpServlet {
 
-    final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
+    //REMOVE// final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
     int numPlayers = 3;
     RiskGame game = new RiskGame();
     String[] players;
@@ -65,7 +64,6 @@ public class RiskServlet extends HttpServlet {
                     }
                     else if(request.getServletPath().equals("/start_game"))
                     {
-                        int j = 0;
                         players = new String[numPlayers];
                         for (int i = 0; i < numPlayers; i++) {
                             players[i] = (String)request.getParameter("player" + i + "Name");
@@ -134,7 +132,7 @@ public class RiskServlet extends HttpServlet {
 
         switch(game.getGameState())
         {
-            case INIT_PLAYERS:
+            case PRE_GAME:
                 if(request.getServletPath().equals("/get_js_map"))
                 {
                     response.setContentType("application/json");
@@ -147,9 +145,11 @@ public class RiskServlet extends HttpServlet {
         
         if(request.getServletPath().equals("/advance_turn"))
         {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(json.toJson(game.nextTurn()));
+                game.advanceTurnPhase();
+                //response.setContentType("application/json");
+                //response.setCharacterEncoding("UTF-8");
+                //response.getWriter().write(json.toJson());
+                
         }
     }
 
