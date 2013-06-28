@@ -14,7 +14,7 @@ public class RiskGame {
 	 *  i.e. player.numTerrContoled / #  =  the num new armies
 	 *  that player recieves that turn <= #   
 	 */
-    private final int CALC_NEW_ARMIES_BASE = 2;
+    private final int CALC_NEW_ARMIES_BASE = 1;
 	
     private Queue<Player> list = new LinkedList<Player>();
 	private Player players[];	
@@ -212,9 +212,11 @@ public class RiskGame {
 	    }
 	    else if (turnPhase == TurnPhase.ATTACK)
 	    {
+            turnPhase = TurnPhase.FORTIFY;
 	    }
 	    else if (turnPhase == TurnPhase.FORTIFY)
 	    {
+            nextTurn();
 	    }
 	    else if (turnPhase == TurnPhase.NULL)
 	    {
