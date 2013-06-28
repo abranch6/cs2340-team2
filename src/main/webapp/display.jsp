@@ -13,6 +13,11 @@
 <body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
 
 <div id=control_panel style="width:200px; background:#CCC; float:left;">
+    <div>
+        <h3>Game Status</h3>
+        <p id="p_game_state">Game State:</p>
+        <p id="p_turn_phase">Turn Phase:</p>
+    </div>
     <div id=selected_territory>
         <h3>Selected Territory</h3>
         <p id="s_t_type">No Territory Selected</p>
@@ -21,7 +26,7 @@
     </div>
     <p>
     <button onclick="placeArmies()">Place Armies</button>
-    <button onclick="advanceTurn()">End Turn</button>
+    <button onclick="advanceTurn()" id="end_turn_button">End Turn</button>
     <h3>Turn Order</h3>
     <div id = "player1">
         <p id="p1_name"></p>

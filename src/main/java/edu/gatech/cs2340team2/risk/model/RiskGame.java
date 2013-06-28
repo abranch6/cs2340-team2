@@ -106,13 +106,7 @@ public class RiskGame {
 	    }
 	    else if (state == GameState.GAME)
 	    {
-	        /* NOTE: # armies to place needs to be ALL of the new armies 'player' just recieved
-	         *     NOT the default '5' from PRE_GAME.
-	         * TODO: if we want to allow players to put new armies on more than 1 territory, we 
-	         *     need to add in a text-input to Display, specifying # armies player wishes to 
-	         *     place on the selected territory (obviously we must check # <= player's # armies    
-	         */
-	        success = this.placeArmiesGAME(selectedTerr, playerId, players[playerId].getArmies());
+	        success = this.placeArmiesGAME(selectedTerr, playerId, armies);
 	    }
 	    
 	    return success;
@@ -124,21 +118,30 @@ public class RiskGame {
 	    
 	    if (turnPhase == TurnPhase.PLACE_NEW_ARMIES)
 	    {
-            if(selectedTerr.getPlayerId() == playerId)
+            if(players[playerId].getArmies() >= armies)
             {
-                selectedTerr.addArmies(armies);
-                players[playerId].addArmies(-armies);
-                success = true;
-                
-                this.advanceTurnPhase();
-                //turnPhase = TurnPhase.ATTACK;
+                if(selectedTerr.getPlayerId() == playerId)
+                {
+                    selectedTerr.addArmies(armies);
+                   players[playerId].addArmies(-armies);
+                   success = true;
+                }
+                else if(selectedTerr.getPlayerId() == -1)
+                {
+                    selectedTerr.addArmies(armies);
+                    selectedTerr.setPlayerId(playerId);
+                    players[playerId].addArmies(-armies);
+                    players[playerId].incrementNumTerritoriesContolled();
+                    success = true;
+                    
+                } 
             }
 	    }
-	    else if (turnPhase == TurnPhase.ATTACK)
-	    {
-	        //TESTING// System.out.println("DEBUG: placeArmies() -> turnPhase=ATTACK");
-	    }
-	    
+	   
+        if(success)
+        {
+            updateTurnPhase();
+        } 
 	    return success;
 	}
 	
@@ -166,13 +169,8 @@ public class RiskGame {
 	    
 	    if (success)
 	    {
-	        if (this.isPreGameComplete())
-            {
-	          //TESTING// System.out.println("GAME STATE TO --> GameState.GAME");
-                state = GameState.GAME;
-            }
-	        
-            this.nextTurn(); 
+            updateGameState();
+            nextTurn(); 
 	    }
 	    
 	    return success;
@@ -181,64 +179,64 @@ public class RiskGame {
 	
 	public void nextTurn()
 	{
-	    Player temp = list.poll();
-	    list.add(temp);
-	    currPlayerTurnID = list.peek().getId();
-	    
+        if(turnPhase != TurnPhase.PLACE_NEW_ARMIES)
+        {
+	        Player temp = list.poll();
+	        list.add(temp);
+	        currPlayerTurnID = list.peek().getId();
+	    }
+
+    
 	    if(state == GameState.GAME)
 	    {
 	        turnPhase = TurnPhase.PLACE_NEW_ARMIES;
 	        this.givePlayerNewArmies(currPlayerTurnID);
 	    }
+        else if(state == GameState.PRE_GAME)
+        {
+            if(players[currPlayerTurnID].getArmies() == 0)
+            {
+                nextTurn();
+            }
+        }
 	}
 	
-	public void advanceTurnPhase()
+	public void updateTurnPhase()
 	{
 	    if (turnPhase == TurnPhase.PLACE_NEW_ARMIES)
 	    {
-	        //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=PLACE_NEW_ARMIES");
-	        
 	        if (players[currPlayerTurnID].getArmies() == 0)
 	        {
-	            //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=PLACE_NEW_ARMIES  -->  phase complete[goto ATTACK]");
-	            
 	            turnPhase = TurnPhase.ATTACK;
-	        }
-	        else
-	        {
-	            //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=PLACE_NEW_ARMIES  -->  phase incomplete");
-	            
-	            return;
 	        }
 	    }
 	    else if (turnPhase == TurnPhase.ATTACK)
 	    {
-	        //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=ATTACK");
-	        //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=ATTACK  -->  phase complete[goto FORTIFY]");
-	        
-	        turnPhase = TurnPhase.FORTIFY;
-	        this.fortify(); //TEMPORARY M3
 	    }
 	    else if (turnPhase == TurnPhase.FORTIFY)
 	    {
-	        //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=FORTIFY");
-	        //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=FORTIFY  -->  phase complete -> nextTurn()");
-	        
-	        this.nextTurn();
 	    }
 	    else if (turnPhase == TurnPhase.NULL)
 	    {
-	        //TESTING// System.out.println("DEBUG: advanceTurnPhase() -> turnPhase=NULL");
 	        
 	        return;
 	    }
 	}
-	
+
+    public void updateGameState()
+    {
+        switch(state)
+        {
+            case PRE_GAME:
+                if(isPreGameComplete())
+                {
+                    state = GameState.GAME;
+                }
+            break;
+        }
+    }	
 	public void fortify()
 	{
-	    //TESTING//System.out.println("DEBUG: fortify() -> advanceTurnPhase()");
-	    
-	    this.advanceTurnPhase(); //TEMPORARY M3
 	}
 	
 	public String getPlayerTurnJSON()
@@ -261,6 +259,11 @@ public class RiskGame {
 	{
 	    return json.toJson(state);
 	}
+
+    public String getTurnPhaseJSON()
+    {
+        return json.toJson(turnPhase);
+    }
 	
 	private void givePlayerNewArmies(int playerID)
 	{
