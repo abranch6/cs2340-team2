@@ -7,106 +7,110 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
-public class RiskGame {
-	
-	private Queue<Player> list = new LinkedList<Player>();
-	private Player players[];
-	private int armies;
-	private GameState state;
-	private HexMap map;
+public class RiskGame { 
+    
+    private Queue<Player> list = new LinkedList<Player>();
+    private Player players[];
+    private int armies;
+    private GameState state;
+    private HexMap map;
     private Gson json;
 
-	public RiskGame()
-	{
+    public RiskGame()
+    {
+        this(new HexMap(7));
+    }
+    
+    public RiskGame(HexMap map){
         json = new Gson();
-		state = GameState.INIT_PLAYERS;
-		map = new HexMap(7);
-	}
+        state = GameState.INIT_PLAYERS;
+        this.map = map;
+    }
+    
+    public void setGameState(GameState state)
+    {
+        this.state = state;
+    }
 
-	public void setGameState(GameState state)
-	{
-		this.state = state;
-	}
+    public GameState getGameState()
+    {
+        return state;
+    }
 
-	public GameState getGameState()
-	{
-	    return state;
-	}
-
-	public void initPlayers(String[] names){
-	    players = new Player[names.length];
-	    int idCounter = 0;
-		Random rand = new Random();
-	
-		while(list.size() < names.length){
-			int index = rand.nextInt(names.length);
-			if (names[index] != null){
-			    Player temp = new Player(names[index], getStartingArmies(names.length), idCounter);
-				list.add(temp);
-			    players[idCounter] = temp;
-			    idCounter++;
-				names[index] = null;
-			}
-		}
-	}
-	public int getStartingArmies(int i){
-		switch (i){
-		case 3: 
-			return 35;
-		case 4:
-			return 30;
-		case 5: 
-			return 25;
-		case 6: 
-			return 20;
-		default: 
-			return 30;
-		}
-	}
-	public Queue<Player> getQueue(){
-		return list;
-	}
-	
-	public String getJSonTerritory(MapLocation loc)
-	{
-	    return map.getTerritory(loc).getJSon();
-	}
-	
-	public HexMap getMap()
-	{
-	    return map;
-	}
-	
-	public boolean placeArmies(int row, int col, int playerId, int armies)
-	{
-	    Territory temp = map.getTerritory(new MapLocation(row, col));
-	    
-	    if(players[playerId].getArmies() >= armies)
-	    {
-	        if(temp.getPlayerId() == playerId)
-	        {
-	            temp.addArmies(armies);
-	            players[playerId].addArmies(-armies);
-	            return true;
-	        }
-	        else if(temp.getPlayerId() == -1)
-	        {
-	            temp.addArmies(armies);
-	            temp.setPlayerId(playerId);
-	            players[playerId].addArmies(-armies);
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-	
-	public int nextTurn()
-	{
-	    Player temp = list.poll();
-	    list.add(temp);
-	    return list.peek().getId();
-	}
-	
+    public void initPlayers(String[] names){
+        players = new Player[names.length];
+        int idCounter = 0;
+        Random rand = new Random();
+    
+        while(list.size() < names.length){
+            int index = rand.nextInt(names.length);
+            if (names[index] != null){
+                Player temp = new Player(names[index], getStartingArmies(names.length), idCounter);
+                list.add(temp);
+                players[idCounter] = temp;
+                idCounter++;
+                names[index] = null;
+            }
+        }
+    }
+    public int getStartingArmies(int i){
+        switch (i){
+        case 3: 
+            return 35;
+        case 4:
+            return 30;
+        case 5: 
+            return 25;
+        case 6: 
+            return 20;
+        default: 
+            return 30;
+        }
+    }
+    public Queue<Player> getQueue(){
+        return list;
+    }
+    
+    public String getJSonTerritory(MapLocation loc)
+    {
+        return map.getTerritory(loc).getJSon();
+    }
+    
+    public HexMap getMap()
+    {
+        return map;
+    }
+    
+    public boolean placeArmies(int row, int col, int playerId, int armies)
+    {
+        Territory temp = map.getTerritory(new MapLocation(row, col));
+        
+        if(players[playerId].getArmies() >= armies)
+        {
+            if(temp.getPlayerId() == playerId)
+            {
+                temp.addArmies(armies);
+                players[playerId].addArmies(-armies);
+                return true;
+            }
+            else if(temp.getPlayerId() == -1)
+            {
+                temp.addArmies(armies);
+                temp.setPlayerId(playerId);
+                players[playerId].addArmies(-armies);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public int nextTurn()
+    {
+        Player temp = list.poll();
+        list.add(temp);
+        return list.peek().getId();
+    }
+    
     public String getPlayerTurnJSON()
     {
         Player[] queuetoArray = list.toArray(new Player[0]);
@@ -117,9 +121,9 @@ public class RiskGame {
             turn[i] = queuetoArray[i].getId();
         }
         return json.toJson(turn);
-    }	
-	public String getPlayerJSON(){
-		return json.toJson(players);
-	}
+    }   
+    public String getPlayerJSON(){
+        return json.toJson(players);
+    }
 
 }

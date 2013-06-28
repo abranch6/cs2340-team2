@@ -29,7 +29,6 @@ import com.google.gson.GsonBuilder;
         "/place_armies",
         "/advance_turn", 
         "/update_num_players", // PUT
-        "/get_js_map", //GET
         "/get_player_json",
         "/get_player_turn_json"
     })
