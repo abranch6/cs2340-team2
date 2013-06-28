@@ -9,6 +9,7 @@ function updatePlayerTurnInfo(){
         {
 			$("#p" + (r + 1) + "_name").text("Name: " + window.players[array[r]].name);
             $("#p" + (r + 1) + "_armies").text("Armies: " + window.players[array[r]].armies);
+			$("#p" + (r + 1) + "_color").text("Color: " + window.playerColors[array[r]]);
 		}
 		
 	});
@@ -31,6 +32,6 @@ $.ajax({
         }
     }});
     updatePlayerTurnInfo();
-    console.log(players);
+    
 }
 
