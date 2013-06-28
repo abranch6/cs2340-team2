@@ -47,12 +47,14 @@ function fetchGameState()
         type: "get",
         success: function(state) {
             window.gameState = state;
+            updateControl();
         }});
 }
 
 function updateControl()
 {
-    if(window.gameState)
+    if(window.gameState == "PRE_GAME")
     {
+        $("#end_turn_button").hide();
     }
 }

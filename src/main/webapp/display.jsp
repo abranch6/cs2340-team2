@@ -10,7 +10,7 @@
 <title>RISK Display Screen</title>
 </head>
 
-<body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo();" ondragstart="return false;" ondrop="return false;">
+<body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
 
 <div id=control_panel style="width:200px; background:#CCC; float:left;">
     <div id=selected_territory>
@@ -20,8 +20,8 @@
         <p id="s_t_armies">Armies:</p>
     </div>
 	<p>
-    <button onclick="placeArmies()">Place Armies</button>
-	<button onclick="advanceTurn()">End Turn</button>
+    <button onclick="placeArmies()" id="place_armies_button">Place Armies</button>
+	<button onclick="advanceTurn()" id="end_turn_button">End Turn</button>
     <h3>Turn Order</h3>
     <div id = "player1">
         <p id="p1_name"></p>
