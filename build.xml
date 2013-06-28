@@ -9,6 +9,7 @@
   <property name="src.home"      value="${basedir}/src/main/"/>
   <property name="web.home"      value="${basedir}/web"/>
   <property name="lib.home"      value="${basedir}/libs"/>
+  <property name="tomcat.url" value="http://localhost:8080/${app.name}"/> 
 
   <path id="compile.classpath">
 
@@ -35,7 +36,8 @@
     <!-- Compile Java classes as necessary -->
     <mkdir    dir="${build.home}/WEB-INF/classes"/>
     <javac srcdir="${src.home}"
-          destdir="${build.home}/WEB-INF/classes">
+           destdir="${build.home}/WEB-INF/classes"
+           includeAntRuntime="false">
         <classpath refid="compile.classpath"/>
     </javac>
 
@@ -50,10 +52,6 @@
       <fileset dir="${lib.home}"/>
     </copy>
   </target>
-  
-  <target name="tomcat.clean">
-    <delete dir="${catalina.home}/webapps/${app.name}" />
-  </target>
 
   <target name="deploy" depends="prepare">
     <mkdir dir="${catalina.home}/webapps/${app.name}"/>
@@ -65,10 +63,76 @@
   
   <target name="main" depends="clean, deploy" />
   
+  <target name="play" depends="main, tomcat.start, tomcat.launch" />
+  
+  <!-- TOMCAT CONTROLS -->
+  <target name="tomcat.clean">
+    <delete dir="${catalina.home}/webapps/${app.name}" />
+  </target>
+  
+  <target name="tomcat.launch" >
+      <exec dir="." executable="cmd">
+          <arg value="/c" />
+          <arg value="start ${tomcat.url}"/>
+      </exec>      
+  </target>
+  
   <target name="tomcat.start">
       <exec dir="${catalina.home}/bin" executable="cmd">
-          <arg line="startup.bat"/>
+          <arg value="/c" />
+          <arg value="startup.bat"/>
       </exec>
   </target>
+  
+  <target name="tomcat.stop">
+      <exec dir="${catalina.home}/bin" executable="cmd">
+          <arg value="/c" />
+          <arg value="shutdown.bat"/>
+      </exec>
+  </target>
+  
+  <target name="tomcat.reload">
+      <exec dir="${catalina.home}/bin" executable="cmd">
+          <arg value="/c" />
+          <arg value="shutdown.bat"/>
+      </exec>
+      <exec dir="${catalina.home}/bin" executable="cmd">
+          <arg value="/c" />
+          <arg value="startup.bat"/>    
+      </exec>
+  </target>
+  
+  <!--
+  <property name="tomcat.manager.url" value="http://localhost:8080/manager"/>
+  <property name="tomcat.manager.username" value="admin-gui"/>
+  <property name="tomcat.manager.password" value="risk"/>
+  -->   
+  
+  <!-- 
+  <taskdef  name="start" classname="org.apache.catalina.ant.StartTask">
+      <classpath>
+          <path location="${catalina.home}/lib/catalina-ant.jar" />
+      </classpath>
+  </taskdef>
+  
+  <taskdef  name="stop" classname="org.apache.catalina.ant.StopTask">
+      <classpath>
+          <path location="${catalina.home}/lib/catalina-ant.jar" />
+      </classpath>
+  </taskdef>
+
+  <taskdef  name="reload" classname="org.apache.catalina.ant.ReloadTask">
+      <classpath>
+          <path location="${catalina.home}/lib/catalina-ant.jar" />
+      </classpath>
+  </taskdef>  
+  
+  <target name="tomcat.start" >
+      <start url="${tomcat.manager.url}"
+          username="${tomcat.manager.username}"
+          password="${tomcat.manager.password}"
+          path="/${app.name}" />
+  </target>
+  -->
 
 </project>
