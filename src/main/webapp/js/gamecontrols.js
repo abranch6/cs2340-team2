@@ -10,19 +10,9 @@ function placeArmies()
         async: false,
         url: "/risk/place_armies",
         type: "post",
-        data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer},
-        success: function(success) {
-            success = $.parseJSON(success);
-            if(success)
-            {
-                $.ajax({
-                    async: false,
-                    url: "/risk/advance_turn",
-                    type: "get"
-                });
-            }
-            updateTerritory(r,c);
-            }});
+        data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer}
+        });
+        updateTerritory(r,c);    
     }
     fetchGameState();
     updatePlayerInfo();
@@ -57,4 +47,24 @@ function updateControl()
     {
         $("#end_turn_button").hide();
     }
+}
+
+function advanceTurn()
+{
+	$.ajax({
+		async: false,
+		url: "/risk/advance_turn",
+		type: "get"
+	});
+	updatePlayerInfo();
+}
+
+function fetchGameState()
+{
+	$.ajax({
+		async: false,
+		url: "/risk/get_game_state",
+		type: function(state) {
+			window.gameState = state;
+	}});
 }

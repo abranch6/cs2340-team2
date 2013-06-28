@@ -19,9 +19,9 @@
         <p id="s_t_player">Controlling Player:</p>
         <p id="s_t_armies">Armies:</p>
     </div>
-	<p>
-    <button onclick="placeArmies()" id="place_armies_button">Place Armies</button>
-	<button onclick="advanceTurn()" id="end_turn_button">End Turn</button>
+    <p>
+    <button onclick="placeArmies()">Place Armies</button>
+    <button onclick="advanceTurn()">End Turn</button>
     <h3>Turn Order</h3>
     <div id = "player1">
         <p id="p1_name"></p>
@@ -32,31 +32,31 @@
     <div id = "player2">
         <p id="p2_name"></p>
         <p id="p2_armies"></p>
-		<p id="p2_color"></p>
+        <p id="p2_color"></p>
     </div>
     <br/>
     <div id = "player3">
         <p id="p3_name"></p>
         <p id="p3_armies"></p>
-		<p id="p3_color"></p>
+        <p id="p3_color"></p>
     </div>
     <br/>
     <div id = "player4">
         <p id="p4_name"></p>
         <p id="p4_armies"></p>
-		<p id="p4_color"></p>
+        <p id="p4_color"></p>
     </div>
     <br/>
     <div id = "player5">
         <p id="p5_name"></p>
         <p id="p5_armies"></p>
-		<p id="p5_color"></p>
+        <p id="p5_color"></p>
     </div>
     <br/>
     <div id = "player6">
         <p id="p6_name"></p>
         <p id="p6_armies"></p>
-		<p id="p6_color"></p>
+        <p id="p6_color"></p>
     </div>
 </div>
 
