@@ -21,7 +21,8 @@
     </div>
     <p>
     <button onclick="placeArmies()">Place Armies</button>
-    <button onclick="advanceTurn()">End Turn</button>
+	<button onclick="advanceTurn()">End Turn</button>
+	Number of Armies: <input type="number" id="armies_textbox"><br></input>
     <h3>Turn Order</h3>
     <div id = "player1">
         <p id="p1_name"></p>
