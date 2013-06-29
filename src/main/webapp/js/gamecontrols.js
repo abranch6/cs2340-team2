@@ -16,18 +16,21 @@ function placeArmies()
     }
     fetchGameState();
     updatePlayerInfo();
-    fetchGameState();
     fetchTurnPhase();
 }
 
-function advanceTurn(){
+function advanceTurn()
+{
 	$.ajax({
 		async: false,
 		url: "/risk/advance_turn",
 		type: "get"
 	});
  	updatePlayerInfo(); 
-
+    fetchGameState();
+    fetchTurnPhase();
+    updateControl();
+    console.log(window.turnPhase);
 }
 
 function fetchGameState()
@@ -73,14 +76,4 @@ function updateControl()
             $("#end_turn_button").show();
         }
     }
-}
-
-function advanceTurn()
-{
-	$.ajax({
-		async: false,
-		url: "/risk/advance_turn",
-		type: "get"
-	});
-	updatePlayerInfo();
 }

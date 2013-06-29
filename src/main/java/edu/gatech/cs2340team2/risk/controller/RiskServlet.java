@@ -153,8 +153,7 @@ public class RiskServlet extends HttpServlet {
         
         if(request.getServletPath().equals("/advance_turn"))
         {
-                game.updateTurnPhase();
-                
+                game.updateTurnPhase();    
         }
     }
 
