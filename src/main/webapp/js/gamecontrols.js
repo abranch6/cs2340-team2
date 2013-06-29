@@ -14,8 +14,10 @@ function placeArmies()
         });
         updateTerritory(r,c);    
     }
+    fetchGameState();
     updatePlayerInfo();
     fetchGameState();
+    fetchTurnPhase();
 }
 
 function advanceTurn(){
@@ -36,13 +38,40 @@ function fetchGameState()
         type: "get",
         success: function(state) {
             window.gameState = state;
+            $("#p_game_state").text("Game State: " + state);
+            updateControl();
+        }});
+}
+
+function fetchTurnPhase()
+{
+    $.ajax({
+        async: false,
+        url: "/risk/get_turn_phase",
+        type: "get",
+        success: function(state) {
+            window.turnPhase = state;
+            $("#p_turn_phase").text("Turn Phase: " + state);
+            updateControl();
         }});
 }
 
 function updateControl()
 {
-    if(window.gameState)
+    if(window.gameState == "PRE_GAME")
     {
+        $("#end_turn_button").hide();
+    }
+    else if(window.gameState == "GAME")
+    {
+        if(window.turnPhase == "PLACE_NEW_ARMIES")
+        {
+            $("#end_turn_button").hide();
+        }
+        else if(window.turnPhase == "ATTACK")
+        {
+            $("#end_turn_button").show();
+        }
     }
 }
 
@@ -54,14 +83,4 @@ function advanceTurn()
 		type: "get"
 	});
 	updatePlayerInfo();
-}
-
-function fetchGameState()
-{
-	$.ajax({
-		async: false,
-		url: "/risk/get_game_state",
-		type: function(state) {
-			window.gameState = state;
-	}});
 }

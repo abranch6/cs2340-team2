@@ -25,12 +25,14 @@ import com.google.gson.GsonBuilder;
         "/start_game", // POST
         "/num_players", // POST
         "/update_territory", //POST
+        "/get_js_map",
         "/place_armies",
         "/advance_turn", 
         "/update_num_players", // PUT
         "/get_player_json",
         "/get_player_turn_json",
-        "/get_game_state"
+        "/get_game_state",
+        "/get_turn_phase"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -129,6 +131,12 @@ public class RiskServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(game.getGameStateJSON());
         }
+        else if(request.getServletPath().equals("/get_turn_phase"))
+        {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(game.getTurnPhaseJSON());
+        }
 
         switch(game.getGameState())
         {
@@ -145,10 +153,7 @@ public class RiskServlet extends HttpServlet {
         
         if(request.getServletPath().equals("/advance_turn"))
         {
-                game.advanceTurnPhase();
-                //response.setContentType("application/json");
-                //response.setCharacterEncoding("UTF-8");
-                //response.getWriter().write(json.toJson());
+                game.updateTurnPhase();
                 
         }
     }
