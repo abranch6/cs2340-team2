@@ -26,16 +26,20 @@ public class RiskGame {
 	private GameState state;
 	private int currPlayerTurnID;
 	private TurnPhase turnPhase;
-	
-	
+		
 	
 	public RiskGame()
 	{
-		json = new Gson();
-		map = new HexMap(7);
-		state = GameState.INIT_PLAYERS;
-		turnPhase = TurnPhase.NULL;
+        this(new HexMap(7));
 	}
+
+    public RiskGame(HexMap map)
+    {
+        this.map = map;
+        json = new Gson();
+        state = GameState.INIT_PLAYERS;
+        turnPhase = TurnPhase.NULL;
+    }
 
 	public void setGameState(GameState state)
 	{

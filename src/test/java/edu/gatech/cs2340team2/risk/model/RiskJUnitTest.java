@@ -1,9 +1,14 @@
+package edu.gatech.cs2340team2.risk.model;
+
+import edu.gatech.cs2340team2.risk.model.RiskGame;
+import edu.gatech.cs2340team2.risk.model.HexMap;
+
 import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import org.junit.Test;
-//import static net.sourceforge.jwebunit.junit.JWebUnit.*;
 
-public class RiskJUnitTests extends RiskGame {
+public class RiskJUnitTest extends RiskGame {
 //    public void prepare() {
 //        setBaseUrl("http://localhost:8080/risk");
 //    }
@@ -11,7 +16,7 @@ public class RiskJUnitTests extends RiskGame {
     //script out a game
     
     
-    @Test(timeout = 100)
+    @Test
     public void gettingStartingArmies(){
         //test what they have left, test what they have in the territories
         //after one turn
@@ -24,6 +29,8 @@ public class RiskJUnitTests extends RiskGame {
         assertEquals(true,testingGame.getStartingArmies(35));
         
     }
+
+    @Test
     public void placingNewArmies(){
         HexMap testMap= new HexMap(2);
         RiskGame testingGame= new RiskGame(testMap);
@@ -54,6 +61,7 @@ public class RiskJUnitTests extends RiskGame {
         assertEquals(false,testingGame.placeArmies(1,1, 2, 15));
     }
     
+    @Test
     public void getNextTurnArmies(){
         HexMap testMap= new HexMap(2);
         RiskGame testingGame= new RiskGame(testMap);
