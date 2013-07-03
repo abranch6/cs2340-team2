@@ -8,20 +8,38 @@ import com.google.gson.GsonBuilder;
 
 
 public class RiskGame {
+	/*  Signifies the min # armies each player will recieve
+	 *  per turn AS-WELL-AS the # or territories that must be
+	 *  controlled to recieve 1 new army.
+	 *  i.e. player.numTerrContoled / #  =  the num new armies
+	 *  that player recieves that turn <= #   
+	 */
+    private final int CALC_NEW_ARMIES_BASE = 1;
 	
-	private Queue<Player> list = new LinkedList<Player>();
-	private Player players[];
+    private Queue<Player> list = new LinkedList<Player>();
+	private Player players[];	
 	private int armies;
-	private GameState state;
 	private HexMap map;
-    private Gson json;
-
+	private Gson json;
+	
+	//Current State of the Game variables
+	private GameState state;
+	private int currPlayerTurnID;
+	private TurnPhase turnPhase;
+		
+	
 	public RiskGame()
 	{
-        json = new Gson();
-		state = GameState.INIT_PLAYERS;
-		map = new HexMap(7);
+        this(new HexMap(7));
 	}
+
+    public RiskGame(HexMap map)
+    {
+        this.map = map;
+        json = new Gson();
+        state = GameState.INIT_PLAYERS;
+        turnPhase = TurnPhase.NULL;
+    }
 
 	public void setGameState(GameState state)
 	{
@@ -34,8 +52,8 @@ public class RiskGame {
 	}
 
 	public void initPlayers(String[] names){
-	    players = new Player[names.length];
-	    int idCounter = 0;
+		players = new Player[names.length];
+		int idCounter = 0;
 		Random rand = new Random();
 	
 		while(list.size() < names.length){
@@ -48,7 +66,10 @@ public class RiskGame {
 				names[index] = null;
 			}
 		}
+		
+		state = GameState.PRE_GAME;
 	}
+	
 	public int getStartingArmies(int i){
 		switch (i){
 		case 3: 
@@ -63,6 +84,7 @@ public class RiskGame {
 			return 30;
 		}
 	}
+	
 	public Queue<Player> getQueue(){
 		return list;
 	}
@@ -79,47 +101,208 @@ public class RiskGame {
 	
 	public boolean placeArmies(int row, int col, int playerId, int armies)
 	{
-	    Territory temp = map.getTerritory(new MapLocation(row, col));
+	    boolean success = false; //tracks if the armies were successfully placed
+	    Territory selectedTerr = map.getTerritory(new MapLocation(row, col));
+	    
+	    if (state == GameState.PRE_GAME)
+	    {
+	        success = this.placeArmiesPRE_GAME(selectedTerr, playerId, armies);
+	    }
+	    else if (state == GameState.GAME)
+	    {
+	        success = this.placeArmiesGAME(selectedTerr, playerId, armies);
+	    }
+	    
+	    return success;
+	}
+	
+	private boolean placeArmiesGAME(Territory selectedTerr, int playerId, int armies)
+	{
+	    boolean success = false;
+	    
+	    if (turnPhase == TurnPhase.PLACE_NEW_ARMIES)
+	    {
+            if(players[playerId].getArmies() >= armies)
+            {
+                if(selectedTerr.getPlayerId() == playerId)
+                {
+                    selectedTerr.addArmies(armies);
+                   players[playerId].addArmies(-armies);
+                   success = true;
+                }
+                else if(selectedTerr.getPlayerId() == -1)
+                {
+                    selectedTerr.addArmies(armies);
+                    selectedTerr.setPlayerId(playerId);
+                    players[playerId].addArmies(-armies);
+                    players[playerId].incrementNumTerritoriesContolled();
+                    success = true;
+                    
+                } 
+            }
+	    }
+	   
+        if(success)
+        {
+            updateTurnPhase();
+        } 
+	    return success;
+	}
+	
+	private boolean placeArmiesPRE_GAME(Territory selectedTerr, int playerId, int armies)
+	{
+	    boolean success = false;
 	    
 	    if(players[playerId].getArmies() >= armies)
+        {
+            if(selectedTerr.getPlayerId() == playerId)
+            {
+                selectedTerr.addArmies(armies);
+                players[playerId].addArmies(-armies);
+                success = true;
+            }
+            else if(selectedTerr.getPlayerId() == -1)
+            {
+                selectedTerr.addArmies(armies);
+                selectedTerr.setPlayerId(playerId);
+                players[playerId].addArmies(-armies);
+                players[playerId].incrementNumTerritoriesContolled();
+                success = true;
+            }
+        }
+	    
+	    if (success)
 	    {
-	        if(temp.getPlayerId() == playerId)
+            updateGameState();
+            nextTurn(); 
+	    }
+	    
+	    return success;
+	}
+	
+	
+	public void nextTurn()
+	{
+        if(turnPhase != TurnPhase.PLACE_NEW_ARMIES)
+        {
+	        Player temp = list.poll();
+	        list.add(temp);
+	        currPlayerTurnID = list.peek().getId();
+	    }
+
+    
+	    if(state == GameState.GAME)
+	    {
+	        turnPhase = TurnPhase.PLACE_NEW_ARMIES;
+	        this.givePlayerNewArmies(currPlayerTurnID);
+	    }
+        else if(state == GameState.PRE_GAME)
+        {
+            if(players[currPlayerTurnID].getArmies() == 0)
+            {
+                nextTurn();
+            }
+        }
+	}
+	
+	public void updateTurnPhase()
+	{
+	    if (turnPhase == TurnPhase.PLACE_NEW_ARMIES)
+	    {
+	        if (players[currPlayerTurnID].getArmies() == 0)
 	        {
-	            temp.addArmies(armies);
-	            players[playerId].addArmies(-armies);
-	            return true;
-	        }
-	        else if(temp.getPlayerId() == -1)
-	        {
-	            temp.addArmies(armies);
-	            temp.setPlayerId(playerId);
-	            players[playerId].addArmies(-armies);
-	            return true;
+	            turnPhase = TurnPhase.ATTACK;
 	        }
 	    }
-	    return false;
+	    else if (turnPhase == TurnPhase.ATTACK)
+	    {
+            turnPhase = TurnPhase.FORTIFY;
+	    }
+	    else if (turnPhase == TurnPhase.FORTIFY)
+	    {
+            nextTurn();
+	    }
+	    else if (turnPhase == TurnPhase.NULL)
+	    {
+	        
+	        return;
+	    }
 	}
-	
-	public int nextTurn()
-	{
-	    Player temp = list.poll();
-	    list.add(temp);
-	    return list.peek().getId();
-	}
-	
-    public String getPlayerTurnJSON()
-    {
-        Player[] queuetoArray = list.toArray(new Player[0]);
-        int[] turn = new int[queuetoArray.length];
 
-        for(int i = 0; i < queuetoArray.length; i++)
+    public void updateGameState()
+    {
+        switch(state)
         {
-            turn[i] = queuetoArray[i].getId();
+            case PRE_GAME:
+                if(isPreGameComplete())
+                {
+                    state = GameState.GAME;
+                }
+            break;
         }
-        return json.toJson(turn);
     }	
+	public void fortify()
+	{
+	}
+	
+	public String getPlayerTurnJSON()
+	{
+	    Player[] queuetoArray = list.toArray(new Player[0]);
+	    int[] turn = new int[queuetoArray.length];
+    
+	    for(int i = 0; i < queuetoArray.length; i++)
+	    {
+	        turn[i] = queuetoArray[i].getId();
+	    }
+	    return json.toJson(turn);
+	}
+	
 	public String getPlayerJSON(){
 		return json.toJson(players);
+	}
+	
+	public String getGameStateJSON()
+	{
+	    return json.toJson(state);
+	}
+
+    public String getTurnPhaseJSON()
+    {
+        return json.toJson(turnPhase);
+    }
+	
+	private void givePlayerNewArmies(int playerID)
+	{
+		Player currPlayer = players[playerID];
+		int numTerr = currPlayer.getNumTerritoriesControlled();
+		
+		System.out.println("USER: " + currPlayer.getName() + " | Has " + numTerr + " Territories.");
+		
+		if (numTerr <= (CALC_NEW_ARMIES_BASE * CALC_NEW_ARMIES_BASE))
+		{
+			
+			currPlayer.setArmies(CALC_NEW_ARMIES_BASE);
+		}
+		else
+		{
+			int newArmies = (numTerr / CALC_NEW_ARMIES_BASE);
+			currPlayer.setArmies(newArmies);
+		}
+
+	}
+	
+	private boolean isPreGameComplete()
+	{
+		boolean complete = true;
+		
+		for (Player player : players)
+		{
+			if (player.getArmies() != 0)
+			{
+				complete = false;
+			}
+		}
+		return complete;
 	}
 
 }
