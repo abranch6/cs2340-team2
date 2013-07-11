@@ -32,31 +32,47 @@ function placeTile(color, number, r, c) {
     return div; 
 }
 
-function updateSelectedTerritoryInfo()
+function updateSelectedTerritoryInfo(territory)
 {   
-    var loc = window.selectedTerritory;
+    var loc;
+
+    if(territory == 1)
+    {
+        loc = window.selectedTerritory1;
+    }
+    else
+    {
+        loc = window.selectedTerritory2;
+    }
+    
     if(loc.row >= 0 && loc.col >= 0)
     {
         if(window.mapArray[loc.row][loc.col].type == "land")
         {
-            $("#s_t_type").text("Type: Land");
+            $("#s_t_type_" + territory).text("Type: Land");
             if(window.mapArray[loc.row][loc.col].player >= 0)
             {
-                $("#s_t_player").text("Controlling Player: " + window.players[window.mapArray[loc.row][loc.col].player].name);
+                $("#s_t_player_" + territory).text("Controlling Player: " + window.players[window.mapArray[loc.row][loc.col].player].name);
             }
             else
             {
-                $("#s_t_player").text("Controlling Player: None");
+                $("#s_t_player_" + territory).text("Controlling Player: None");
 
             }
-            $("#s_t_armies").text("Armies: " + window.mapArray[loc.row][loc.col].armies);
+            $("#s_t_armies_" + territory).text("Armies: " + window.mapArray[loc.row][loc.col].armies);
         }
         else if(window.mapArray[loc.row][loc.col].type == "water")
         {
-            $("#s_t_type").text("Type: Water");
-            $("#s_t_player").text("");
-            $("#s_t_armies").text("");
+            $("#s_t_type_" + territory).text("Type: Water");
+            $("#s_t_player_" + territory).text("");
+            $("#s_t_armies_" + territory).text("");
         }
+    }
+    else
+    {
+         $("#s_t_type_" + territory).text("No Territory Selected");
+            $("#s_t_player_" + territory).text("");
+            $("#s_t_armies_" + territory).text(""); 
     }
 }
 
@@ -115,8 +131,7 @@ function placeIntTile(value, r, c)
             tile.bind("click", function(event) {
               var row = $(this).data("row");
               var column = $(this).data("column");
-              window.selectedTerritory = {"row":row, "col":column};
-              updateSelectedTerritoryInfo();
+              selectTerritory(row, column);
             });
     }
 
@@ -136,12 +151,10 @@ function placeTerritoryTile(player, armies, r, c)
     tile.bind("click", function(event) {
               var row = $(this).data("row");
               var column = $(this).data("column");
-              window.selectedTerritory = {"row":row, "col":column};
-              updateSelectedTerritoryInfo();
+              selectTerritory(row, column);
             });
 
     window.mapArray[r][c] = {"DOM":tile, "type":"land", "player":player, "armies":armies, "row":r, "col":c};
-    updateSelectedTerritoryInfo();
 }
 
 function getTextPosition(image, text)
@@ -196,4 +209,40 @@ function create2DArray(rows)
     }  
 
     return arr;
+}
+
+function selectTerritory(row, column)
+{
+    if(window.gameState == "PRE_GAME")
+    {
+        window.selectedTerritory1 = {"row":row, "col":column};   
+    }
+    else if(window.gameState == "GAME")
+    {
+        if(window.turnPhase == "PLACE_NEW_ARMIES")
+        {
+            window.selectedTerritory1 = {"row":row, "col":column};
+        }
+        else if(window.turnPhase == "ATTACK")
+        {
+            if(mapArray[row][column].player == currentPlayer)
+            {
+                window.selectedTerritory1 = {"row":row, "col":column};
+            }
+            else
+            {
+                window.selectedTerritory2 = {"row":row, "col":column};
+            }
+        }
+    }
+    updateSelectedTerritoryInfo(1);
+    updateSelectedTerritoryInfo(2);
+}
+
+function deSelectTerritories()
+{
+    window.selectedTerritory1 = {"row":-1, "col":-1};
+    window.selectedTerritory2 = {"row":-1, "col":-1};
+    updateSelectedTerritoryInfo(1);
+    updateSelectedTerritoryInfo(2);
 }
