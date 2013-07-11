@@ -1,7 +1,66 @@
 div#hexmap {
-  position: relative;
+  position: absolute;
+  top:-5;
+  font-size: 200%;
 }
 
 div.hidden {
   display: none;
 }
+
+.button{
+background:url(images/three.png);
+position: left;
+}
+
+.player1{
+position: absolute;
+padding-top: 10px;
+left: 5px;
+width: 125px;
+}
+.player2{
+position: absolute;
+padding-top: 10px;
+left: 120px;
+width: 125px;
+}
+.player3{
+position: absolute;
+padding-top: 10px;
+left: 235px;
+width: 125px;
+}
+.player4{
+position: absolute;
+padding-top: 10px;
+left: 350px;
+width: 125px;
+}
+.player5{
+position: absolute;
+padding-top: 10px;
+left: 465px;
+width: 125px;
+}
+.player6{
+position: absolute;
+padding-top: 10px;
+left: 580px;
+width: 125px;
+}
+.territoryInfo{
+position: absolute;
+padding-left: 55px;
+padding-bottom: 30px;
+}
+.opacity{
+opacity:1.0;
+}
+.opacity:hover{
+opacity:0.75;
+}
+.opacity:active{
+border-color: lime;
+}
+

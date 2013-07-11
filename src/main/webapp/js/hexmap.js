@@ -1,4 +1,4 @@
-var playerColors = ["cyan","fushia","green","yellow","red","tangerine"];
+var playerColors = ["Blue","Purple","Green","Yellow","Red","Orange"];
 
 function placeTile(color, number, r, c) {
     var tileImg = $("." + color, "#templates").children().clone();
@@ -93,12 +93,12 @@ function placeIntTile(value, r, c)
     var armies;
     if(value == 1)
     {
-         color = "blue";
+         color = "Ocean";
          armies = -1;
     }
     else if(value == 2)
     {
-        color = "brown";
+        color = "Brown";
         armies = 0;
     }
     if(value != 0)
@@ -133,7 +133,6 @@ function placeTerritoryTile(player, armies, r, c)
         color = window.playerColors[player];
     }
     var tile = placeTile(color,armies,r,c);
-
     tile.bind("click", function(event) {
               var row = $(this).data("row");
               var column = $(this).data("column");
@@ -149,13 +148,13 @@ function getTextPosition(image, text)
 {
     var tile_width = image.attr("width");
     var tile_height = image.attr("height");
-    ypos = (tile_height / 4);
-    xpos = (tile_width / 2) - 16;
+    ypos = (tile_height / 6) + 1;
+    xpos = (tile_width / 2) -17.5;
 
     var style = {
                     "position": "absolute",
                     "top": ypos, "left": xpos, 
-                    "width": 32, "text-align":"center"
+                    "width": 32, "text-align":"center",
                 };
 
     return style;
@@ -171,7 +170,7 @@ function getTilePosition(row, col, image)
     var x_offset = tile_width / 2;
 
     var xpos = 0 + (col * tile_width);
-    var ypos = 0 + (row * (tile_height - y_offset));
+    var ypos = 0 + (row * (tile_height - y_offset))-1;
 
     ypos += 40; 
 
