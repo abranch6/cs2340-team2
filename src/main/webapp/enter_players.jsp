@@ -29,7 +29,7 @@ text-align:center;
 	<% for (int i = 0; i < numPlayers; i++) { %>
 	<li>
         <input type="hidden" name="operation" value="POST" />
-	<input type="text" name="player<%= i %>Name" placeholder="Player <%= i  %>" required />
+	<input type="text" maxlength="11" name="player<%= i %>Name" placeholder="Player <%= i  %>" required />
 	 </li>
          <% } %>
 	<input type="submit" value="Start Game!" />
