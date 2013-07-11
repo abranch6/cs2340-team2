@@ -1,18 +1,20 @@
 function placeArmies()
 {
-    var r = selectedTerritory.row;
-    var c = selectedTerritory.col;
+    var r = window.selectedTerritory1.row;
+    var c = window.selectedTerritory1.col;
     var armies = $("#armies_textbox").val();
+
+    console.log(r);
     if(r >= 0 && c >= 0 && window.mapArray[r][c].type == "land")
     {
-
         $.ajax({
-        async: false,
-        url: "/risk/place_armies",
-        type: "post",
-        data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer}
-        });
-        updateTerritory(r,c);    
+            async: false,
+            url: "/risk/place_armies",
+            type: "post",
+            data: {"row":r, "col":c, "armies":armies,"player": window.currentPlayer}
+            });
+        updateTerritory(r,c);
+        deSelectTerritories(); 
     }
     fetchGameState();
     updatePlayerInfo();
@@ -30,7 +32,6 @@ function advanceTurn()
     fetchGameState();
     fetchTurnPhase();
     updateControl();
-    console.log(window.turnPhase);
 }
 
 function fetchGameState()
@@ -76,4 +77,21 @@ function updateControl()
             $("#end_turn_button").show();
         }
     }
+}
+
+function attack(attackDieNum, defendDieNum, attackRow, attackCol, defendRow, defendCol)
+{
+    $.ajax({
+        async: true,
+        url: "/risk/attack",
+        type: "post",
+        data: {"attackDieNum" : attackDieNum, "defendDieNum" : defendDieNum, "attackRow" : attackRow,
+               "attackCol" : attackCol, "defendRow" : defendRow,"defendCol" : defendCol,},
+        success: function(die) {
+            updatePlayerInfo();
+            updateControl();
+            updateTerritory(defendRow, defendCol);
+            updateTerritory(attackRow, attackCol);
+            deSelectTerritories(); 
+        }});
 }
