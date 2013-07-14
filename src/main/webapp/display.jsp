@@ -64,7 +64,10 @@
     <p>
     <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
 	<button onclick="placeArmies()" >Place Armies</button>
-    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">End Turn</button>
+    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">Next Turn Phase</button>
+    <button onclick="attack(1,1,window.selectedTerritory1.row,window.selectedTerritory1.col,window.selectedTerritory2.row,window.selectedTerritory2.col)">
+        Attack
+    </button>
 	</br>
 </div>
 
