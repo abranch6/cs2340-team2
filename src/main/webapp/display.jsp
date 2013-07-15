@@ -79,6 +79,19 @@
 
 <div id="hexmap" style="position:absolute; left:15px;" class="changeOnClick"></div>
 
+<div id=dice_panel style="left: 700px;">
+	<div id=spot_0_0>
+	</div>
+	<div id=spot_0_1>
+	</div>
+	<div id=spot_0_2>
+	</div>
+	<div id=spot_1_0>
+	</div>
+	<div id=spot_1_1>
+	</div>
+	<div id=spot_1_2>
+	</div>
 </body>
 
 

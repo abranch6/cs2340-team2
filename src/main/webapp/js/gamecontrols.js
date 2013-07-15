@@ -2,7 +2,7 @@ function placeArmies()
 {
     var r = window.selectedTerritory1.row;
     var c = window.selectedTerritory1.col;
-    var armies = $("#armies_textbox").val();
+    var armies = $("#armies_textbox1").val();
     
     if(r >= 0 && c >= 0 && window.mapArray[r][c].type == "land")
     {
@@ -99,10 +99,23 @@ function attack()
         data: {"attackDieNum" : attackDieNum, "defendDieNum" : defendDieNum, "attackRow" : attackRow,
                "attackCol" : attackCol, "defendRow" : defendRow,"defendCol" : defendCol,},
         success: function(die) {
+		console.log(die);
             updatePlayerInfo();
             updateControl();
             updateTerritory(defendRow, defendCol);
             updateTerritory(attackRow, attackCol);
             deSelectTerritories(); 
+			for(var i = 0; i < die.length; i++){
+				for(var j = 0; j < die[i].length; j++){
+					$("#spot_" + i + "_" + j).children().remove();
+					var image;
+						image = $('<img>', {
+							src: "/risk/images/die" + die[i][j] + ".png"
+						});
+						if(die[i][j] != 0){
+							$("#spot_" + i + "_" + j).append(image);
+						}
+				}
+			}
         }});
 }
