@@ -54,6 +54,11 @@ position: absolute;
 padding-left: 55px;
 padding-bottom: 30px;
 }
+.player2Territory{
+position:absolute;
+left:400px;
+top: -20px;
+}
 .opacity{
 opacity:1.0;
 }
