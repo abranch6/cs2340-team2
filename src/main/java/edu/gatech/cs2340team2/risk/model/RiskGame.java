@@ -185,8 +185,8 @@ public class RiskGame {
                 players[playerId].addArmies(-armies);
                 success = true;
             }
-            else if(selectedTerr.getPlayerId() == -1)
-            {
+            else if(selectedTerr.getPlayerId() == NEUTRAL)
+            {         
                 selectedTerr.addArmies(armies);
                 selectedTerr.setPlayerId(playerId);
                 players[playerId].addArmies(-armies);
@@ -397,12 +397,12 @@ public class RiskGame {
     	Arrays.sort(dice[1]);
     	
     	//takes sorted array in ascending order, and turns it into sorted descending order
-    	int temp = dice[0][0];
-    	dice[0][0] = dice[0][2];
-    	dice[0][2] = temp;
+    	int temp = dice[ATTACKER][0];
+    	dice[ATTACKER][0] = dice[ATTACKER][2];
+    	dice[ATTACKER][2] = temp;
     	
-    	dice[1][0] = dice[1][2];
-    	dice[1][2] = 0;
+    	dice[DEFENDER][0] = dice[DEFENDER][2];
+    	dice[DEFENDER][2] = 0;
     	
     	return dice;
     }
