@@ -133,7 +133,14 @@ public class HexMap
     
     public Territory getTerritory(MapLocation loc)
     {
-        return territoryMap[loc.row][loc.col];
+    	if (loc.row > 0 && loc.row < territoryMap.length)
+    	{
+    		if (loc.col > 0 && loc.col < territoryMap[loc.row].length)
+    		{
+    			return territoryMap[loc.row][loc.col];
+    		}
+    	}
+        return null;
     }
     
     public boolean areTerritoriesAdjacent(Territory terrOne, Territory terrTwo)
