@@ -10,26 +10,10 @@
 <title>RISK Display Screen</title>
 </head>
 
-<body style="user-select: none;" onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
-
-<div id=control_panel style="width:200px; background:#CCC; float:left;">
-    <div>
-        <h3>Game Status</h3>
-        <p id="p_game_state">Game State:</p>
-        <p id="p_turn_phase">Turn Phase:</p>
-    </div>
-    <div id=selected_territory>
-        <h3>Selected Territory</h3>
-        <p id="s_t_type">No Territory Selected</p>
-        <p id="s_t_player">Controlling Player:</p>
-        <p id="s_t_armies">Armies:</p>
-    </div>
-    <p>
-    <button onclick="placeArmies()">Place Armies</button>
-	Number of Armies: <input type="number" id="armies_textbox"><br></input>
-    <button onclick="advanceTurn()" id="end_turn_button">End Turn</button>
-    <h3>Turn Order</h3>
-    <div id = "player1">
+<body style="user-select: none; "onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
+<div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px; text-indent: 20px;">
+    <h2 style="padding-top:20px;">Turn Order</h2>
+    <div id = "player1" class="player1">
         <p id="p1_name"></p>
         <p id="p1_armies"></p>
 		<p id="p1_color"></p>
@@ -64,6 +48,36 @@
         <p id="p6_armies"></p>
         <p id="p6_color"></p>
     </div>
+</div>
+<img src="images/blackRomanNumerals.png" style="width:700; height:20">
+<div id=control_panel class="hidden" style="width:350px; position:relative; top:125px">
+    <div>
+        <h3>Game Status</h3>
+        <p id="p_game_state">Game State:</p>
+        <p id="p_turn_phase">Turn Phase:</p>
+    </div>
+</div>
+<div id=control_panel class="territoryInfo" style="background-image:URL('images/RomanNumerals.png'); background-size: 380px 306px;width:325px; position:relative; top:325px">
+    <div id=selected_territory_1>
+	</br>
+        <h3>Selected Territory One</h3>
+        <p id="s_t_type_1">No Territory Selected</p>
+        <p id="s_t_player_1">Controlling Player:</p>
+        <p id="s_t_armies_1">Armies:</p>
+    </div>
+    <div id=selected_territory_2>
+    </br>
+        <h3>Selected Territory Two</h3>
+        <p id="s_t_type_2">No Territory Selected</p>
+        <p id="s_t_player_2">Controlling Player:</p>
+        <p id="s_t_armies_2">Armies:</p>
+    </div>
+
+    <p>
+    <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
+	<button onclick="placeArmies()" >Place Armies</button>
+    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">End Turn</button>
+	</br>
 </div>
 
 <div id="hexmap" style="float:left;"></div>
