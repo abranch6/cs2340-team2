@@ -135,4 +135,26 @@ public class HexMap
     {
         return territoryMap[loc.row][loc.col];
     }
+    
+    public boolean areTerritoriesAdjacent(Territory terrOne, Territory terrTwo)
+    {
+    	boolean terrOneCheck = false;
+    	boolean terrTwoCheck = false;
+    	
+    	for (int i = 0; i < 6; i++)
+    	{
+    		MapLocation neighborOfTerrOne = terrOne.getMapLocation().getNeighbor(i);
+    		if (getTerritory(neighborOfTerrOne) == terrTwo)
+    			terrOneCheck = true;
+    		
+    		MapLocation neighborOfTerrTwo = terrTwo.getMapLocation().getNeighbor(i);
+    		if (getTerritory(neighborOfTerrTwo) == terrOne)
+    			terrTwoCheck = true;
+    	}
+    	
+    	if (terrOneCheck && terrTwoCheck)
+    		return true;
+    	
+    	return false;
+    }
 }

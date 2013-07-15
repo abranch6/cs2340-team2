@@ -3,6 +3,7 @@ package edu.gatech.cs2340team2.risk.model;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Arrays;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,6 +16,10 @@ public class RiskGame {
 	 *  that player recieves that turn <= #   
 	 */
     private final int CALC_NEW_ARMIES_BASE = 1;
+    
+    private final int NEUTRAL = 0;
+    private final int ATTACKER = 0;
+    private final int DEFENDER = 1;
 	
     private Queue<Player> list = new LinkedList<Player>();
 	private Player players[];	
@@ -240,7 +245,156 @@ public class RiskGame {
                 }
             break;
         }
-    }	
+    }
+    
+    public int[][] attack(int attackDieNum, int defendDieNum, int attackRow, int attackCol, int defendRow, int defendCol)
+    {
+    	int[][] diceValues = new int[2][3];
+    	//int invalidAttack = false;
+    	
+    	Territory attackTerr = map.getTerritory(new MapLocation(attackRow, attackCol));
+    	Territory defendTerr = map.getTerritory(new MapLocation(defendRow, defendCol));
+    	
+    	//Check if Territories are Invalid:
+    	// - AttackingTerritory must belong to currentTurnPlayer
+    	// - AttackingTerritory must have more than 1 armies
+    	// - DefendingTerritory must not belong to currentTurnPlayer OR be neutral
+    	// - DefendingTerritory must be adjacent to AttackingTerritory
+    	if (attackTerr.getPlayerId() != currPlayerTurnID || attackTerr.getArmies() == 1)
+    	{
+    		return diceValues;
+    	}
+    	if (defendTerr.getPlayerId() == currPlayerTurnID || defendTerr.getPlayerId() == NEUTRAL || !map.areTerritoriesAdjacent(attackTerr, defendTerr))
+    	{
+    		return diceValues;
+    	}
+    	
+    	//Check if Dice are InValid:
+    	// - 0 < numAttackDie < 4
+    	// - AttackingTerritory must have at least 1 more armies than numAttackDie rolled
+    	// - 0 < numDefendDie < 3
+    	// - DefendingTerrotory must have at least as many armies as numDefendDie rolled
+    	if (attackDieNum > 3 || attackDieNum < 1 || attackTerr.getArmies() - attackDieNum < 1)
+    	{
+    		return diceValues;
+    	}
+    	if (defendDieNum > 2 || defendDieNum < 1 || defendTerr.getArmies() - defendDieNum < 0)
+    	{
+    		return diceValues;
+    	}
+    	
+    	//Everything is valid by now, so HandleAttack:
+    	diceValues = handleDiceRoll(attackDieNum, defendDieNum);
+    	
+    	int numDiceComparisons = 0;
+    	
+    	if (attackDieNum < defendDieNum)
+    	{
+    		numDiceComparisons = attackDieNum;
+    		for (int i = 0; i < numDiceComparisons; i++)
+    		{
+    			//handle Dice Comparisson:
+    			if (diceValues[ATTACKER][i] > diceValues[DEFENDER][i]) 		
+    				defendTerr.addArmies(-1);
+    			else
+    				attackTerr.addArmies(-1);
+    		}    		
+    	}
+    	else 
+    	{
+    		if (attackDieNum == defendDieNum)
+    			numDiceComparisons = attackDieNum;
+    		
+    		else if (attackDieNum > defendDieNum)
+    			numDiceComparisons = defendDieNum;
+    		
+    		for (int i = 0; i < numDiceComparisons; i++)
+    		{
+    			//handle Dice Comparisson:
+    			if (diceValues[ATTACKER][i] > diceValues[DEFENDER][i]) 		
+    				defendTerr.addArmies(-1);
+    			else
+    				attackTerr.addArmies(-1);
+    		}
+
+    		//Handle if DefendingTerritory has lost all armies
+    		if (defendTerr.getArmies() == 0)
+    		{
+    			handleTerritoryCaptured(attackTerr, defendTerr, attackDieNum);
+    		}
+    		
+    	}
+    	
+    	return diceValues;
+    }
+    
+    private void handleTerritoryCaptured(Territory attackTerr, Territory defendTerr, int attackDieNum)
+    {
+		//AttackingPlayer takes over this territory
+		if (attackTerr.getArmies() <= 1)
+		{
+			//**DEBUGGING ONLY**// THIS SHOULD NEVER BE ABLE TO HAPPEN, BUT JUST TO MAKE SURE!
+			defendTerr.setArmies(-10);
+			attackTerr.setArmies(-15);
+		}
+		else
+		{
+			//move #attackDieNum to new terr
+			if (attackTerr.getArmies() >= attackDieNum + 1)
+			{
+				attackTerr.addArmies(-attackDieNum);    					
+				defendTerr.setArmies(attackDieNum);	
+			}
+			//move only 1 to new terr
+			else
+			{
+				attackTerr.addArmies(-1);    					
+				defendTerr.setArmies(1);	    					
+			}
+			
+			players[defendTerr.getPlayerId()].decrementNumTerritoriesContolled();
+			defendTerr.setPlayerId(currPlayerTurnID);
+			players[currPlayerTurnID].incrementNumTerritoriesContolled();
+		}    	
+    }
+    
+    private int[][] handleDiceRoll(int attackDieNum, int defendDieNum)
+    {
+    	int[][] dice = new int[2][3];
+    	
+     	//Roll Dice:
+    	for (int i = 0; i < attackDieNum; i++)
+    	{
+    		dice[ATTACKER][i] = getRandomDieValue();
+    	}
+    	for (int i = 0; i < defendDieNum; i++)
+    	{
+    		dice[DEFENDER][i] = getRandomDieValue();
+    	}
+    	
+    	//Order Rolled Dice Values:
+    	//sorts into ascending order.
+    	Arrays.sort(dice[0]);
+    	Arrays.sort(dice[1]);
+    	
+    	//takes sorted array in ascending order, and turns it into sorted descending order
+    	int temp = dice[0][0];
+    	dice[0][0] = dice[0][2];
+    	dice[0][2] = temp;
+    	
+    	dice[1][0] = dice[1][2];
+    	dice[1][2] = 0;
+    	
+    	return dice;
+    }
+    
+    private int getRandomDieValue()
+    {
+    	Random rand = new Random();
+    	int value = rand.nextInt(6) + 1;
+    	return value;
+    }
+    
 	public void fortify()
 	{
 	}
