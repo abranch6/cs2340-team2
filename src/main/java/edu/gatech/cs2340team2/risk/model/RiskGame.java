@@ -17,7 +17,7 @@ public class RiskGame {
 	 */
     private final int CALC_NEW_ARMIES_BASE = 1;
     
-    private final int NEUTRAL = 0;
+    private final int NEUTRAL = -1;
     private final int ATTACKER = 0;
     private final int DEFENDER = 1;
 	
@@ -131,18 +131,37 @@ public class RiskGame {
             {
                 if(selectedTerr.getPlayerId() == playerId)
                 {
-                    selectedTerr.addArmies(armies);
+                   selectedTerr.addArmies(armies);
                    players[playerId].addArmies(-armies);
                    success = true;
                 }
-                else if(selectedTerr.getPlayerId() == -1)
+                else if(selectedTerr.getPlayerId() == NEUTRAL)
                 {
-                    selectedTerr.addArmies(armies);
-                    selectedTerr.setPlayerId(playerId);
-                    players[playerId].addArmies(-armies);
-                    players[playerId].incrementNumTerritoriesContolled();
-                    success = true;
-                    
+                	boolean valid = false;
+                	int adjacentPlayerId = NEUTRAL;
+                	for (int i = 0; i < 6; i++)
+                	{
+                		MapLocation neighbor = selectedTerr.getMapLocation().getNeighbor(i);
+                		if (neighbor != null)
+                		{
+                			Territory adjacent = map.getTerritory(neighbor);
+	                 		if (adjacent != null)
+	                 		{
+	                 			adjacentPlayerId = adjacent.getPlayerId();
+	                 			if (adjacentPlayerId == playerId)
+	                 				valid = true; 
+	                 		}
+                		}
+                	}
+                	
+                	if (valid)
+                	{
+	                    selectedTerr.addArmies(armies);
+	                    selectedTerr.setPlayerId(playerId);
+	                    players[playerId].addArmies(-armies);
+	                    players[playerId].incrementNumTerritoriesContolled();
+	                    success = true;               		
+                	}
                 } 
             }
 	    }
