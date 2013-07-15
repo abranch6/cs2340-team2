@@ -32,11 +32,11 @@ import com.google.gson.GsonBuilder;
         "/get_player_json",
         "/get_player_turn_json",
         "/get_game_state",
-        "/get_turn_phase"
+        "/get_turn_phase",
+        "/attack" //POST
     })
 public class RiskServlet extends HttpServlet {
 
-    //REMOVE// final int[] POSSIBLE_NUM_PLAYERS = {3,4,5,6};
     int numPlayers = 3;
     RiskGame game = new RiskGame();
     String[] players;
@@ -96,13 +96,42 @@ public class RiskServlet extends HttpServlet {
                 int row = Integer.parseInt(request.getParameter("row"));
                 int col = Integer.parseInt(request.getParameter("col"));
                 int playerId = Integer.parseInt(request.getParameter("player"));
-                int armies = Integer.parseInt(request.getParameter("armies"));
+                
+                int armies = 0;
+                boolean placed = false;
 
-                boolean placed = game.placeArmies(row, col, playerId, armies);
+                if(!request.getParameter("armies").equals(""))
+                {   
+                   armies = Integer.parseInt(request.getParameter("armies"));
+                }
+    
+                if(armies != 0)
+                {
+                     placed = game.placeArmies(row, col, playerId, armies);
+                }
+
                 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(json.toJson(Boolean.toString(placed)));
+            }
+            else if (request.getServletPath().equals("/attack"))
+            {
+            	int attackDieNum = Integer.parseInt(request.getParameter("attackDieNum"));
+            	int defendDieNum = Integer.parseInt(request.getParameter("defendDieNum"));
+            	
+            	int attackRow = Integer.parseInt(request.getParameter("attackRow"));
+            	int attackCol = Integer.parseInt(request.getParameter("attackCol"));
+            	int defendRow = Integer.parseInt(request.getParameter("defendRow"));
+            	int defendCol = Integer.parseInt(request.getParameter("defendCol"));
+            	
+            	boolean attackWasSuccess = false;
+            	int[][] dice = game.attack(attackDieNum, defendDieNum, attackRow, attackCol, defendRow, defendCol);
+
+            	
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json.toJson(dice));          	
             }
         }
     }

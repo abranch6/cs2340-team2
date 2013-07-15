@@ -50,6 +50,11 @@ public class Territory
     {
         this.armies = armies;
     }
+    
+    public MapLocation getMapLocation()
+    {
+    	return location;
+    }
 
     public String getJSon()
     {
