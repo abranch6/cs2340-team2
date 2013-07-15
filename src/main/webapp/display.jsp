@@ -53,26 +53,27 @@
         <p id="p_turn_phase">Turn Phase:</p>
     </div>
 </div>
-<div id=control_panel class="territoryInfo" style="background-image:URL('images/RomanNumerals.png'); background-repeat: ; background-size: 380px 306px;width:325px;  height: 582px; position:relative; left:710px; top: -50;">
+<div id=control_panel class="territoryInfo" style="width:325px;  height: 580px; position:relative; left:710px; top: -50;">
    <div id=selected_territory_1>
+	</br>
 	</br>
         <h3>Selected Territory One</h3>
         <p id="s_t_type_1">No Territory Selected</p>
         <p id="s_t_player_1">Controlling Player:</p>
         <p id="s_t_armies_1">Armies:</p>
+		<br>Number of Armies: <input type="number" id="armies_textbox1"><br></input>
+		<button onclick="placeArmies()" id="place_armies_button" >Place Armies</button>
+		<button onclick="attack()" id="attack_button">Attack</button>
+		</br>
     </div>
     <div id=selected_territory_2 class="player2Territory">
-	</br>
-	</br>
         <h3>Selected Territory Two</h3>
         <p id="s_t_type_2">No Territory Selected</p>
         <p id="s_t_player_2">Controlling Player:</p>
         <p id="s_t_armies_2">Armies:</p>
+		<br>Number of Armies: <input type="number" id="armies_textbox2"><br></input>
     </div>
-
-    <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
-	<button onclick="placeArmies()" >Place Armies</button>
-    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">End Turn</button>
+    <button onclick="advanceTurn()" id="end_turn_button">End Turn</button>
 	</br>
 </div>
 

@@ -65,22 +65,34 @@ function updateControl()
     if(window.gameState == "PRE_GAME")
     {
         $("#end_turn_button").hide();
+		$("#place_armies_button").show();
+		$("#attack_button").hide();
     }
     else if(window.gameState == "GAME")
     {
         if(window.turnPhase == "PLACE_NEW_ARMIES")
         {
+			$("#attack_button").hide();
             $("#end_turn_button").hide();
+			$("#place_armies_button").show();
         }
         else if(window.turnPhase == "ATTACK")
         {
+			$("#attack_button").show();
             $("#end_turn_button").show();
+			$("#place_armies_button").hide();
         }
     }
 }
 
-function attack(attackDieNum, defendDieNum, attackRow, attackCol, defendRow, defendCol)
+function attack()
 {
+	var attackDieNum = $("#armies_textbox1").val();
+	var defendDieNum =$("#armies_textbox2").val();
+	var attackRow = selectedTerritory1.row;
+	var attackCol = selectedTerritory1.col;
+	var defendRow = selectedTerritory2.row;
+	var defendCol = selectedTerritory2.col;
     $.ajax({
         async: true,
         url: "/risk/attack",
