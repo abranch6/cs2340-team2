@@ -11,13 +11,9 @@
 </head>
 
 <body style="user-select: none; "onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
-<<<<<<< HEAD
-<div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px;text-indent: 20px;"">
-<h2 style="padding-top:20px;">Turn Order</h2>
-=======
+
 <div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px; text-indent: 20px;">
     <h2 style="padding-top:20px;">Turn Order</h2>
->>>>>>> merged attack
     <div id = "player1" class="player1">
         <p id="p1_name"></p>
         <p id="p1_armies"></p>
@@ -59,22 +55,6 @@
     </div>
 </div>
 <div id=control_panel class="territoryInfo" style="background-image:URL('images/RomanNumerals.png'); background-size: 380px 306px;width:325px; position:relative; top:325px">
-<<<<<<< HEAD
-    <div id=selected_territory>
-	</br>
-        <h3>Selected Territory</h3>
-        <p id="s_t_type">No Territory Selected</p>
-        <p id="s_t_player">Controlling Player:</p>
-        <p id="s_t_armies">Armies:</p>
-    </div>
-    <p>
-    <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
-	<button onclick="placeArmies()" >Place Armies</button>
-    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">Next Turn Phase</button>
-    <button onclick="attack(1,1,window.selectedTerritory1.row,window.selectedTerritory1.col,window.selectedTerritory2.row,window.selectedTerritory2.col)">
-        Attack
-    </button>
-=======
     <div id=selected_territory_1>
 	</br>
         <h3>Selected Territory One</h3>
@@ -94,7 +74,9 @@
     <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
 	<button onclick="placeArmies()" >Place Armies</button>
     <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">End Turn</button>
->>>>>>> merged attack
+    <button onclick="attack(1,1,window.selectedTerritory1.row,window.selectedTerritory1.col,window.selectedTerritory2.row,window.selectedTerritory2.col)">
+        Attack
+    </button>
 	</br>
 </div>
 
