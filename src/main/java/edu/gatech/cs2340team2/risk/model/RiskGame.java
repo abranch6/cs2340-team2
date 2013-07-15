@@ -305,20 +305,6 @@ public class RiskGame {
     	//Everything is valid by now, so HandleAttack:
     	diceValues = handleDiceRoll(attackDieNum, defendDieNum);
     	
-    	/*
-    	System.out.println("ATTACKER DICE (in order):");
-    	for (int i = 0; i < 3; i++)
-    	{
-    		System.out.println(diceValues[ATTACKER][i]);
-    	}
-
-    	System.out.println("\nDEFENDER DICE (in order):");
-    	for (int i = 0; i < 3; i++)
-    	{
-    		System.out.println(diceValues[DEFENDER][i]);
-    	}
-    	*/
-    	
     	int numDiceComparisons = 0;
     	
     	if (attackDieNum < defendDieNum)
