@@ -68,3 +68,40 @@ opacity:0.75;
 border-color: lime;
 }
 
+.die_0_0{
+position: absolute;
+left: 1200px;
+top: 115px;
+size: 50px 50px;
+}
+.die_0_1{
+position: absolute;
+left: 1300px;
+top: 115px;
+size: 50px 50px;
+}
+.die_0_2{
+position: absolute;
+left: 1400px;
+top: 115px;
+size: 50px 50px;
+}
+.die_1_0{
+position: absolute;
+left: 1200px;
+top: 360px;
+size: 50px 50px;
+}
+.die_1_1{
+position: absolute;
+left: 1300px;
+top: 360px;
+size: 50px 50px;
+}
+.die_1_2{
+position: absolute;
+left: 1400px;
+top: 360px;
+size: 50px 50px;
+}
+
