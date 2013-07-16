@@ -65,7 +65,13 @@ function updateControl()
     {
         $("#end_turn_button").hide();
 		$("#place_armies_button").show();
+		$("#place_armies_info").show();
 		$("#attack_button").hide();
+		$("#attack_info").hide();
+		$("#defend_info").hide();
+		$("#selected_territory_2").hide();
+		$("#place_num_armies").show();
+		$("#place_attack_armies").hide();
     }
     else if(window.gameState == "GAME")
     {
@@ -74,12 +80,24 @@ function updateControl()
 			$("#attack_button").hide();
             $("#end_turn_button").hide();
 			$("#place_armies_button").show();
+			$("#place_armies_info").show();
+			$("#attack_info").hide();
+			$("#defend_info").hide();
+			$("#selected_territory_2").hide();
+			$("#place_num_armies").show();
+			$("#place_attack_armies").hide();
         }
         else if(window.turnPhase == "ATTACK")
         {
 			$("#attack_button").show();
             $("#end_turn_button").show();
 			$("#place_armies_button").hide();
+			$("#place_armies_info").hide();
+			$("#attack_info").show();
+			$("#defend_info").show();
+			$("#selected_territory_2").show();
+			$("#place_num_armies").hide();
+			$("#place_attack_armies").show();
         }
     }
 }
@@ -99,7 +117,7 @@ function attack()
         data: {"attackDieNum" : attackDieNum, "defendDieNum" : defendDieNum, "attackRow" : attackRow,
                "attackCol" : attackCol, "defendRow" : defendRow,"defendCol" : defendCol,},
         success: function(die) {
-		console.log(die);
+		console.log("die" + die);
             updatePlayerInfo();
             updateControl();
             updateTerritory(defendRow, defendCol);
