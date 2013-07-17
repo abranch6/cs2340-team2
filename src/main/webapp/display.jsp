@@ -55,7 +55,7 @@
     </div>
 </div>
 <div id=control_panel class="territoryInfo" style="background-image:URL('images/RomanNumerals.png'); background-size: 380px 306px;width:325px; position:relative; top:325px">
-    <div id=selected_territory_1>
+   <div id=selected_territory_1>
 	</br>
         <h3>Selected Territory One</h3>
         <p id="s_t_type_1">No Territory Selected</p>
@@ -74,9 +74,11 @@
     <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
 	<button onclick="placeArmies()" >Place Armies</button>
     <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">End Turn</button>
+    <!--  
     <button onclick="attack(1,1,window.selectedTerritory1.row,window.selectedTerritory1.col,window.selectedTerritory2.row,window.selectedTerritory2.col)">
         Attack
     </button>
+    -->
 	</br>
 </div>
 
