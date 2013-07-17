@@ -133,9 +133,9 @@ public class HexMap
     
     public Territory getTerritory(MapLocation loc)
     {
-    	if (loc.row > 0 && loc.row < territoryMap.length)
+    	if (loc.row >= 0 && loc.row < territoryMap.length)
     	{
-    		if (loc.col > 0 && loc.col < territoryMap[loc.row].length)
+    		if (loc.col >= 0 && loc.col < territoryMap[loc.row].length)
     		{
     			return territoryMap[loc.row][loc.col];
     		}
