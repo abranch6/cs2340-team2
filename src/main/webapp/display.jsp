@@ -78,17 +78,6 @@
         <p id="s_t_armies_2">Armies:</p>
 		<p id="place_defend_armies"> Number of armies to defend with: <input type="number" id="armies_textbox2"></input></p>
     </div>
-
-    <p>
-    <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
-	<button onclick="placeArmies()" >Place Armies</button>
-    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">End Turn</button>
-    <!--  
-    <button onclick="attack(1,1,window.selectedTerritory1.row,window.selectedTerritory1.col,window.selectedTerritory2.row,window.selectedTerritory2.col)">
-        Attack
-    </button>
-    -->
-	</br>
 </div>
 
 <div id="hexmap" style="position:absolute; left:15px;" class="changeOnClick"></div>
