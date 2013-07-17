@@ -69,7 +69,7 @@
 		<br>
 		<button onclick="placeArmies()" id="place_armies_button" >Place Armies</button>
 		<button onclick="attack()" id="attack_button">  Attack  </button>
-		<button onclick="advanceTurn()" id="end_turn_button"> End Turn </button>
+		<button onclick="advanceTurn()" id="end_turn_button"> End Phase</button>
     </div>
     <div id=selected_territory_2 class="player2Territory">
         <h3 id="defend_info">Defender</h3>
