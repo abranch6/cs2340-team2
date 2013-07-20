@@ -464,7 +464,7 @@ public class RiskGame {
         int id = 1;
         if(list.size() == 1)
         {
-            id = list.poll();
+            id = list.poll().getId();
         }
  
         return id;
