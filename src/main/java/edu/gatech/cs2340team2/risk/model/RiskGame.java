@@ -459,4 +459,37 @@ public class RiskGame {
 		return complete;
 	}
 
+        private int isGameOver()
+        {
+	    Territory[][] territoryMap = map.getTerritoryArray();
+
+	    boolean check = false;
+	    int idHold;
+	    
+	   outerloop:
+	    for(int xAxis = 0; xAxis < (territoryMap[0].length + 1); xAxis++)
+	    {
+		for(int yAxis = 0; yAxis < (territoryMap[1].length + 1); yAxis++)
+		{
+		    if (check = false)
+		    {
+			idHold = territoryMap[xAxis][yAxis].getPlaterId();
+			check = true;
+		    }
+
+		    if (check = true)
+		    {
+			if (idHold != territoryMap[xAxis][yAxis].getPlayerId())
+			{
+			    idHold = -1;
+			    break outerloop;
+			}
+
+		    }
+		}
+	    }
+
+           return idHold;	           
+
+	}
 }
