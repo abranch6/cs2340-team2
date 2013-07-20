@@ -1,5 +1,4 @@
 var playerColors = ["Blue","Purple","Green","Yellow","Red","Orange"];
-
 function placeTile(color, number, r, c) {
     var tileImg = $("." + color, "#templates").children().clone();
     var divStyle = getTilePosition(r, c, tileImg);
@@ -233,6 +232,17 @@ function selectTerritory(row, column)
             {
                 window.selectedTerritory2 = {"row":row, "col":column};
             }
+        }
+        else if(window.turnPhase == "FORTIFY")
+        {
+            if($('input[name=radio_fortify]:radio:checked').attr('id') == "fortify_source")
+            {
+                window.selectedTerritory1 = {"row":row, "col":column};   
+            }
+            else
+            {
+                window.selectedTerritory2 = {"row":row, "col":column};
+            } 
         }
     }
     updateSelectedTerritoryInfo(1);
