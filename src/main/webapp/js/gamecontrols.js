@@ -64,40 +64,61 @@ function updateControl()
     if(window.gameState == "PRE_GAME")
     {
         $("#end_turn_button").hide();
+        $("#fortify_button").hide();
 		$("#place_armies_button").show();
-		$("#place_armies_info").show();
+		$("#st1_title").text("Place Armies");
+
 		$("#attack_button").hide();
-		$("#attack_info").hide();
 		$("#defend_info").hide();
 		$("#selected_territory_2").hide();
-		$("#place_num_armies").show();
-		$("#place_attack_armies").hide();
+        $("#st1_textbox_title").text("Number of armies to place:");
+
+        $("#fortify_select").hide()
     }
     else if(window.gameState == "GAME")
     {
         if(window.turnPhase == "PLACE_NEW_ARMIES")
         {
 			$("#attack_button").hide();
+            $("#fortify_button").hide();
             $("#end_turn_button").hide();
 			$("#place_armies_button").show();
-			$("#place_armies_info").show();
-			$("#attack_info").hide();
-			$("#defend_info").hide();
+		
+            $("#st1_title").text("Place Armies");	
 			$("#selected_territory_2").hide();
-			$("#place_num_armies").show();
-			$("#place_attack_armies").hide();
+            $("#st1_textbox_title").text("Number of armies to place:");
+
+            $("#fortify_select").hide()
         }
         else if(window.turnPhase == "ATTACK")
         {
 			$("#attack_button").show();
+            $("#fortify_button").hide();
             $("#end_turn_button").show();
 			$("#place_armies_button").hide();
-			$("#place_armies_info").hide();
-			$("#attack_info").show();
-			$("#defend_info").show();
+
+            $("#st1_title").text("Attack");
+            $("#st2_title").text("Defend");
 			$("#selected_territory_2").show();
-			$("#place_num_armies").hide();
-			$("#place_attack_armies").show();
+            
+            $("#st1_textbox_title").text("Number of armies to attack with:");
+
+            $("#fortify_select").hide()
+        }
+        else if(window.turnPhase == "FORTIFY")
+        {
+            $("#attack_button").hide();
+            $("#fortify_button").show();
+            $("#end_turn_button").show();
+            $("#place_armies_button").hide();
+
+            $("#st1_title").text("Fortify Source");
+            $("#st2_title").text("Fortify Destination");
+
+            $("#selected_territory_2").show();
+            $("#st1_textbox_title").text("Number of armies to move:");
+            $("#place_defend_armies").hide();
+            $("#fortify_select").show();  
         }
     }
 }
@@ -135,5 +156,29 @@ function attack()
 						}
 				}
 			}
+        }});
+}
+
+function fortify()
+{
+    var armyNum = $("#armies_textbox1").val();
+    var srcRow = selectedTerritory1.row;
+    var srcCol = selectedTerritory1.col;
+    var destRow = selectedTerritory2.row;
+    var destCol = selectedTerritory2.col;
+    $.ajax({
+        async: true,
+        url: "/risk/fortify",
+        type: "post",
+        data: {"armyNum" : armyNum, "srcRow" : srcRow,
+               "srcCol" : srcCol, "destRow" : destRow,"destCol" : destCol,},
+        success: function(die) {
+            fetchGameState();
+            fetchTurnPhase();
+            updatePlayerInfo();
+            updateControl();
+            updateTerritory(srcRow, srcCol);
+            updateTerritory(destRow, destCol);
+            deSelectTerritories();
         }});
 }

@@ -54,24 +54,30 @@
     </div>
 </div>
 <div id=control_panel class="territoryInfo" style="width:325px;  height: 580px; position:relative; left:710px; top: -50;">
-   <div id=selected_territory_1>
-	</br>
-	</br>
-        <h3 id="attack_info">Attacker</h3>
-		<h3 id="place_armies_info">Place Armies</h3>
+   
+    <div id=fortify_select>
+        <h3>Select Source or Destination for Territory</h3>
+        <input type="radio" name="radio_fortify" id="fortify_source" value="Source" checked> Source<br>
+        <input type="radio" name="radio_fortify" id="fortify_destination" value="Destination"> Destination  
+    </div>    
+    <div id=selected_territory_1>
+	    </br>
+	    </br>
+        <h3 id="st1_title"></h3>
         <p id="s_t_type_1">No Territory Selected</p>
         <p id="s_t_player_1">Controlling Player:</p>
         <p id="s_t_armies_1">Armies:</p>
-		<p id="place_num_armies"> Number of armies to place:</p>
-		<p id="place_attack_armies"> Number of armies to attack with: </p>
+        
+        <p id="st1_textbox_title"> </p>
 		<input type="number" id="armies_textbox1"></input>
 		<br>
 		<button onclick="placeArmies()" id="place_armies_button" >Place Armies</button>
 		<button onclick="attack()" id="attack_button">  Attack  </button>
+        <button onclick="fortify()" id="fortify_button"> Fortify </button>
 		<button onclick="advanceTurn()" id="end_turn_button"> End Phase</button>
     </div>
     <div id=selected_territory_2 class="player2Territory">
-        <h3 id="defend_info">Defender</h3>
+        <h3 id="st2_title"></h3>
         <p id="s_t_type_2">No Territory Selected</p>
         <p id="s_t_player_2">Controlling Player:</p>
         <p id="s_t_armies_2">Armies:</p>
