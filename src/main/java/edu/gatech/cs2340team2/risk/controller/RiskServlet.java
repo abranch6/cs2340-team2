@@ -96,20 +96,9 @@ public class RiskServlet extends HttpServlet {
                 int row = Integer.parseInt(request.getParameter("row"));
                 int col = Integer.parseInt(request.getParameter("col"));
                 int playerId = Integer.parseInt(request.getParameter("player"));
-                
-                int armies = 0;
-                boolean placed = false;
+                int armies = Integer.parseInt(request.getParameter("armies"));
 
-                if(!request.getParameter("armies").equals(""))
-                {   
-                   armies = Integer.parseInt(request.getParameter("armies"));
-                }
-    
-                if(armies != 0)
-                {
-                     placed = game.placeArmies(row, col, playerId, armies);
-                }
-
+                boolean placed = game.placeArmies(row, col, playerId, armies);
                 
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");

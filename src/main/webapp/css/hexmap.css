@@ -54,6 +54,10 @@ position: absolute;
 padding-left: 55px;
 padding-bottom: 30px;
 }
+.player2Territory{
+position:absolute;
+padding-top: 100px;
+}
 .opacity{
 opacity:1.0;
 }
@@ -62,5 +66,42 @@ opacity:0.75;
 }
 .opacity:active{
 border-color: lime;
+}
+
+.die_0_0{
+position: absolute;
+left: 1200px;
+top: 115px;
+size: 50px 50px;
+}
+.die_0_1{
+position: absolute;
+left: 1300px;
+top: 115px;
+size: 50px 50px;
+}
+.die_0_2{
+position: absolute;
+left: 1400px;
+top: 115px;
+size: 50px 50px;
+}
+.die_1_0{
+position: absolute;
+left: 1200px;
+top: 360px;
+size: 50px 50px;
+}
+.die_1_1{
+position: absolute;
+left: 1300px;
+top: 360px;
+size: 50px 50px;
+}
+.die_1_2{
+position: absolute;
+left: 1400px;
+top: 360px;
+size: 50px 50px;
 }
 

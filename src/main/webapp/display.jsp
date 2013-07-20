@@ -11,8 +11,9 @@
 </head>
 
 <body style="user-select: none; "onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
-<div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px;text-indent: 20px;"">
-<h2 style="padding-top:20px;">Turn Order</h2>
+<div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px; top: 600px; text-indent: 20px;">
+    <h2>Turn Order</h2>
+	<img src="images/blackRomanNumerals.png" style="width:700; height:20; padding-left: 10px;">
     <div id = "player1" class="player1">
         <p id="p1_name"></p>
         <p id="p1_armies"></p>
@@ -45,34 +46,55 @@
         <p id="p6_color"></p>
     </div>
 </div>
-<img src="images/blackRomanNumerals.png" style="width:700; height:20">
-<div id=control_panel class="hidden" style="width:350px; position:relative; top:125px">
+<div id=control_panel class="hidden" style="width:350px; position:relative;">
     <div>
         <h3>Game Status</h3>
         <p id="p_game_state">Game State:</p>
         <p id="p_turn_phase">Turn Phase:</p>
     </div>
 </div>
-<div id=control_panel class="territoryInfo" style="background-image:URL('images/RomanNumerals.png'); background-size: 380px 306px;width:325px; position:relative; top:325px">
-    <div id=selected_territory>
+<div id=control_panel class="territoryInfo" style="width:325px;  height: 580px; position:relative; left:710px; top: -50;">
+   <div id=selected_territory_1>
 	</br>
-        <h3>Selected Territory</h3>
-        <p id="s_t_type">No Territory Selected</p>
-        <p id="s_t_player">Controlling Player:</p>
-        <p id="s_t_armies">Armies:</p>
+	</br>
+        <h3 id="attack_info">Attacker</h3>
+		<h3 id="place_armies_info">Place Armies</h3>
+        <p id="s_t_type_1">No Territory Selected</p>
+        <p id="s_t_player_1">Controlling Player:</p>
+        <p id="s_t_armies_1">Armies:</p>
+		<p id="place_num_armies"> Number of armies to place:</p>
+		<p id="place_attack_armies"> Number of armies to attack with: </p>
+		<input type="number" id="armies_textbox1"></input>
+		<br>
+		<button onclick="placeArmies()" id="place_armies_button" >Place Armies</button>
+		<button onclick="attack()" id="attack_button">  Attack  </button>
+		<button onclick="advanceTurn()" id="end_turn_button"> End Phase</button>
     </div>
-    <p>
-    <br>Number of Armies: <input type="number" id="armies_textbox"><br></input>
-	<button onclick="placeArmies()" >Place Armies</button>
-    <button onclick="advanceTurn()" id="end_turn_button" style="background-image:URL('images/EndTurn.png')">Next Turn Phase</button>
-    <button onclick="attack(1,1,window.selectedTerritory1.row,window.selectedTerritory1.col,window.selectedTerritory2.row,window.selectedTerritory2.col)">
-        Attack
-    </button>
-	</br>
+    <div id=selected_territory_2 class="player2Territory">
+        <h3 id="defend_info">Defender</h3>
+        <p id="s_t_type_2">No Territory Selected</p>
+        <p id="s_t_player_2">Controlling Player:</p>
+        <p id="s_t_armies_2">Armies:</p>
+		<p id="place_defend_armies"> Number of armies to defend with: <input type="number" id="armies_textbox2"></input></p>
+    </div>
 </div>
 
-<div id="hexmap" style="position:absolute; left:450px; top:195px" class="changeOnClick"></div>
+<div id="hexmap" style="position:absolute; left:15px;" class="changeOnClick"></div>
 
+<div id=dice_panel style="left:1400px;">
+	<div id=spot_0_0 class="die_0_0">
+	</div>
+	<div id=spot_0_1 class="die_0_1">
+	</div>
+	<div id=spot_0_2 class="die_0_2">
+	</div>
+	<div id=spot_1_0 class="die_1_0">
+	</div>
+	<div id=spot_1_1 class="die_1_1">
+	</div>
+	<div id=spot_1_2 class="die_1_2">
+	</div>
+</div>
 </body>
 
 
