@@ -33,7 +33,8 @@ import com.google.gson.GsonBuilder;
         "/get_player_turn_json",
         "/get_game_state",
         "/get_turn_phase",
-        "/attack" //POST
+        "/attack", //POST
+        "/fortify"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -121,6 +122,21 @@ public class RiskServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(json.toJson(dice));          	
+            }
+            else if (request.getServletPath().equals("/fortify"))
+            {
+            	int numSourceArmiesToMove = Integer.parseInt(request.getParameter("armyNum"));
+            	
+            	int sourceRow = Integer.parseInt(request.getParameter("srcRow"));
+            	int sourceCol = Integer.parseInt(request.getParameter("srcCol"));
+            	int destinationRow = Integer.parseInt(request.getParameter("destRow"));
+            	int destinationCol = Integer.parseInt(request.getParameter("destCol"));
+            	
+            	boolean success = game.fortify(numSourceArmiesToMove, sourceRow, sourceCol, destinationRow, destinationCol);
+            	
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json.toJson(success));   
             }
         }
     }

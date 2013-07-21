@@ -414,8 +414,28 @@ public class RiskGame {
     	return value;
     }
     
-	public void fortify()
+	public boolean fortify(int sourceNumArmiesToMove, int sourceRow, int sourceCol, int destinationRow, int destinationCol)
 	{
+		Territory sourceTerr = map.getTerritory(new MapLocation(sourceRow, sourceCol));
+    	Territory destinationTerr = map.getTerritory(new MapLocation(destinationRow, destinationCol));
+    	
+    	
+    	if (sourceTerr.getPlayerId() != currPlayerTurnID || destinationTerr.getPlayerId() != sourceTerr.getPlayerId() || !map.areTerritoriesAdjacent(sourceTerr, destinationTerr))
+    	{
+    		return false;
+    	}
+    	if (sourceNumArmiesToMove < 1 || (sourceTerr.getArmies() - sourceNumArmiesToMove) < 1)
+    	{
+    		return false;
+    	}
+    	
+    	//remove armies from Source
+    	sourceTerr.addArmies(-sourceNumArmiesToMove);
+    	
+    	//add armies to destination
+    	destinationTerr.addArmies(sourceNumArmiesToMove);
+    	
+    	return true;
 	}
 	
 	public String getPlayerTurnJSON()
