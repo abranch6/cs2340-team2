@@ -108,7 +108,6 @@ public class RiskGame {
 	{
 	    boolean success = false; //tracks if the armies were successfully placed
 	    Territory selectedTerr = map.getTerritory(new MapLocation(row, col));
-	    
 	    if (state == GameState.PRE_GAME)
 	    {
 	        success = this.placeArmiesPRE_GAME(selectedTerr, playerId, armies);
@@ -163,6 +162,7 @@ public class RiskGame {
             if(selectedTerr.getPlayerId() == playerId)
             {
                 selectedTerr.addArmies(armies);
+                System.out.println("Got here");
                 players[playerId].addArmies(-armies);
                 success = true;
             }

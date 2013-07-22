@@ -3,7 +3,6 @@ function placeArmies()
     var r = window.selectedTerritory1.row;
     var c = window.selectedTerritory1.col;
     var armies = $("#armies_textbox1").val();
-    
     if(r >= 0 && c >= 0 && window.mapArray[r][c].type == "land")
     {
         $.ajax({
