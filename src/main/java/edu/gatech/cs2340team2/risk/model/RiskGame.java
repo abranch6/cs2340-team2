@@ -142,6 +142,7 @@ public class RiskGame {
                     for (int i = 0; i < 6; i++)
                     {
                         MapLocation neighbor = selectedTerr.getMapLocation().getNeighbor(i);
+                        
                         if (neighbor != null)
                         {
                             Territory adjacent = map.getTerritory(neighbor);
@@ -321,27 +322,38 @@ public class RiskGame {
     		for (int i = 0; i < numDiceComparisons; i++)
     		{
     			//handle Dice Comparisson:
-    			if (diceValues[ATTACKER][i] > diceValues[DEFENDER][i]) 		
+    			if (diceValues[ATTACKER][i] > diceValues[DEFENDER][i])
+                {	
     				defendTerr.addArmies(-1);
-    			else
+    			}
+                else
+                {
     				attackTerr.addArmies(-1);
+                }
     		}    		
     	}
     	else 
     	{
     		if (attackDieNum == defendDieNum)
+            {
     			numDiceComparisons = attackDieNum;
-    		
+    		}
     		else if (attackDieNum > defendDieNum)
+            {
     			numDiceComparisons = defendDieNum;
-    		
+    		}
+
     		for (int i = 0; i < numDiceComparisons; i++)
     		{
     			//handle Dice Comparisson:
-    			if (diceValues[ATTACKER][i] > diceValues[DEFENDER][i]) 		
+    			if (diceValues[ATTACKER][i] > diceValues[DEFENDER][i])
+                { 		
     				defendTerr.addArmies(-1);
-    			else
+    			}
+                else
+                {
     				attackTerr.addArmies(-1);
+                }
     		}
 
     		//Handle if DefendingTerritory has lost all armies
@@ -463,7 +475,7 @@ public class RiskGame {
     	
     	//add armies to destination
     	destinationTerr.addArmies(sourceNumArmiesToMove);
-    	
+    	nextTurn();
     	return true;
 	}
 	
@@ -554,7 +566,7 @@ public class RiskGame {
     {
         if(isGameOver())
         {
-            state=GameState.POST_GAME;
+    //        state=GameState.POST_GAME;
             return list.poll();
         }
         return null;

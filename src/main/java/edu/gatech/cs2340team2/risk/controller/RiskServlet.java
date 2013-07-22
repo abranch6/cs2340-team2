@@ -59,11 +59,16 @@ public class RiskServlet extends HttpServlet {
             throws IOException, ServletException {
         String operation = (String) request.getParameter("operation");
         
-        if (operation != null && operation.equalsIgnoreCase("PUT")) {
+        if (operation != null && operation.equalsIgnoreCase("PUT")) 
+        {
             doPut(request, response);
-        } else if (operation != null && operation.equalsIgnoreCase("DELETE")) {
+        } 
+        else if (operation != null && operation.equalsIgnoreCase("DELETE")) 
+        {
             doDelete(request, response);
-        } else {
+        } 
+        else 
+        {
 
             switch(game.getGameState())
             {
@@ -89,14 +94,7 @@ public class RiskServlet extends HttpServlet {
                     }
                     break;
                 case POST_GAME:
-                    if(request.getServletPath().equals("/show_game_over"))
-                    {
-                        Player winner = game.getWinner();
-                        request.setAttribute("winner", winner);
-                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/game_over.jsp");
-                        dispatcher.forward(request,response);
-                    }
-                    else if (request.getServletPath().equals("/reset"))
+                    if (request.getServletPath().equals("/reset"))
                     {
                     	resetGameServlet();
                     	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.html");
@@ -208,6 +206,10 @@ public class RiskServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(game.getWinnerIdJson());
         }
+        else if(request.getServletPath().equals("/advance_turn"))
+        {
+                game.updateTurnPhase();
+        }
 
         switch(game.getGameState())
         {
@@ -221,11 +223,6 @@ public class RiskServlet extends HttpServlet {
                 break;
         }
         
-        
-        if(request.getServletPath().equals("/advance_turn"))
-        {
-                game.updateTurnPhase();    
-        }
     }
 
     protected void doPut(HttpServletRequest request,

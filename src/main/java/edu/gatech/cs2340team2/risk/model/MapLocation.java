@@ -49,8 +49,7 @@ public class MapLocation
         {
             newRow = row + neighborIndex[neighbor][0];
             newCol = col + (neighborIndex[neighbor][1] * row % 2);
-        }
-        
+        }        
         return new MapLocation(newRow,newCol);
     }
 }
