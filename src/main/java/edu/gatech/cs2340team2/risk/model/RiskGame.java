@@ -262,7 +262,13 @@ public class RiskGame {
                 {
                     state = GameState.GAME;
                 }
-            break;
+                break;
+            case GAME:
+            	if (isGameOver())
+            	{
+            		state = GameState.POST_GAME;
+            	}
+            	break;
         }
     }
     
@@ -360,10 +366,14 @@ public class RiskGame {
     	
     	//remove from playerId array library "players"
     	players[defeatedPlayer.getId()] = null;
+    	
+    	updateGameState();
     }    
     
-    private void handleTerritoryCaptured(Territory attackTerr, Territory defendTerr, int attackDieNum)
+    private Player handleTerritoryCaptured(Territory attackTerr, Territory defendTerr, int attackDieNum)
     {
+    	Player playerWhoLostTerritory = players[defendTerr.getPlayerId()];
+    	
 		//AttackingPlayer takes over this territory
 		if (attackTerr.getArmies() <= 1)
 		{
@@ -389,7 +399,9 @@ public class RiskGame {
 			players[defendTerr.getPlayerId()].decrementNumTerritoriesContolled();
 			defendTerr.setPlayerId(currPlayerTurnID);
 			players[currPlayerTurnID].incrementNumTerritoriesContolled();
-		}    	
+		}
+		
+		return playerWhoLostTerritory;
     }
     
     private int[][] handleDiceRoll(int attackDieNum, int defendDieNum)
@@ -478,6 +490,11 @@ public class RiskGame {
     {
         return json.toJson(turnPhase);
     }
+    
+    public String getIsGameOverJSON()
+    {
+    	return json.toJson(isGameOver());
+    }
 	
 	private void givePlayerNewArmies(int playerID)
 	{
@@ -512,5 +529,28 @@ public class RiskGame {
 		}
 		return complete;
 	}
+	
+    private boolean isGameOver()
+    {
+        if(list.size() == 1)
+        	return true;
+        
+        return false;
+	}
 
+    public int getWinnerId()
+    {
+        if(isGameOver())
+            return list.poll().getId();
+ 
+        return -1;
+	}
+
+    public Player getWinner()
+    {
+        if(isGameOver())
+            return list.poll();
+ 
+        return null;
+	}
 }
