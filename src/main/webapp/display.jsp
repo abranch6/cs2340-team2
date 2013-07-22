@@ -10,7 +10,8 @@
 <title>RISK Display Screen</title>
 </head>
 
-<body style="user-select: none; "onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
+<body style="user-select: none; "onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState(); initDivs();" ondragstart="return false;" ondrop="return false;">
+<div id=game>
 <div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px; top: 600px; text-indent: 20px;">
     <h2>Turn Order</h2>
     <img src="images/blackRomanNumerals.png" style="width:700; height:20; padding-left: 10px;">
@@ -46,15 +47,12 @@
         <p id="p6_color"></p>
     </div>
 </div>
-<div id=control_panel class="hidden" style="width:350px; position:relative;">
+<div id=control_panel class="territoryInfo" style="width:325px;  height: 580px; position:relative; left:710px; top: -50;">
     <div>
         <h3>Game Status</h3>
         <p id="p_game_state">Game State:</p>
         <p id="p_turn_phase">Turn Phase:</p>
-    </div>
-</div>
-<div id=control_panel class="territoryInfo" style="width:325px;  height: 580px; position:relative; left:710px; top: -50;">
-   
+    </div> 
     <div id=fortify_select>
         <h3>Select Source or Destination for Territory</h3>
         <input type="radio" name="radio_fortify" id="fortify_source" value="Source" checked> Source<br>
@@ -81,7 +79,8 @@
         <p id="s_t_type_2">No Territory Selected</p>
         <p id="s_t_player_2">Controlling Player:</p>
         <p id="s_t_armies_2">Armies:</p>
-        <p id="place_defend_armies"> Number of armies to defend with: <input type="number" id="armies_textbox2"></input></p>
+        <p id="place_defend_armies"> Number of armies to defend with:</p>
+        <input type="number" id="armies_textbox2"></input>
     </div>
 </div>
 
@@ -101,6 +100,22 @@
     <div id=spot_1_2 class="die_1_2">
     </div>
 </div>
+
+</div>
+<div id=game_over>
+
+<h1 style="text-align:center;">GAME OVER!</h1>
+<form action="/risk/reset" method="POST" >
+<ul style="text-align:center;">
+     <li style="list-style-type: none;">
+       <p id=winner>The Winner is:</p>
+     </li>
+    <input type="submit" value="Play Again?" />
+</ul>
+</form>
+
+</div>
+
 </body>
 
 
@@ -139,5 +154,4 @@
         <img src="images/tiles/hex-fushia.png" width="50" height="52" class="opacity"/>
     </div>
 </div>
-
 </html>

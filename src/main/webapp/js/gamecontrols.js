@@ -26,6 +26,7 @@ function advanceTurn()
 		url: "/risk/advance_turn",
 		type: "get"
 	});
+    deSelectTerritories();
  	updatePlayerInfo(); 
     fetchGameState();
     fetchTurnPhase();
@@ -40,7 +41,18 @@ function fetchGameState()
         type: "get",
         success: function(state) {
             window.gameState = state;
-            $("#p_game_state").text("Game State: " + state);
+            if(state == "PRE_GAME")
+            {
+                $("#p_game_state").text("Game State: Place Inital Armies");
+            }
+            else if(state == "GAME")
+            {
+                $("#p_game_state").text("Game State: Main Game");
+            } 
+            else if(state == "POST_GAME")
+            {
+                $("#p_game_state").text("Game State: Gameover");
+            }
             updateControl();
         }});
 }
@@ -53,7 +65,18 @@ function fetchTurnPhase()
         type: "get",
         success: function(state) {
             window.turnPhase = state;
-            $("#p_turn_phase").text("Turn Phase: " + state);
+            if(state == "PLACE_NEW_ARMIES")
+            {
+                $("#p_turn_phase").text("Turn Phase: Place New Armies");
+            }
+            else if(state == "ATTACK")
+            {
+                $("#p_turn_phase").text("Turn Phase: Attack");
+            }
+            else if(state == "FORTIFY")
+            {   
+                $("#p_turn_phase").text("Turn Phase: Fortify");
+            }
             updateControl();
         }});
 }
@@ -72,7 +95,8 @@ function updateControl()
 		$("#selected_territory_2").hide();
         $("#st1_textbox_title").text("Number of armies to place:");
 
-        $("#fortify_select").hide()
+        $("#fortify_select").hide();
+        $("armies_textbox1").show();
     }
     else if(window.gameState == "GAME")
     {
@@ -86,7 +110,8 @@ function updateControl()
 			$("#selected_territory_2").hide();
             $("#st1_textbox_title").text("Number of armies to place:");
 
-            $("#fortify_select").hide()
+            $("#fortify_select").hide();
+            $("armies_textbox1").show();
         }
         else if(window.turnPhase == "ATTACK")
         {
@@ -101,7 +126,9 @@ function updateControl()
             
             $("#st1_textbox_title").text("Number of armies to attack with:");
 
-            $("#fortify_select").hide()
+            $("#fortify_select").hide();
+            $("armies_textbox2").show();
+            $("armies_textbox1").show();
         }
         else if(window.turnPhase == "FORTIFY")
         {
@@ -115,8 +142,9 @@ function updateControl()
 
             $("#selected_territory_2").show();
             $("#st1_textbox_title").text("Number of armies to move:");
-            $("#place_defend_armies").hide();
-            $("#fortify_select").show();  
+            $("#fortify_select").show();
+            $("armies_textbox1").show();
+            $("armies_textbox2").hide();
         }
     }
 }
@@ -136,22 +164,23 @@ function attack()
         data: {"attackDieNum" : attackDieNum, "defendDieNum" : defendDieNum, "attackRow" : attackRow,
                "attackCol" : attackCol, "defendRow" : defendRow,"defendCol" : defendCol,},
         success: function(die) {
-		console.log("die" + die);
             updatePlayerInfo();
             updateControl();
             updateTerritory(defendRow, defendCol);
             updateTerritory(attackRow, attackCol);
-            deSelectTerritories(); 
 			for(var i = 0; i < die.length; i++){
 				for(var j = 0; j < die[i].length; j++){
 					$("#spot_" + i + "_" + j).children().remove();
-					var image;
-						image = $('<img>', {
-							src: "/risk/images/die" + die[i][j] + ".png"
-						});
+                    if(die[i][j] != 0)
+                    {
+					    var image;
+						    image = $('<img>', {
+							    src: "/risk/images/die" + die[i][j] + ".png"
+						    });
 						if(die[i][j] != 0){
-							$("#spot_" + i + "_" + j).append(image);
+					        $("#spot_" + i + "_" + j).append(image);
 						}
+                    }
 				}
 			}		
         }});
@@ -182,6 +211,11 @@ function fortify()
         }});
 }
 
+function initDivs()
+{
+    $("#game").show();
+    $("#game_over").hide();
+}
 function checkGameOver()
 {
 	var gameover = false;
@@ -199,7 +233,15 @@ function checkGameOver()
 function showGameOverScreen()
 {
     $.ajax({
-        url: "/risk/show_game_over",
-        type: "post",
+        url: "/risk/get_winner_id",
+        type: "get",
+        success: function(winner) {
+            if (winner >= 0)
+            {
+                $("#winner").text("The Winner is: " + players[winner].name);
+            }
+        }
     });
+    $("#game").hide();
+    $("#game_over").show();
 }

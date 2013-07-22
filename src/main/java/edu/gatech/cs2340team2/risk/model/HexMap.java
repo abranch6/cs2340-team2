@@ -71,7 +71,7 @@ public class HexMap
         Stack<MapLocation> locations = new Stack<MapLocation>();
         MapLocation currentLocation = new MapLocation(territoryMap.length / 2, territoryMap[0].length / 2);
         Random rnd = new Random();
-        int territories = (int)(Math.sqrt(3) / 4.0 * size * size * 6.0 * 3.0 / 4.0);
+        int territories = (int)(Math.sqrt(3) / 4.0 * size * size * 6.0 * 0.60);
         int rand = 0;
         int neighborCount;
         MapLocation[] neighbors = new MapLocation[6];

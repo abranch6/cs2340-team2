@@ -36,7 +36,7 @@ import com.google.gson.GsonBuilder;
         "/attack", //POST
         "/fortify",
         "/check_game_over",
-        "/show_game_over",
+        "/get_winner_id",
         "/reset"
     })
 public class RiskServlet extends HttpServlet {
@@ -202,6 +202,11 @@ public class RiskServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(game.getIsGameOverJSON());
+        }
+        else if (request.getServletPath().equals("/get_winner_id")){
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(game.getWinnerIdJson());
         }
 
         switch(game.getGameState())

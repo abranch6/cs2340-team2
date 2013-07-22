@@ -17,7 +17,7 @@ public class RiskGame {
 	 */
     private final int CALC_NEW_ARMIES_BASE = 1;
     
-    private final int NEUTRAL = 0;
+    private final int NEUTRAL = -1;
     private final int ATTACKER = 0;
     private final int DEFENDER = 1;
 	
@@ -35,7 +35,7 @@ public class RiskGame {
 	
 	public RiskGame()
 	{
-        this(new HexMap(7));
+        this(new HexMap(5));
 	}
 
     public RiskGame(HexMap map)
@@ -157,9 +157,9 @@ public class RiskGame {
 	private boolean placeArmiesPRE_GAME(Territory selectedTerr, int playerId, int armies)
 	{
 	    boolean success = false;
-	    
 	    if(players[playerId].getArmies() >= armies)
         {
+            System.out.println("Here armies");
             if(selectedTerr.getPlayerId() == playerId)
             {
                 selectedTerr.addArmies(armies);
@@ -168,7 +168,8 @@ public class RiskGame {
                 success = true;
             }
             else if(selectedTerr.getPlayerId() == NEUTRAL)
-            {         
+            {   
+                System.out.println("Here Neutral");      
                 selectedTerr.addArmies(armies);
                 selectedTerr.setPlayerId(playerId);
                 players[playerId].addArmies(-armies);
@@ -521,13 +522,13 @@ public class RiskGame {
         return false;
 	}
 
-    public int getWinnerId()
+    public String getWinnerIdJson()
     {
         if(isGameOver())
         {
-            return list.poll().getId();
+            return json.toJson(list.poll().getId());
         }
-        return -1;
+        return json.toJson(-1);
 	}
 
     public Player getWinner()
