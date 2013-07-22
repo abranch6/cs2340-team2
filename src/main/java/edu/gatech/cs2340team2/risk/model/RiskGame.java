@@ -466,7 +466,7 @@ public class RiskGame {
         {
             id = list.poll().getId();
         }
- 
+        state=GameState.POST_GAME;
         return id;
 	}
 }
