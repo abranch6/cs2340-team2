@@ -78,7 +78,7 @@ public class RiskGame {
 	public int getStartingArmies(int i){
 		switch (i){
 		case 3: 
-			return 35;
+			return 5;
 		case 4:
 			return 30;
 		case 5: 
@@ -339,13 +339,28 @@ public class RiskGame {
     		//Handle if DefendingTerritory has lost all armies
     		if (defendTerr.getArmies() == 0)
     		{
-    			handleTerritoryCaptured(attackTerr, defendTerr, attackDieNum);
+    			Player playerWhoLostTerritory = handleTerritoryCaptured(attackTerr, defendTerr, attackDieNum);
+    			
+    			//Handle if player who lost territory has been defeated (controls no territories)
+    			if (playerWhoLostTerritory.getNumTerritoriesControlled() == 0)
+    			{
+    				handleRemovingDefeatedPlayer(playerWhoLostTerritory);
+    			}
     		}
     		
     	}
     	
     	return diceValues;
     }
+    
+    private void handleRemovingDefeatedPlayer(Player defeatedPlayer)
+    {
+    	//remove from turn-queue
+    	list.remove(defeatedPlayer); 
+    	
+    	//remove from playerId array library "players"
+    	players[defeatedPlayer.getId()] = null;
+    }    
     
     private void handleTerritoryCaptured(Territory attackTerr, Territory defendTerr, int attackDieNum)
     {
