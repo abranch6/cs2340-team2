@@ -21,7 +21,7 @@ public class RiskGame {
     private final int ATTACKER = 0;
     private final int DEFENDER = 1;
 	
-    private Queue<Player> list = new LinkedList<Player>();
+    private Queue<Player> list; // = new LinkedList<Player>();
 	private Player players[];	
 	private int armies;
 	private HexMap map;
@@ -42,6 +42,7 @@ public class RiskGame {
     {
         this.map = map;
         json = new Gson();
+        list = new LinkedList<Player>();
         state = GameState.INIT_PLAYERS;
         turnPhase = TurnPhase.NULL;
     }

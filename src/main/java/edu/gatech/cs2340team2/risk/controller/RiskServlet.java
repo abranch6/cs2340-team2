@@ -37,7 +37,7 @@ import com.google.gson.GsonBuilder;
         "/fortify",
         "/check_game_over",
         "/show_game_over",
-        "/reset_game"
+        "/reset"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -64,7 +64,7 @@ public class RiskServlet extends HttpServlet {
         } else if (operation != null && operation.equalsIgnoreCase("DELETE")) {
             doDelete(request, response);
         } else {
-            System.out.println("Game State: " + game.getGameState());
+
             switch(game.getGameState())
             {
                 case INIT_PLAYERS:
@@ -96,7 +96,7 @@ public class RiskServlet extends HttpServlet {
                         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/game_over.jsp");
                         dispatcher.forward(request,response);
                     }
-                    else if (request.getServletPath().equals("/reset_game"))
+                    else if (request.getServletPath().equals("/reset"))
                     {
                     	resetGameServlet();
                     	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.html");

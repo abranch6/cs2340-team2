@@ -77,6 +77,7 @@ public class HexMap
         MapLocation[] neighbors = new MapLocation[6];
         
         jsMap[currentLocation.row][currentLocation.col] = 2;
+        territoryMap[currentLocation.row][currentLocation.col] = new Territory(currentLocation.row,currentLocation.col);
         locations.push(currentLocation);
        
         
