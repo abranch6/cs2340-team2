@@ -82,7 +82,6 @@ function updateControl()
             $("#fortify_button").hide();
             $("#end_turn_button").hide();
 			$("#place_armies_button").show();
-		
             $("#st1_title").text("Place Armies");	
 			$("#selected_territory_2").hide();
             $("#st1_textbox_title").text("Number of armies to place:");
@@ -131,7 +130,7 @@ function attack()
 	var defendRow = selectedTerritory2.row;
 	var defendCol = selectedTerritory2.col;
     $.ajax({
-        async: true,
+        async: false,
         url: "/risk/attack",
         type: "post",
         data: {"attackDieNum" : attackDieNum, "defendDieNum" : defendDieNum, "attackRow" : attackRow,
@@ -154,8 +153,9 @@ function attack()
 							$("#spot_" + i + "_" + j).append(image);
 						}
 				}
-			}
+			}		
         }});
+    checkGameOver();
 }
 
 function fortify()
@@ -180,4 +180,26 @@ function fortify()
             updateTerritory(destRow, destCol);
             deSelectTerritories();
         }});
+}
+
+function checkGameOver()
+{
+	var gameover = false;
+    $.ajax({
+        url: "/risk/check_game_over",
+        type: "get",
+        success: function(over) {
+		    if (over)
+		    	showGameOverScreen();        	
+        }
+    });
+
+}
+
+function showGameOverScreen()
+{
+    $.ajax({
+        url: "/risk/show_game_over",
+        type: "post",
+    });
 }

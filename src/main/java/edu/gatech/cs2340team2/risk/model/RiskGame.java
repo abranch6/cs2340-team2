@@ -21,7 +21,7 @@ public class RiskGame {
     private final int ATTACKER = 0;
     private final int DEFENDER = 1;
 	
-    private Queue<Player> list = new LinkedList<Player>();
+    private Queue<Player> list; // = new LinkedList<Player>();
 	private Player players[];	
 	private int armies;
 	private HexMap map;
@@ -42,6 +42,7 @@ public class RiskGame {
     {
         this.map = map;
         json = new Gson();
+        list = new LinkedList<Player>();
         state = GameState.INIT_PLAYERS;
         turnPhase = TurnPhase.NULL;
     }
@@ -78,7 +79,7 @@ public class RiskGame {
 	public int getStartingArmies(int i){
 		switch (i){
 		case 3: 
-			return 35;
+			return 5;
 		case 4:
 			return 30;
 		case 5: 
@@ -166,8 +167,8 @@ public class RiskGame {
                 players[playerId].addArmies(-armies);
                 success = true;
             }
-            else if(selectedTerr.getPlayerId() == -1)
-            {
+            else if(selectedTerr.getPlayerId() == NEUTRAL)
+            {         
                 selectedTerr.addArmies(armies);
                 selectedTerr.setPlayerId(playerId);
                 players[playerId].addArmies(-armies);
@@ -243,7 +244,13 @@ public class RiskGame {
                 {
                     state = GameState.GAME;
                 }
-            break;
+                break;
+            case GAME:
+            	if (isGameOver())
+            	{
+            		state = GameState.POST_GAME;
+            	}
+            	break;
         }
     }
     
@@ -320,7 +327,13 @@ public class RiskGame {
     		//Handle if DefendingTerritory has lost all armies
     		if (defendTerr.getArmies() == 0)
     		{
-    			handleTerritoryCaptured(attackTerr, defendTerr, attackDieNum);
+    			Player playerWhoLostTerritory = handleTerritoryCaptured(attackTerr, defendTerr, attackDieNum);
+    			
+    			//Handle if player who lost territory has been defeated (controls no territories)
+    			if (playerWhoLostTerritory.getNumTerritoriesControlled() == 0)
+    			{
+    				handleRemovingDefeatedPlayer(playerWhoLostTerritory);
+    			}
     		}
     		
     	}
@@ -328,8 +341,21 @@ public class RiskGame {
     	return diceValues;
     }
     
-    private void handleTerritoryCaptured(Territory attackTerr, Territory defendTerr, int attackDieNum)
+    private void handleRemovingDefeatedPlayer(Player defeatedPlayer)
     {
+    	//remove from turn-queue
+    	list.remove(defeatedPlayer); 
+    	
+    	//remove from playerId array library "players"
+    	players[defeatedPlayer.getId()] = null;
+    	
+    	updateGameState();
+    }    
+    
+    private Player handleTerritoryCaptured(Territory attackTerr, Territory defendTerr, int attackDieNum)
+    {
+    	Player playerWhoLostTerritory = players[defendTerr.getPlayerId()];
+    	
 		//AttackingPlayer takes over this territory
 		if (attackTerr.getArmies() <= 1)
 		{
@@ -355,7 +381,9 @@ public class RiskGame {
 			players[defendTerr.getPlayerId()].decrementNumTerritoriesContolled();
 			defendTerr.setPlayerId(currPlayerTurnID);
 			players[currPlayerTurnID].incrementNumTerritoriesContolled();
-		}    	
+		}
+		
+		return playerWhoLostTerritory;
     }
     
     private int[][] handleDiceRoll(int attackDieNum, int defendDieNum)
@@ -378,12 +406,12 @@ public class RiskGame {
     	Arrays.sort(dice[1]);
     	
     	//takes sorted array in ascending order, and turns it into sorted descending order
-    	int temp = dice[0][0];
-    	dice[0][0] = dice[0][2];
-    	dice[0][2] = temp;
+    	int temp = dice[ATTACKER][0];
+    	dice[ATTACKER][0] = dice[ATTACKER][2];
+    	dice[ATTACKER][2] = temp;
     	
-    	dice[1][0] = dice[1][2];
-    	dice[1][2] = 0;
+    	dice[DEFENDER][0] = dice[DEFENDER][2];
+    	dice[DEFENDER][2] = 0;
     	
     	return dice;
     }
@@ -395,8 +423,28 @@ public class RiskGame {
     	return value;
     }
     
-	public void fortify()
+	public boolean fortify(int sourceNumArmiesToMove, int sourceRow, int sourceCol, int destinationRow, int destinationCol)
 	{
+		Territory sourceTerr = map.getTerritory(new MapLocation(sourceRow, sourceCol));
+    	Territory destinationTerr = map.getTerritory(new MapLocation(destinationRow, destinationCol));
+    	
+    	
+    	if (sourceTerr.getPlayerId() != currPlayerTurnID || destinationTerr.getPlayerId() != sourceTerr.getPlayerId() || !map.areTerritoriesAdjacent(sourceTerr, destinationTerr))
+    	{
+    		return false;
+    	}
+    	if (sourceNumArmiesToMove < 1 || (sourceTerr.getArmies() - sourceNumArmiesToMove) < 1)
+    	{
+    		return false;
+    	}
+    	
+    	//remove armies from Source
+    	sourceTerr.addArmies(-sourceNumArmiesToMove);
+    	
+    	//add armies to destination
+    	destinationTerr.addArmies(sourceNumArmiesToMove);
+    	
+    	return true;
 	}
 	
 	public String getPlayerTurnJSON()
@@ -423,6 +471,11 @@ public class RiskGame {
     public String getTurnPhaseJSON()
     {
         return json.toJson(turnPhase);
+    }
+    
+    public String getIsGameOverJSON()
+    {
+    	return json.toJson(isGameOver());
     }
 	
 	private void givePlayerNewArmies(int playerID)
@@ -458,15 +511,31 @@ public class RiskGame {
 		}
 		return complete;
 	}
-
-    private int isGameOver()
+	
+    private boolean isGameOver()
     {
-        int id = 1;
         if(list.size() == 1)
         {
-            id = list.poll().getId();
+        	return true;
         }
- 
-        return id;
+        return false;
+	}
+
+    public int getWinnerId()
+    {
+        if(isGameOver())
+        {
+            return list.poll().getId();
+        }
+        return -1;
+	}
+
+    public Player getWinner()
+    {
+        if(isGameOver())
+        {
+            return list.poll();
+        }
+        return null;
 	}
 }

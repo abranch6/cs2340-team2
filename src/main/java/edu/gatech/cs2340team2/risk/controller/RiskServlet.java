@@ -33,7 +33,11 @@ import com.google.gson.GsonBuilder;
         "/get_player_turn_json",
         "/get_game_state",
         "/get_turn_phase",
-        "/attack" //POST
+        "/attack", //POST
+        "/fortify",
+        "/check_game_over",
+        "/show_game_over",
+        "/reset"
     })
 public class RiskServlet extends HttpServlet {
 
@@ -41,6 +45,13 @@ public class RiskServlet extends HttpServlet {
     RiskGame game = new RiskGame();
     String[] players;
     Gson json = new Gson();
+    
+    private void resetGameServlet()
+    {
+    	numPlayers = 3;
+    	game = new RiskGame();
+    	json = new Gson();
+    }
     
     @Override
     protected void doPost(HttpServletRequest request,
@@ -53,7 +64,7 @@ public class RiskServlet extends HttpServlet {
         } else if (operation != null && operation.equalsIgnoreCase("DELETE")) {
             doDelete(request, response);
         } else {
-           
+
             switch(game.getGameState())
             {
                 case INIT_PLAYERS:
@@ -74,6 +85,21 @@ public class RiskServlet extends HttpServlet {
                         request.setAttribute("players", game.getQueue());
                         request.setAttribute("numPlayers", numPlayers);
                         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/display.jsp");
+                        dispatcher.forward(request,response);
+                    }
+                    break;
+                case POST_GAME:
+                    if(request.getServletPath().equals("/show_game_over"))
+                    {
+                        Player winner = game.getWinner();
+                        request.setAttribute("winner", winner);
+                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/game_over.jsp");
+                        dispatcher.forward(request,response);
+                    }
+                    else if (request.getServletPath().equals("/reset"))
+                    {
+                    	resetGameServlet();
+                    	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.html");
                         dispatcher.forward(request,response);
                     }
                     break;
@@ -122,6 +148,22 @@ public class RiskServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(json.toJson(dice));          	
             }
+            else if (request.getServletPath().equals("/fortify"))
+            {
+            	int numSourceArmiesToMove = Integer.parseInt(request.getParameter("armyNum"));
+            	
+            	int sourceRow = Integer.parseInt(request.getParameter("srcRow"));
+            	int sourceCol = Integer.parseInt(request.getParameter("srcCol"));
+            	int destinationRow = Integer.parseInt(request.getParameter("destRow"));
+            	int destinationCol = Integer.parseInt(request.getParameter("destCol"));
+            	
+            	boolean success = game.fortify(numSourceArmiesToMove, sourceRow, sourceCol, destinationRow, destinationCol);
+            	
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json.toJson(success));   
+            }
+
         }
     }
 
@@ -154,6 +196,12 @@ public class RiskServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(game.getTurnPhaseJSON());
+        }
+        else if (request.getServletPath().equals("/check_game_over"))
+        {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(game.getIsGameOverJSON());
         }
 
         switch(game.getGameState())

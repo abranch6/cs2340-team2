@@ -13,12 +13,12 @@
 <body style="user-select: none; "onselectstart="return false;" onLoad="showHexMap(); updatePlayerInfo(); fetchGameState();" ondragstart="return false;" ondrop="return false;">
 <div id=player_panel style="width:1000px; position:relative; left:5px padding-left: 20px; top: 600px; text-indent: 20px;">
     <h2>Turn Order</h2>
-	<img src="images/blackRomanNumerals.png" style="width:700; height:20; padding-left: 10px;">
+    <img src="images/blackRomanNumerals.png" style="width:700; height:20; padding-left: 10px;">
     <div id = "player1" class="player1">
         <p id="p1_name"></p>
         <p id="p1_armies"></p>
-		<p id="p1_color"></p>
-		<img src="images/blackRomanNumerals.png" style="width:700; height:20">
+        <p id="p1_color"></p>
+        <img src="images/blackRomanNumerals.png" style="width:700; height:20">
     </div>
     <div id = "player2" class="player2">
         <p id="p2_name"></p>
@@ -61,45 +61,45 @@
         <input type="radio" name="radio_fortify" id="fortify_destination" value="Destination"> Destination  
     </div>    
     <div id=selected_territory_1>
-	    </br>
-	    </br>
+        </br>
+        </br>
         <h3 id="st1_title"></h3>
         <p id="s_t_type_1">No Territory Selected</p>
         <p id="s_t_player_1">Controlling Player:</p>
         <p id="s_t_armies_1">Armies:</p>
         
         <p id="st1_textbox_title"> </p>
-		<input type="number" id="armies_textbox1"></input>
-		<br>
-		<button onclick="placeArmies()" id="place_armies_button" >Place Armies</button>
-		<button onclick="attack()" id="attack_button">  Attack  </button>
+        <input type="number" id="armies_textbox1"></input>
+        <br>
+        <button onclick="placeArmies()" id="place_armies_button" >Place Armies</button>
+        <button onclick="attack()" id="attack_button">  Attack  </button>
         <button onclick="fortify()" id="fortify_button"> Fortify </button>
-		<button onclick="advanceTurn()" id="end_turn_button"> End Phase</button>
+        <button onclick="advanceTurn()" id="end_turn_button"> End Phase</button>
     </div>
     <div id=selected_territory_2 class="player2Territory">
         <h3 id="st2_title"></h3>
         <p id="s_t_type_2">No Territory Selected</p>
         <p id="s_t_player_2">Controlling Player:</p>
         <p id="s_t_armies_2">Armies:</p>
-		<p id="place_defend_armies"> Number of armies to defend with: <input type="number" id="armies_textbox2"></input></p>
+        <p id="place_defend_armies"> Number of armies to defend with: <input type="number" id="armies_textbox2"></input></p>
     </div>
 </div>
 
 <div id="hexmap" style="position:absolute; left:15px;" class="changeOnClick"></div>
 
 <div id=dice_panel style="left:1400px;">
-	<div id=spot_0_0 class="die_0_0">
-	</div>
-	<div id=spot_0_1 class="die_0_1">
-	</div>
-	<div id=spot_0_2 class="die_0_2">
-	</div>
-	<div id=spot_1_0 class="die_1_0">
-	</div>
-	<div id=spot_1_1 class="die_1_1">
-	</div>
-	<div id=spot_1_2 class="die_1_2">
-	</div>
+    <div id=spot_0_0 class="die_0_0">
+    </div>
+    <div id=spot_0_1 class="die_0_1">
+    </div>
+    <div id=spot_0_2 class="die_0_2">
+    </div>
+    <div id=spot_1_0 class="die_1_0">
+    </div>
+    <div id=spot_1_1 class="die_1_1">
+    </div>
+    <div id=spot_1_2 class="die_1_2">
+    </div>
 </div>
 </body>
 
