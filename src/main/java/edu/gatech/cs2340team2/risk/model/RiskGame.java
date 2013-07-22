@@ -554,6 +554,7 @@ public class RiskGame {
     {
         if(isGameOver())
         {
+            state=GameState.POST_GAME;
             return list.poll();
         }
         return null;

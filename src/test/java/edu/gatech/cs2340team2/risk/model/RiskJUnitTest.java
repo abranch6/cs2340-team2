@@ -105,6 +105,7 @@ public class RiskJUnitTest extends RiskGame {
         assertEquals(false,testingGame.placeArmies(0, 1, 2, 5)); //should be 10
     }
     
+    @Test
     public void testFirstPlayerAttacking(){
         HexMap testMap= new HexMap(2);
         RiskGame testingGame= new RiskGame(testMap);
@@ -212,5 +213,273 @@ public class RiskJUnitTest extends RiskGame {
             testingGame.nextTurn();
         }
         
+    }
+    
+    @Test
+    public void testIsGameOver1(){
+        HexMap testMap= new HexMap(2);
+        RiskGame testingGame= new RiskGame(testMap);
+        testingGame.initPlayers(new String[]{"Tam","Jay","Arthur"});
+        Territory playerOnesSpot= new Territory(0,1);
+        Territory playerTwosSpot1= new Territory (2,2);
+        Territory playerTwosSpot2= new Territory (1,2);
+        Territory playerThreesSpot =new Territory (1,0);
+       
+        //SET ALL ARMIES FIRST (35) THEN CHECK IF ARMIES ARE ADJACENT
+        //IF THEY ARE ADJACENT, THEY ARE ABLE TO ATTACK
+        
+        
+        //FIRST ROUND
+        //player 1's first turn
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+       
+        //player 2's first turn 
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        //player 3's first turn
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //2nd ROUND
+        
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //3rd Round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(1,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //4th round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(1,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //5th round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(1,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        // 6th round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //7th round- all armies are done
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        testingGame.setGameState(getGameState());
+        if(testingGame.getGameState()!=GameState.POST_GAME){
+            //do nothing
+            return;
+        }
+    }
+    
+    @Test
+    public void testIsGameOver2(){
+        HexMap testMap= new HexMap(2);
+        RiskGame testingGame= new RiskGame(testMap);
+        testingGame.initPlayers(new String[]{"Tam","Jay","Arthur"});
+        Territory playerOnesSpot= new Territory(0,1);
+        Territory playerTwosSpot1= new Territory (2,2);
+        Territory playerTwosSpot2= new Territory (1,2);
+        Territory playerThreesSpot =new Territory (1,0);
+  
+        //FIRST ROUND
+        //player 1's first turn
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+       
+        //player 2's first turn 
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        //player 3's first turn
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //2nd ROUND
+        
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //3rd Round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(1,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //4th round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(1,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //5th round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(1,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        // 6th round
+        testingGame.placeArmies(0,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //7th round- all armies are done
+        testingGame.placeArmies(1,1,0,5);
+        testingGame.nextTurn();
+             
+        testingGame.placeArmies(2,2,1,5);
+        testingGame.nextTurn();
+        
+        testingGame.placeArmies(1,0,2,5);
+        testingGame.nextTurn();
+        
+        //player 1's turn
+        testingGame.attack(5, 4, 0, 1, 1, 0);
+        testingGame.nextTurn();
+        
+        //player 2 turn
+        testingGame.nextTurn();
+        
+        //player 3's turn
+        testingGame.nextTurn();
+        
+        //player 1's turn
+        testingGame.attack(4, 3, 0, 1, 1, 0);
+        testingGame.nextTurn();
+        
+        //player 2 turn
+        testingGame.nextTurn();
+        
+        //player 3's turn
+        testingGame.nextTurn();
+        
+        //player 1
+        testingGame.attack(5, 2, 0, 1, 1, 0);
+        testingGame.nextTurn();
+        
+       //player 2 turn
+        testingGame.nextTurn();
+        
+        //player 3's turn
+        testingGame.nextTurn();
+        
+        //player 1's turn
+        testingGame.attack(5, 2, 0, 1, 1, 0);
+        testingGame.nextTurn();
+       
+        //player 2 turn
+        testingGame.nextTurn();
+        
+        //player 3 is gone
+        
+        
+        
+        
+        
+        //player 1's turn
+        testingGame.attack(5, 4, 1, 1, 1, 2);
+        testingGame.nextTurn();
+        
+        //player 2's turn
+        testingGame.nextTurn();
+        
+        testingGame.attack(5, 4, 1, 1, 1, 2);
+        testingGame.nextTurn();
+        
+        //2
+        testingGame.nextTurn();
+        
+        testingGame.attack(5, 4, 1, 1, 1, 2);
+        testingGame.nextTurn();
+        testingGame.nextTurn();
+        
+        //that territory is gone
+
+        testingGame.attack(5 ,4 ,1, 1 ,2 ,2);
+        testingGame.nextTurn();
+        
+        testingGame.nextTurn();
+        
+        testingGame.attack(5 ,4 ,1, 1 ,2 ,2);
+        testingGame.nextTurn();
+        
+        testingGame.nextTurn();
+        
+        testingGame.attack(5 ,4 ,1, 1 ,2 ,2);
+        testingGame.nextTurn();
+        
+        testingGame.nextTurn();
+        
+        testingGame.attack(5 ,4 ,1, 1 ,2 ,2);
+        testingGame.nextTurn();
+        
+        testingGame.nextTurn();
+        
+        //all second player territories gone
+        if(testingGame.getGameState()!=GameState.POST_GAME){
+            //do nothing
+            return;
+        } 
     }
 }
