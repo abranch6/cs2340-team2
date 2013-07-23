@@ -79,7 +79,7 @@
         <p id="s_t_type_2">No Territory Selected</p>
         <p id="s_t_player_2">Controlling Player:</p>
         <p id="s_t_armies_2">Armies:</p>
-        <p id="place_defend_armies"> Number of armies to defend with:</p>
+        <p id="st2_textbox_title"> Number of armies to defend with:</p>
         <input type="number" id="armies_textbox2"></input>
     </div>
 </div>

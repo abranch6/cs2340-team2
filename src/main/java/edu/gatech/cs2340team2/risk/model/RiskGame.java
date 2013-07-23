@@ -35,7 +35,7 @@ public class RiskGame {
 	
 	public RiskGame()
 	{
-        this(new HexMap(5));
+        this(new HexMap(6));
 	}
 
     public RiskGame(HexMap map)

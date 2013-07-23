@@ -96,7 +96,7 @@ function updateControl()
         $("#st1_textbox_title").text("Number of armies to place:");
 
         $("#fortify_select").hide();
-        $("armies_textbox1").show();
+        $("#armies_textbox1").show();
     }
     else if(window.gameState == "GAME")
     {
@@ -111,7 +111,7 @@ function updateControl()
             $("#st1_textbox_title").text("Number of armies to place:");
 
             $("#fortify_select").hide();
-            $("armies_textbox1").show();
+            $("#armies_textbox1").show();
         }
         else if(window.turnPhase == "ATTACK")
         {
@@ -127,8 +127,9 @@ function updateControl()
             $("#st1_textbox_title").text("Number of armies to attack with:");
 
             $("#fortify_select").hide();
-            $("armies_textbox2").show();
-            $("armies_textbox1").show();
+            $("#armies_textbox2").show();
+            $("#armies_textbox1").show();
+            $("#st2_textbox_title").show();
         }
         else if(window.turnPhase == "FORTIFY")
         {
@@ -143,8 +144,9 @@ function updateControl()
             $("#selected_territory_2").show();
             $("#st1_textbox_title").text("Number of armies to move:");
             $("#fortify_select").show();
-            $("armies_textbox1").show();
-            $("armies_textbox2").hide();
+            $("#armies_textbox1").show();
+            $("#st2_textbox_title").hide(); 
+            $("#armies_textbox2").hide();
         }
     }
 }
